@@ -29,7 +29,7 @@
 - Um host em cada LAN
     
 
-`Host A ── LAN A (Switch 1) ── Roteador ── LAN B (Switch 1) ── Host B`
+`Host A ── LAN A ── Roteador ── LAN B ── Host B`
 
 ---
 
