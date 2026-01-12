@@ -10,6 +10,14 @@ ___
 - **Laboratório 1** — Introdução / primeiros passos  
   👉 [Abrir Laboratório 1](./labs/lab01.md)
 
+## Laboratórios
+
+| Lab | Tema | Link |
+|---:|------|------|
+| 01 | Introdução / primeiros passos | [Abrir](./labs/lab01.md) |
+
+
+
 ## Organização (em evolução)
 Este repositório será usado para publicar os laboratórios da disciplina, com instruções e materiais de apoio.
 
