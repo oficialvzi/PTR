@@ -198,13 +198,3 @@ Relacionar explicitamente com:
     
 - Plano de dados × plano de controle
     
-
----
-
-## Extensão opcional (se sobrar tempo)
-
-- Inserir um terceiro roteador
-    
-- Remover gateway padrão e observar falha
-    
-- Usar `traceroute` para visualizar o salto intermediário
