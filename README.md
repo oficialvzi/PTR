@@ -1,10 +1,13 @@
 Disciplina: **ENE0025 - PTR - Protocolos de Transporte e Roteamento** 
+
 Curso: **Engenharia de Redes de Comunicação**  
 Instituição: **Universidade de Brasília (UnB)**  
 Departamento: **Engenharia Elétrica** 
 
 Professor Responsável: **Prof. Dr. Laerte Peotta de Melo**
+
 Monitores: **Victor Lima Dos Santos**
+
 ---
 
 ## Apresentação
@@ -116,7 +119,6 @@ Os critérios específicos de cada experimento serão informados no respectivo r
 
 
 
-## Organização (em evolução)
-Este repositório é de uso acadêmico e destina-se exclusivamente às atividades disciplina.
+> Este repositório é de uso acadêmico e destina-se exclusivamente às atividades disciplina.
 
 
