@@ -1,8 +1,6 @@
 
 ## Objetivos do laboratório
 
-Ao final da atividade, o estudante deverá:
-
 - Compreender que redes distintas **não se comunicam automaticamente**
     
 - Identificar o **papel do roteador** como elemento lógico de interconexão
@@ -14,7 +12,7 @@ Ao final da atividade, o estudante deverá:
 
 ---
 
-## Cenário do laboratório
+## Cenário do Laboratório
 
 ### Topologia lógica
 
