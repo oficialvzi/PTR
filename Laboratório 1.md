@@ -19,6 +19,7 @@ Ao final da atividade, o estudante deverá:
 ### Topologia lógica
 
 
+<img width="659" height="553" alt="Pasted image 20260111075540" src="https://github.com/user-attachments/assets/997f0a66-08ae-46c1-ac7b-43834c95506c" />
 
 
 
