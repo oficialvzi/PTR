@@ -1,5 +1,4 @@
-# PTR
-Disciplina: **Engenharia de Redes - ENE0025 - Protocolos de Transporte e Roteamento** 
+## Disciplina: **Engenharia de Redes - ENE0025 - PTR - Protocolos de Transporte e Roteamento** 
 
 Monitores: **Victor Lima Dos Santos**
 ___
