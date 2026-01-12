@@ -1,5 +1,16 @@
 # PTR
-## Disciplina Engenharia de Redes - ENE0025 - PROTOCOLOS DE TRANSPORTE E ROTEAMENTO
+Disciplina: **Engenharia de Redes - ENE0025 - Protocolos de Transporte e Roteamento**
 ___
-# Lista dos laboratórios
-- [Laboratórop 1 — Configuração inicial ](./Laboratório 1.md)
+
+## Como usar este repositório
+1. Abra a lista de laboratórios abaixo.
+2. Em cada laboratório, siga as instruções e entregue conforme orientação do professor.
+
+## Laboratórios
+- **Laboratório 1** — Introdução / primeiros passos  
+  👉 [Abrir Laboratório 1](./Laborat%C3%B3rio%201.md)
+
+## Organização (em evolução)
+Este repositório será usado para publicar os laboratórios da disciplina, com instruções e materiais de apoio.
+
+
