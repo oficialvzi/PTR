@@ -7,10 +7,6 @@ ___
 2. Em cada laboratório, siga as instruções e entregue conforme orientação do professor.
 
 ## Laboratórios
-- **Laboratório 1** — Introdução / primeiros passos  
-  👉 [Abrir Laboratório 1](./labs/lab01.md)
-
-## Laboratórios
 
 | Lab | Tema | Link |
 |---:|------|------|
