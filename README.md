@@ -122,9 +122,9 @@ Os critérios específicos de cada experimento serão informados no respectivo r
 
 ## Laboratórios
 
-| Lab | Tema | Link |
-|---:|------|------|
-| 01 | Introdução / primeiros passos | [Abrir](./labs/lab01.md) |
+| Laboratírio | Tema | Link |
+|:---:|:------|------|
+| 01 | Introdução / primeiros passos | [Acessar](./labs/lab01.md) |
 
 
 
