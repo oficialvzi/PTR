@@ -96,7 +96,7 @@ Os critérios específicos de cada experimento serão informados no respectivo r
 - Atenção às normas de uso do laboratório.
 ---
 
-- ## Bibliografia Básica
+## Bibliografia Básica
 
 - **DOYLE, Jeff; CARROLL, Jennifer DeHaven**. Routing TCP/IP: volume 1. Indianapolis: Cisco Press, 1998.
 - **FOROUZAN, Behrouz A.** Protocolo TCP/IP. 3. ed. Porto Alegre: AMGH, 2010.
@@ -108,7 +108,7 @@ Os critérios específicos de cada experimento serão informados no respectivo r
 - **STALLINGS, William.** Comunicações de dados e redes de computadores. 10. ed. São Paulo: Pearson, 2014.
 - **COMER, Douglas E.** Interligação de redes com TCP/IP: princípios, protocolos e arquitetura. 5. ed. Rio de Janeiro: Elsevier, 2006.
 
-- ## Documentos Normativos e Técnicos
+## Documentos Normativos e Técnicos
 - **POSTEL, Jon.** Transmission Control Protocol. RFC 793. Marina del Rey: ISI, 1981.
 - **POSTEL, Jon.** User Datagram Protocol. RFC 768. Marina del Rey: ISI, 1980.
 - **MOY, John T.** OSPF version 2. RFC 2328. Marina del Rey: ISI, 1998.
