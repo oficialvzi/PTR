@@ -1,7 +1,8 @@
 # Laboratório 01 - Configuração inicial no PNetLab
 
 **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** **Prof. Dr. Laerte Peotta de Melo**
+**Professor responsável:** **Prof. Dr. Laerte Peotta de Melo**  
+**Monitores:** Victor Lima dos Santos  
 
 ---
 
