@@ -1,3 +1,7 @@
+**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
+**Professor responsável:** **Prof. Dr. Laerte Peotta de Melo**
+
+---
 
 ## Objetivos do laboratório
 
