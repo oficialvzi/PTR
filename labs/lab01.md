@@ -35,8 +35,9 @@
 - Um host em cada LAN
     
 
-`Host A ── LAN A ── Roteador ── LAN B ── Host B`
-
+```text
+Host A - LAN A - Roteador - LAN B - Host B
+```
 ---
 
 ## Recursos no PNetLab
