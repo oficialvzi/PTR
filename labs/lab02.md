@@ -40,6 +40,7 @@ A topologia do laboratório é composta por:
 
 ### Diagrama lógico
 
+
 ```text
 +--------+        +----------+        +--------+
 |  PC1   |------->|  Switch  |<-------|   R1   |
