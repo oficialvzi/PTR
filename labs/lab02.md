@@ -1,4 +1,4 @@
-# Laboratório 01 — Configuração básica de roteadores no PNetLab
+# Laboratório 02 — Configuração básica de roteadores no PNetLab
 
 **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
 **Professor responsável:** **Prof. Dr. Laerte Peotta de Melo**
