@@ -42,22 +42,18 @@ A topologia do laboratório é composta por:
 
 ### Diagrama lógico
 
-
-```text
-+--------+        +----------+        +--------+
-|  PC1   |------->|  Switch  |<-------|   R1   |
-| VPCS   |        |   SW1    |        | G0/0   |
-+--------+        +----------+        +--------+
-```
+<img width="4732" height="990" alt="Cliente Payment Fraud-2026-03-19-234219" src="https://github.com/user-attachments/assets/d63038b6-e02c-4a4c-89f8-fab225fa87c0" />
 
 ---
 
 ## 4. Endereçamento IP
 
-| Dispositivo | Interface | Endereço IP   | Máscara       | Gateway       |
-|-------------|-----------|---------------|---------------|---------------|
-| R1          | G0/0      | 192.168.0.254 | 255.255.255.0 | —             |
-| PC1         | eth0      | 192.168.0.10  | 255.255.255.0 | 192.168.0.254 |
+| Dispositivo | Interface        | Endereço IP   | Máscara           | Gateway Padrão | Observação                    |
+|-------------|------------------|---------------|-------------------|----------------|-------------------------------|
+| Router 1841 | Fa0/0            | 192.168.0.254 | 255.255.255.0     | —              | Interface LAN do roteador     |
+| PC 1        | FastEthernet0    | 192.168.0.1   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
+| PC 2        | FastEthernet0    | 192.168.0.2   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
+| Terminal    | Console          | —             | —                 | —              | Acesso local via cabo console |
 
 ---
 
