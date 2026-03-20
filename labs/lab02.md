@@ -19,15 +19,16 @@ Este é o primeiro cenário prático da disciplina e serve como base para os lab
 
 Ao final deste laboratório, o aluno deverá ser capaz de:
 
-- acessar o roteador pela CLI;
-- configurar o nome do equipamento;
-- proteger o acesso local e privilegiado;
-- configurar banner de aviso;
-- atribuir endereço IP a uma interface;
-- ativar a interface de rede;
-- habilitar acesso remoto via SSH;
-- validar conectividade com um host da LAN;
-- salvar a configuração no equipamento.
+- montar uma topologia básica no PNetLab com terminal, roteador, switch e hosts;
+- realizar o acesso inicial ao roteador por meio da porta de console;
+- compreender a função de cada elemento da topologia em uma rede local;
+- configurar parâmetros básicos de administração no roteador;
+- atribuir endereço IP à interface Fa0/0 do roteador;
+- configurar o endereçamento IP dos hosts da LAN;
+- identificar o papel do gateway padrão na comunicação da rede;
+- testar a conectividade entre roteador e estações com comandos de verificação;
+- salvar a configuração realizada no equipamento;
+- preparar o ambiente para os próximos laboratórios de roteamento.
 
 ---
 
@@ -37,7 +38,8 @@ A topologia do laboratório é composta por:
 
 - **1 roteador Cisco**
 - **1 switch Ethernet**
-- **1 host VPCS**
+- **1 Terminal**
+- **2 PCS** 
 - enlaces Ethernet entre os dispositivos
 
 ### Diagrama lógico
@@ -64,22 +66,58 @@ A topologia do laboratório é composta por:
   - IOSv, CSR1000v, IOL ou equivalente
 - 1 nó **Ethernet Switch**
 - 1 nó **VPCS**
+- 2 PCs **Linux**
 - Acesso ao console do roteador pelo navegador
 
 ---
 
 ## 6. Montagem do cenário no PNetLab
 
-1. Criar um novo laboratório no PNetLab.
-2. Adicionar os seguintes nós:
-   - 1 roteador Cisco
-   - 1 switch
-   - 1 VPCS
-3. Conectar:
-   - `PC1` ao `SW1`
-   - `R1 G0/0` ao `SW1`
-4. Inicializar os dispositivos.
+Nesta atividade, o cenário deve reproduzir uma topologia simples de rede local com acesso inicial ao roteador por **console** e comunicação dos hosts por meio de uma **LAN Ethernet**.
 
+### 6.1 Dispositivos necessários
+
+Adicionar ao laboratório os seguintes nós no PNetLab:
+
+- **1 roteador Cisco 1841** ou equivalente
+- **1 switch Cisco 2960-24TT** ou equivalente
+- **2 PCs** para a rede local
+- **1 terminal** para acesso via console ao roteador
+
+> Caso a imagem exata dos equipamentos não esteja disponível no PNetLab, podem ser utilizados dispositivos equivalentes, mantendo a mesma função lógica no cenário.
+
+### 6.2 Conexões da topologia
+
+Realizar as conexões conforme abaixo:
+
+- conectar o **Terminal** à porta **Console** do **Router 1841**
+- conectar a interface **Fa0/0** do **Router 1841** ao **Switch 2960-24TT**
+- conectar o **PC 1** ao switch
+- conectar o **PC 2** ao switch
+
+### 6.3 Organização lógica do cenário
+
+A topologia final deverá representar:
+
+- **acesso local ao roteador** por meio de cabo de console;
+- **rede LAN 192.168.0.0/24** interligando roteador, switch e hosts;
+- **roteador como gateway padrão** da rede local.
+
+### 6.4 Passos de montagem
+
+1. Criar um novo laboratório no PNetLab.
+2. Inserir os dispositivos listados na topologia.
+3. Renomear os nós para facilitar a identificação:
+   - `Terminal`
+   - `R1`
+   - `SW1`
+   - `PC1`
+   - `PC2`
+4. Conectar os equipamentos conforme o diagrama da atividade.
+5. Inicializar todos os nós.
+6. Acessar o roteador inicialmente pelo **terminal de console**.
+7. Após a configuração da interface `Fa0/0`, validar a conectividade entre os hosts e o roteador.
+   
 ---
 
 ## 7. Configuração do roteador
@@ -181,34 +219,16 @@ ssh -l admin 192.168.0.254
 
 ## 10. Resultados esperados
 
-Ao concluir a prática, o aluno deve observar que:
+Ao final da montagem, o laboratório deverá permitir:
 
-- a interface `G0/0` do roteador está em estado `up/up`;
-- o host `PC1` consegue alcançar o endereço `192.168.0.254`;
-- o roteador aceita conexões SSH;
-- a configuração foi salva corretamente.
-
----
-
-## 11. Checklist de validação
-
-Marque cada item após a execução:
-
-- [ ] Topologia criada corretamente no PNetLab  
-- [ ] Roteador nomeado como `R1`  
-- [ ] Senha privilegiada configurada  
-- [ ] Usuário local `admin` criado  
-- [ ] Banner de aviso configurado  
-- [ ] Interface LAN configurada com IP `192.168.0.254/24`  
-- [ ] Interface ativada com `no shutdown`  
-- [ ] SSH habilitado  
-- [ ] Host configurado com IP `192.168.0.10/24`  
-- [ ] Ping realizado com sucesso  
-- [ ] Configuração salva com sucesso  
+- acesso ao roteador via console pelo terminal;
+- comunicação entre o roteador e os dois PCs da LAN;
+- testes de conectividade com `ping` entre hosts e gateway;
+- continuidade das configurações básicas de administração do roteador.
 
 ---
 
-## 12. Questões para reflexão
+## 11. Questões para reflexão
 
 1. Qual a diferença entre acesso **via console** e acesso **remoto pela rede**?
 2. Qual a função do comando `no ip domain-lookup` em laboratório?
