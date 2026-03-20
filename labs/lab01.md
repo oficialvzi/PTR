@@ -203,4 +203,13 @@ Relacionar explicitamente com:
 - Encaminhamento × roteamento
     
 - Plano de dados × plano de controle
-    
+
+## Entrega
+
+O aluno deverá enviar relatório em **PDF** pelo ambiente Teams disponibilizado pelo professor:
+
+- captura de tela da topologia no PNetLab;
+- saída dos comandos;
+- Respostas da discussão orientada.
+
+---
