@@ -24,9 +24,7 @@
 ### Topologia lógica
 
 
-<img width="659" height="553" alt="Pasted image 20260111075540" src="https://github.com/user-attachments/assets/997f0a66-08ae-46c1-ac7b-43834c95506c" />
-
-
+<img width="3407" height="990" alt="Cliente Payment Fraud-2026-03-20-000835" src="https://github.com/user-attachments/assets/a3d05855-9ab1-4199-b197-bb8fd59a832d" />
 
 
 - Duas redes locais distintas (LAN A e LAN B)
