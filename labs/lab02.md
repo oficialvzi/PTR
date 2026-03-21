@@ -248,6 +248,8 @@ O aluno deverá entregar:
 - evidência do teste de `ping`;
 - evidência do acesso remoto via SSH, quando aplicável.
 
+> O aluno deve seguir rigorosamente os **roteiros** utilizando o modelo de [**relatório**](./labs/relatório.md) e registrar os resultados conforme solicitado.
+
 ---
 
 ## 14. Desafio extra
