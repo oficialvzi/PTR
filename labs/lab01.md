@@ -24,24 +24,23 @@
 ### Topologia lógica
 
 
-<img width="3407" height="990" alt="Cliente Payment Fraud-2026-03-20-000835" src="https://github.com/user-attachments/assets/a3d05855-9ab1-4199-b197-bb8fd59a832d" />
+<img width="3407" height="990" alt="Cliente Payment Fraud-2026-03-21-103650" src="https://github.com/user-attachments/assets/743384b3-61e1-4606-b45f-6107e4179601" />
 
 
-- Duas redes locais distintas (LAN A e LAN B)
-    
-- Um roteador interligando as duas redes
-    
-- Um host em cada LAN
-    
+<!-- código mermaid
+flowchart LR
+    R["📡 Router 1841<br>eth0: 192.168.10.1/24<br>eth1: 192.168.20.1/24"] --- S["🔀 Switch 2960-24TT"]
+    S --- HA["💻 Host A<br>eth0: 192.168.10.10/24"]
+    S --- HB["💻 Host B<br>eth0: 192.168.20.10/24"]
+-->
 
-```text
-Host A - LAN A - Roteador - LAN B - Host B
-```
----
+ ---
 
 ## Recursos no PNetLab
 
 - 1 roteador (FRRouting ou Cisco IOU)
+
+- 1 switch
     
 - 2 hosts Linux
     
