@@ -44,7 +44,16 @@ A topologia do laboratório é composta por:
 
 ### Diagrama lógico
 
-<img width="4732" height="990" alt="Cliente Payment Fraud-2026-03-19-234219" src="https://github.com/user-attachments/assets/d63038b6-e02c-4a4c-89f8-fab225fa87c0" />
+<img width="4732" height="990" alt="Cliente Payment Fraud-2026-03-21-104124" src="https://github.com/user-attachments/assets/44ae4c4e-3568-45a7-9316-05d0a7123c54" />
+
+
+<!-- diagrama Mermaid
+flowchart LR
+    T["🖥️ PC-PT<br>Terminal"] -. Cabo de Console .- R["📡 Router 1841"]
+    R -- "f0/0: 192.168.0.254<br>Senha = SENHA" --- S["🔀 Switch 2960-24TT"]
+    S --- PC1["💻 PC-PT<br>192.168.0.1"]
+    S --- PC2["💻 PC-PT<br>192.168.0.2"]
+-->
 
 ---
 
