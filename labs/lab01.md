@@ -24,7 +24,8 @@
 ### Topologia lógica
 
 
-<img width="2300" height="1095" alt="Cliente Payment Fraud-2026-03-23-115619" src="https://github.com/user-attachments/assets/a3329b92-0c64-4ac1-870e-0be1f5e01f5f" />
+<img width="2300" height="1570" alt="Cliente Payment Fraud-2026-03-23-120200" src="https://github.com/user-attachments/assets/c21560a0-efe0-46d4-a518-6ce0f5d3aaf4" />
+
 
 
 
