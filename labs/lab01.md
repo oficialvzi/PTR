@@ -24,7 +24,8 @@
 ### Topologia lógica
 
 
-<img width="3407" height="990" alt="Cliente Payment Fraud-2026-03-21-103650" src="https://github.com/user-attachments/assets/743384b3-61e1-4606-b45f-6107e4179601" />
+<img width="2258" height="990" alt="Cliente Payment Fraud-2026-03-23-115438" src="https://github.com/user-attachments/assets/bb4a489c-239e-4a46-bd73-0b2a10de8030" />
+
 
 
 <!-- código mermaid
