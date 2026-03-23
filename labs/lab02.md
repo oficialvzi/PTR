@@ -36,7 +36,7 @@ Ao final deste laboratório, o aluno deverá ser capaz de:
 
 A topologia do laboratório é composta por:
 
-- **1 roteador Cisco**
+- **1 roteador**
 - **1 switch Ethernet**
 - **1 Terminal**
 - **2 PCS** 
@@ -44,13 +44,12 @@ A topologia do laboratório é composta por:
 
 ### Diagrama lógico
 
-<img width="4732" height="990" alt="Cliente Payment Fraud-2026-03-21-104124" src="https://github.com/user-attachments/assets/44ae4c4e-3568-45a7-9316-05d0a7123c54" />
-
+<img width="4155" height="990" alt="Cliente Payment Fraud-2026-03-23-134338" src="https://github.com/user-attachments/assets/2a2d9506-7c30-4d80-8faf-e5d4a6945fae" />
 
 <!-- diagrama Mermaid
 flowchart LR
-    T["🖥️ PC-PT<br>Terminal"] -. Cabo de Console .- R["📡 Router 1841"]
-    R -- "f0/0: 192.168.0.254<br>Senha = SENHA" --- S["🔀 Switch 2960-24TT"]
+    T["🖥️ PC-PT<br>Terminal"] -. Cabo de Console .- R["📡 Router"]
+    R -- "f0/0: 192.168.0.254<br>Senha = SENHA" --- S["🔀 Switch"]
     S --- PC1["💻 PC-PT<br>192.168.0.1"]
     S --- PC2["💻 PC-PT<br>192.168.0.2"]
 -->
@@ -61,7 +60,7 @@ flowchart LR
 
 | Dispositivo | Interface        | Endereço IP   | Máscara           | Gateway Padrão | Observação                    |
 |-------------|------------------|---------------|-------------------|----------------|-------------------------------|
-| Router 1841 | Fa0/0            | 192.168.0.254 | 255.255.255.0     | —              | Interface LAN do roteador     |
+| Router      | Fa0/0            | 192.168.0.254 | 255.255.255.0     | —              | Interface LAN do roteador     |
 | PC 1        | FastEthernet0    | 192.168.0.1   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
 | PC 2        | FastEthernet0    | 192.168.0.2   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
 | Terminal    | Console          | —             | —                 | —              | Acesso local via cabo console |
@@ -88,8 +87,8 @@ Nesta atividade, o cenário deve reproduzir uma topologia simples de rede local 
 
 Adicionar ao laboratório os seguintes nós no PNetLab:
 
-- **1 roteador Cisco 1841** ou equivalente
-- **1 switch Cisco 2960-24TT** ou equivalente
+- **1 roteador Cisco** ou equivalente
+- **1 switch Cisco** ou equivalente
 - **2 PCs** para a rede local
 - **1 terminal** para acesso via console ao roteador
 
@@ -99,8 +98,8 @@ Adicionar ao laboratório os seguintes nós no PNetLab:
 
 Realizar as conexões conforme abaixo:
 
-- conectar o **Terminal** à porta **Console** do **Router 1841**
-- conectar a interface **Fa0/0** do **Router 1841** ao **Switch 2960-24TT**
+- conectar o **Terminal** à porta **Console** do **Router**
+- conectar a interface **Fa0/0** do **Router** ao **Switch**
 - conectar o **PC 1** ao switch
 - conectar o **PC 2** ao switch
 
