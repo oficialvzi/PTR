@@ -40,9 +40,9 @@ flowchart
 
 ## Recursos no PNetLab
 
-- 1 roteador (FRRouting ou Cisco IOU)
+- 1 roteador (FRRouting ou Cisco IOU ou  VyOS)
 
-- 1 switch
+- 1 switch Layer 2
     
 - 2 hosts Linux
     
