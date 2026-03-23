@@ -257,7 +257,7 @@ O aluno deverá entregar:
 - evidência do teste de `ping`;
 - evidência do acesso remoto via SSH, quando aplicável.
 
-> O aluno deve seguir rigorosamente os **roteiros** utilizando o modelo de [**relatório**](./labs/relatório.md) e registrar os resultados conforme solicitado.
+> O aluno deve seguir rigorosamente os **roteiros** utilizando o modelo de [**relatório**](https://github.com/ProfessorLaerte/labredes/blob/main/labs/relatorio.md) e registrar os resultados conforme solicitado.
 
 ---
 
