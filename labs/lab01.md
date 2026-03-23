@@ -24,13 +24,13 @@
 ### Topologia lógica
 
 
-<img width="2258" height="990" alt="Cliente Payment Fraud-2026-03-23-115438" src="https://github.com/user-attachments/assets/bb4a489c-239e-4a46-bd73-0b2a10de8030" />
+<img width="2300" height="1095" alt="Cliente Payment Fraud-2026-03-23-115619" src="https://github.com/user-attachments/assets/a3329b92-0c64-4ac1-870e-0be1f5e01f5f" />
 
 
 
 <!-- código mermaid
-flowchart LR
-    R["📡 Router 1841<br>eth0: 192.168.10.1/24<br>eth1: 192.168.20.1/24"] --- S["🔀 Switch 2960-24TT"]
+flowchart 
+    S["🔀 Switch <br>eth0: 192.168.10.1/24<br>eth1: 192.168.20.1/24"]
     S --- HA["💻 Host A<br>eth0: 192.168.10.10/24"]
     S --- HB["💻 Host B<br>eth0: 192.168.20.10/24"]
 -->
