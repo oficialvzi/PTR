@@ -211,6 +211,6 @@ O aluno deverá enviar relatório em **PDF** pelo ambiente Teams disponibilizado
 - saída dos comandos;
 - Respostas da discussão orientada.
 
-> O aluno deve seguir rigorosamente os **roteiros** utilizando o modelo de [**relatório**](./labs/relatório.md) e registrar os resultados conforme solicitado.
+> O aluno deve seguir rigorosamente os **roteiros** utilizando o modelo de [**relatório**](./labs/relatorio.md) e registrar os resultados conforme solicitado.
 
 ---
