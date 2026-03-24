@@ -226,7 +226,7 @@ ping 192.168.30.10
 
 ## 11. Experimento de convergência
 
-### Etapa 1 — Estado estável
+### Etapa 1 - Estado estável
 
 Com a rede funcionando:
 
@@ -234,7 +234,7 @@ Com a rede funcionando:
 - verificar a rota para `192.168.10.0/24` em **R3**;
 - confirmar a conectividade entre **Linux 1** e **Linux 2**.
 
-### Etapa 2 — Falha de enlace
+### Etapa 2 - Falha de enlace
 
 Desativar a interface entre **R2** e **R3**.
 
@@ -247,7 +247,7 @@ shutdown
 end
 ```
 
-### Etapa 3 — Observação
+### Etapa 3 - Observação
 
 Após a falha:
 
