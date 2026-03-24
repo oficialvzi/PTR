@@ -1,7 +1,8 @@
 # Laboratório 04 - RIP e análise de convergência
 
-**Disciplina:** Protocolos de Transporte e Roteamento  
-**Professor responsável:** **Prof. Dr. Laerte Peotta de Melo**
+**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
+**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+**Monitores:** Victor Lima dos Santos / Beatriz Silva Nascimento
 
 ---
 
