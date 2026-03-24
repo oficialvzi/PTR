@@ -1,4 +1,4 @@
-# Laboratório 04 - RIP e análise de convergência no PNetLab
+# Laboratório 04 - RIP e análise de convergência
 
 **Disciplina:** Protocolos de Transporte e Roteamento  
 **Professor responsável:** **Prof. Dr. Laerte Peotta de Melo**
