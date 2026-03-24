@@ -25,8 +25,8 @@
 
 
 ```mermaid
-flowchart 
-    S["🔀 Switch <br>eth0: 192.168.10.1/24<br>eth1: 192.168.20.1/24"]
+flowchart
+    S["🔀 Switch L3<br>eth0: 192.168.10.1/24<br>eth1: 192.168.20.1/24"]
     S --- HA["💻 Host A<br>eth0: 192.168.10.10/24"]
     S --- HB["💻 Host B<br>eth0: 192.168.20.10/24"]
 ```
@@ -34,6 +34,8 @@ flowchart
  ---
 
 ## Recursos no PNetLab
+
+- Escolha usar um router ou SW L3
 
 - 1 roteador (FRRouting ou Cisco IOU ou  VyOS)
 
