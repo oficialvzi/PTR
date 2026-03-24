@@ -22,7 +22,7 @@ Esta prática introduz o aluno ao roteamento multicast em ambiente controlado. A
 - formação da tabela de rotas multicast;
 - encaminhamento de tráfego multicast entre redes diferentes.
 
-A atividade foi estruturada para simplificar o primeiro contato com multicast roteado antes da evolução para cenários com múltiplos roteadores e PIM-SM.
+A atividade foi estruturada para simplificar o primeiro contato com multicast roteado.
 
 ---
 
