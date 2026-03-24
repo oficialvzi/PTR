@@ -12,7 +12,7 @@ Implementação do **RIPv2** em topologia com múltiplos roteadores, seguida de 
 
 ---
 
-## 2. Justificativa didática
+## 2. Justificativa
 
 Este laboratório eleva o nível de dificuldade em relação às práticas iniciais da disciplina ao introduzir um protocolo de roteamento dinâmico clássico baseado em **vetor-distância**. A atividade permite ao aluno observar não apenas a configuração do **RIPv2**, mas também o comportamento da rede diante de uma mudança de topologia.
 
