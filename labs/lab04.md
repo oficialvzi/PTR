@@ -36,16 +36,47 @@ Ao final da atividade, o aluno deverá ser capaz de:
 
 ## 4. Fundamentação teórica
 
-O RIP é um protocolo de roteamento do tipo **vetor-distância**, simples de configurar e adequado a redes pequenas. Seu funcionamento baseia-se na troca periódica de informações de rota entre roteadores vizinhos, utilizando a métrica de **número de saltos**.
+Protocolos de roteamento dinâmico foram desenvolvidos para permitir que roteadores descubram, atualizem e removam rotas automaticamente, reduzindo a necessidade de configuração manual em redes com múltiplos caminhos e mudanças frequentes. Entre esses protocolos, o **RIP — Routing Information Protocol** ocupa lugar importante na história das redes IP por sua simplicidade de operação e valor didático. Mesmo sendo considerado limitado para redes modernas de maior porte, ele continua sendo extremamente útil em laboratório por permitir a observação clara de conceitos fundamentais como troca de rotas, atualização periódica, métrica por saltos e convergência.
 
-Entre suas principais limitações estão:
+O RIP pertence à classe dos protocolos de **vetor-distância**. Nesse modelo, cada roteador anuncia periodicamente a seus vizinhos as redes que conhece e a distância até elas, medida em **número de saltos**. Cada roteador, ao receber essas informações, recalcula sua tabela de roteamento e escolhe o melhor caminho com base na menor métrica. No RIP, uma rota com até **15 saltos** é considerada alcançável; uma métrica **16** representa destino inalcançável. Essa característica torna o protocolo simples, mas também limita sua aplicação a redes pequenas.
 
-- máximo de **15 hops** como distância válida;
-- convergência lenta;
-- possibilidade de formação de loops temporários;
-- ocorrência do problema de **contagem ao infinito** em mudanças de topologia.
+### Diagrama explicativo do funcionamento do RIP
 
-O **RIPv2** melhora alguns aspectos em relação ao RIPv1, como suporte a **CIDR/VLSM** e uso de **multicast** para envio de atualizações. Ainda assim, continua sendo um protocolo com limitações importantes em cenários maiores ou mais dinâmicos.
+```mermaid
+flowchart LR
+    classDef host fill:#bbdefb,stroke:#1565c0,stroke-width:2,color:#111;
+    classDef router fill:#ffe0b2,stroke:#ef6c00,stroke-width:2,color:#111;
+    classDef note fill:#f5f5f5,stroke:#616161,stroke-dasharray: 5 5,color:#111;
+    classDef fail fill:#ffcdd2,stroke:#c62828,stroke-width:2,color:#111;
+
+    LAN1["💻 LAN 1<br/>192.168.10.0/24"]:::host
+    R1["📡 R1<br/>Aprende rotas RIP"]:::router
+    R2["📡 R2<br/>Troca anúncios a cada período"]:::router
+    R3["📡 R3<br/>Aprende rotas RIP"]:::router
+    LAN3["💻 LAN 3<br/>192.168.30.0/24"]:::host
+
+    N1["Atualizações periódicas<br/>com número de saltos"]:::note
+    N2["Falha de enlace<br/>altera a convergência"]:::fail
+    N3["Métrica 16 =<br/>rota inalcançável"]:::note
+
+    LAN1 --> R1
+    R1 <-->|"RIPv2"| R2
+    R2 <-->|"RIPv2"| R3
+    R3 --> LAN3
+
+    R2 --> N1
+    R2 -. falha .-> N2
+    R3 --> N3
+```
+O funcionamento do RIP depende da troca regular de informações entre roteadores vizinhos. No RIPv1, essas atualizações eram enviadas por broadcast, enquanto o RIPv2 introduziu melhorias importantes, como suporte a CIDR/VLSM, autenticação e envio por multicast, tornando o protocolo mais adequado a ambientes IPv4 contemporâneos. Ainda assim, a lógica de vetor-distância foi mantida, o que preserva suas limitações estruturais.
+
+Um dos conceitos mais importantes para compreender o comportamento do RIP é o de convergência. Diz-se que a rede convergiu quando todos os roteadores possuem uma visão consistente e atualizada da topologia. Em situação estável, isso significa que todas as tabelas de roteamento refletem corretamente os melhores caminhos disponíveis. Quando ocorre uma falha de enlace, porém, essa consistência não é restaurada imediatamente. Cada roteador precisa detectar a mudança, propagar a nova informação e recalcular suas rotas. Esse processo pode levar tempo, especialmente em protocolos de vetor-distância como o RIP.
+
+A lentidão da convergência do RIP está relacionada ao uso de temporizadores e ao modo como as informações se propagam pela rede. Como os anúncios são periódicos, pode haver atraso entre a ocorrência da falha e sua percepção pelos demais roteadores. Durante esse intervalo, alguns dispositivos ainda podem acreditar que o caminho antigo continua válido, o que gera inconsistências temporárias. Em laboratório, esse comportamento é particularmente útil porque permite ao aluno observar, na prática, a diferença entre uma rede operando em estado estável e uma rede em processo de adaptação a uma mudança de topologia.
+
+Outro fenômeno clássico associado ao RIP é o problema de count to infinity. Esse problema ocorre quando roteadores trocam informações incorretas sobre uma rede que deixou de existir, aumentando gradualmente a métrica até que ela atinja o valor 16, considerado infinito no contexto do protocolo. Esse comportamento pode prolongar a convergência e gerar loops temporários. Para reduzir esse tipo de problema, o RIP incorpora mecanismos como split horizon, poison reverse e triggered updates. O split horizon evita que uma rota aprendida por uma interface seja anunciada de volta por essa mesma interface. O poison reverse marca explicitamente uma rota como inalcançável ao reenviá-la. Já os triggered updates permitem acelerar a propagação de mudanças sem depender exclusivamente do próximo ciclo periódico de atualização.
+
+> IMPORTANTE> RIP utiliza **UDP porta 520** para o envio de atualizações. Isso reforça a ideia de que protocolos de roteamento também operam sobre camadas e mecanismos bem definidos da pilha TCP/IP. o roteamento dinâmico não é apenas uma configuração isolada, mas parte do comportamento sistêmico da rede.
 
 ---
 
