@@ -232,7 +232,7 @@ Com a rede funcionando:
 
 - verificar a rota para `192.168.30.0/24` em **R1**;
 - verificar a rota para `192.168.10.0/24` em **R3**;
-- confirmar a conectividade entre **Linux 1** e **Linux 3**.
+- confirmar a conectividade entre **Linux 1** e **Linux 2**.
 
 ### Etapa 2 — Falha de enlace
 
