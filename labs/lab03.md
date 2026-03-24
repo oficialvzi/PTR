@@ -12,7 +12,7 @@ Implementação inicial de **multicast IP com PIM-DM** em uma topologia pequena 
 
 ---
 
-## 2. Justificativa didática
+## 2. Justificativa 
 
 Esta prática introduz o aluno ao roteamento multicast em ambiente controlado. Após a configuração básica de interfaces e conectividade IP em laboratório anterior, o estudante passa a observar:
 
