@@ -30,13 +30,44 @@ A atividade foi estruturada para simplificar o primeiro contato com multicast ro
 
 Protocolos de roteamento tradicionais foram concebidos para comunicação **unicast**, em que um emissor envia pacotes para um único destino. Em aplicações como transmissão de vídeo, distribuição de conteúdo em tempo real, aulas ao vivo, monitoramento e replicação simultânea de dados, esse modelo pode ser ineficiente, pois obriga a origem a enviar múltiplas cópias do mesmo fluxo para diferentes receptores. Nesse contexto surge o **multicast IP**, cujo objetivo é permitir que um mesmo fluxo seja entregue a vários receptores interessados, reduzindo consumo de banda e processamento na origem.
 
-No modelo multicast, os receptores passam a fazer parte de um **grupo multicast**, identificado por um endereço de classe D no IPv4, normalmente no intervalo de `224.0.0.0` a `239.255.255.255`. Um host emissor envia pacotes para o endereço do grupo, e a rede se encarrega de replicar esse tráfego apenas nos pontos necessários. Isso torna o encaminhamento mais eficiente do que no broadcast, que alcança todos os dispositivos do domínio, e mais escalável do que múltiplas transmissões unicast paralelas.
+### Diagrama explicativo do conceito de multicast com PIM-DM
 
-Para que o roteamento multicast funcione, não basta apenas que a rede tenha conectividade IP entre as sub-redes. É necessário que os roteadores saibam **como encaminhar o tráfego multicast** e, principalmente, **por quais interfaces esse tráfego deve ser recebido e reenviado**. É nesse ponto que entra o **PIM — Protocol Independent Multicast**. O termo *independent* indica que o PIM não depende de um protocolo unicast específico, como RIP, OSPF ou EIGRP. Em vez disso, ele utiliza a tabela de roteamento unicast já existente para tomar decisões sobre o melhor caminho reverso até a origem do tráfego.
+```mermaid
+flowchart LR
+    classDef source fill:#bbdefb,stroke:#1565c0,stroke-width:2,color:#111;
+    classDef router fill:#ffe0b2,stroke:#ef6c00,stroke-width:2,color:#111;
+    classDef switch fill:#c8e6c9,stroke:#2e7d32,stroke-width:2,color:#111;
+    classDef host fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2,color:#111;
+    classDef note fill:#f5f5f5,stroke:#616161,stroke-dasharray: 5 5,color:#111;
+
+    SRC["🎥 Host Origem<br/>Envia para 239.1.1.1"]:::source
+    R1["📡 R1<br/>PIM-DM habilitado"]:::router
+    R2["📡 R2<br/>PIM-DM habilitado"]:::router
+    R3["📡 R3<br/>PIM-DM habilitado"]:::router
+    SW1["🔀 SW1"]:::switch
+    SW2["🔀 SW2"]:::switch
+    SW3["🔀 SW3"]:::switch
+    H1["💻 Receptor A<br/>Ingressa no grupo"]:::host
+    H2["💻 Receptor B<br/>Ingressa no grupo"]:::host
+    H3["💻 Host sem interesse<br/>Ramo podado"]:::host
+    N1["Flood inicial"]:::note
+    N2["Prune em ramos sem receptores"]:::note
+
+    SRC --> SW1 --> R1
+    R1 --> R2
+    R1 --> R3
+    R2 --> SW2 --> H1
+    R3 --> SW3 --> H2
+    R3 -. sem receptores .-> H3
+    R1 --> N1
+    R3 -. poda .-> N2
+```
+
+No modelo multicast, os receptores passam a fazer parte de um **grupo multicast**, identificado por um endereço de classe D no IPv4, normalmente no intervalo de `224.0.0.0` a `239.255.255.255`. Um host emissor envia pacotes para o endereço do grupo, e a rede se encarrega de replicar esse tráfego apenas nos pontos necessários. Isso torna o encaminhamento mais eficiente do que no broadcast, que alcança todos os dispositivos do domínio, e mais escalável do que múltiplas transmissões unicast paralelas. Para que o roteamento multicast funcione, não basta apenas que a rede tenha conectividade IP entre as sub-redes. É necessário que os roteadores saibam **como encaminhar o tráfego multicast** e, principalmente, **por quais interfaces esse tráfego deve ser recebido e reenviado**. É nesse ponto que entra o **PIM - Protocol Independent Multicast**. O termo *independent* indica que o PIM não depende de um protocolo unicast específico, como RIP, OSPF ou EIGRP. Em vez disso, ele utiliza a tabela de roteamento unicast já existente para tomar decisões sobre o melhor caminho reverso até a origem do tráfego.
 
 Entre os modos de operação do PIM, o **PIM Dense Mode (PIM-DM)** foi projetado para ambientes em que os receptores estão distribuídos de forma relativamente densa na rede, isto é, quando se supõe que muitos segmentos da topologia desejam receber o tráfego multicast. Seu funcionamento baseia-se na lógica de **flood and prune**. Inicialmente, quando surge um fluxo multicast, o roteador propaga o tráfego para todas as interfaces habilitadas para PIM-DM, exceto aquela pela qual o pacote foi recebido. Em seguida, os roteadores que não possuem receptores interessados enviam mensagens de **prune**, interrompendo a distribuição naquele ramo da árvore multicast.
 
-Esse comportamento torna o PIM-DM adequado para laboratórios introdutórios, pois dispensa, em um primeiro momento, elementos adicionais como **Rendezvous Point (RP)**, exigidos em cenários com **PIM Sparse Mode (PIM-SM)**. Em compensação, o PIM-DM pode gerar envio desnecessário de tráfego em redes grandes, já que o fluxo é inicialmente inundado antes do processo de poda. Por isso, ele é mais apropriado em cenários controlados, pequenos e com elevada probabilidade de interesse pelo fluxo multicast. Outro conceito central para compreender o PIM-DM é o **RPF — Reverse Path Forwarding**. Esse mecanismo verifica se um pacote multicast chegou pela interface que corresponde ao melhor caminho de volta até a origem, segundo a tabela unicast. Se o pacote chega por essa interface esperada, ele pode ser encaminhado; caso contrário, é descartado. Essa regra ajuda a evitar loops e garante consistência na árvore de distribuição multicast. Assim, mesmo sendo um protocolo multicast, o PIM depende diretamente da qualidade da base unicast configurada na rede.
+Esse comportamento torna o PIM-DM adequado para laboratórios introdutórios, pois dispensa, em um primeiro momento, elementos adicionais como **Rendezvous Point (RP)**, exigidos em cenários com **PIM Sparse Mode (PIM-SM)**. Em compensação, o PIM-DM pode gerar envio desnecessário de tráfego em redes grandes, já que o fluxo é inicialmente inundado antes do processo de poda. Por isso, ele é mais apropriado em cenários controlados, pequenos e com elevada probabilidade de interesse pelo fluxo multicast. Outro conceito central para compreender o PIM-DM é o **RPF - Reverse Path Forwarding**. Esse mecanismo verifica se um pacote multicast chegou pela interface que corresponde ao melhor caminho de volta até a origem, segundo a tabela unicast. Se o pacote chega por essa interface esperada, ele pode ser encaminhado; caso contrário, é descartado. Essa regra ajuda a evitar loops e garante consistência na árvore de distribuição multicast. Assim, mesmo sendo um protocolo multicast, o PIM depende diretamente da qualidade da base unicast configurada na rede.
 
 Na prática, o funcionamento multicast também envolve o comportamento dos hosts. Os receptores precisam manifestar interesse em participar de um grupo, normalmente por meio do **IGMP (Internet Group Management Protocol)** em redes IPv4. Em um laboratório simplificado, muitas vezes o foco recai sobre a ativação do multicast no roteador e a geração de tráfego para um endereço de grupo, mas é importante compreender que, em cenários reais, a adesão dos hosts ao grupo é fundamental para que a rede saiba onde o tráfego deve ser mantido ou podado.
 
