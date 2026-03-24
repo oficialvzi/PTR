@@ -76,7 +76,7 @@ Adicionar ao laboratório os seguintes nós:
 
 - **1 roteador Cisco** com suporte a multicast;
 - **2 switches Ethernet**;
-- **2 hosts**, preferencialmente Linux leves ou VPCS.
+- **2 hosts**, preferencialmente Linux leves.
 
 ### 6.2 Conexões da topologia
 
@@ -144,20 +144,22 @@ copy running-config startup-config
 
 ### 8.1 Host Origem
 
-Se usar **VPCS**:
+No **Host Origem (Linux simples)**:
 
 ```bash
-ip 192.168.10.10/24 192.168.10.1
-save
+ip addr add 192.168.10.10/24 dev eth0
+ip link set eth0 up
+ip route add default via 192.168.10.1
 ```
 
 ### 8.2 Host Receptor
 
-Se usar **VPCS**:
+No **Host Origem (Linux simples)**:
 
 ```bash
-ip 192.168.20.10/24 192.168.20.1
-save
+ip addr add 192.168.20.10/24 dev eth0
+ip link set eth0 up
+ip route add default via 192.168.20.1
 ```
 
 ---
