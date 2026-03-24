@@ -6,7 +6,7 @@
 
 ---
 
-## 1. Tema da atividade
+## 1. Tema 
 
 Implementação inicial de **multicast IP com PIM-DM** em uma topologia pequena e controlada no **PNetLab**, validando a formação básica do encaminhamento multicast entre uma origem e um receptor em duas LANs distintas.
 
