@@ -6,7 +6,7 @@
 
 ---
 
-<h2>Podcast da disciplina</h2>
+<h2>Podcast desta Aula</h2>
 
 <table>
   <tr>
@@ -23,7 +23,7 @@
         aspectos práticos da engenharia de redes.
       </p>
       <p>
-        <a href="https://spotifycreators-web.app.link/e/4Wu544oVN1b">Ouvir no Spotify</a>
+        <a href="https://spotifycreators-web.app.link/e/4Wu544oVN1b">Episódio 1: Engenharia do Roteamento Multicast PIM-DM</a>
       </p>
     </td>
   </tr>
