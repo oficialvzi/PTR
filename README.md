@@ -20,6 +20,33 @@ Além da fundamentação teórica, a disciplina possui forte **componente práti
 
 ---
 
+<h2>Podcast da disciplina</h2>
+
+<table>
+  <tr>
+    <td width="320" align="center">
+      <a href="https://spotifycreators-web.app.link/e/4Wu544oVN1b">
+        <img src="images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="280">
+      </a>
+    </td>
+    <td valign="top">
+      <p>
+        O podcast <strong>Latência Zero</strong> apresenta discussões relacionadas a temas
+        abordados em aula, com ênfase em <strong>redes de computadores</strong>,
+        <strong>latência</strong>, <strong>infraestrutura de comunicação</strong> e
+        aspectos práticos da engenharia de redes.
+      </p>
+      <p>
+        <a href="https://spotifycreators-web.app.link/e/4Wu544oVN1b">Ouvir no Spotify</a>
+      </p>
+    </td>
+  </tr>
+</table>
+
+---
+
+
+
 ## Objetivos da Disciplina
 
 Ao final da disciplina, o estudante deverá ser capaz de:
