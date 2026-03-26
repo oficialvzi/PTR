@@ -6,7 +6,7 @@ Departamento: **Engenharia Elétrica**
 
 **Professor Responsável:** Prof. Dr. Laerte Peotta de Melo
 
-**Monitores:** Victor Lima dos Santos / Beatriz Silva Nascimento
+**Monitores:** Victor Lima dos Santos / Beatriz Silva Nascimento / Luan Silva Moura
 
 ---
 
