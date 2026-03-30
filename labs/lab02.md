@@ -47,7 +47,7 @@ A topologia do laboratório é composta por:
 ```mermaid
 flowchart LR
     T["🖥️ PC-PT<br>Terminal"] -. Cabo de Console .- R["📡 Router"]
-    R -- "f0/0: 192.168.0.254<br>Senha = SENHA" --- S["🔀 Switch"]
+    R -- "f0/0: 192.168.0.254<br>Senha = unb123" --- S["🔀 Switch"]
     S --- PC1["💻 PC-PT<br>192.168.0.1"]
     S --- PC2["💻 PC-PT<br>192.168.0.2"]
 ```
@@ -59,8 +59,8 @@ flowchart LR
 | Dispositivo | Interface        | Endereço IP   | Máscara           | Gateway Padrão | Observação                    |
 |-------------|------------------|---------------|-------------------|----------------|-------------------------------|
 | Router      | Fa0/0            | 192.168.0.254 | 255.255.255.0     | —              | Interface LAN do roteador     |
-| PC 1        | FastEthernet0    | 192.168.0.1   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
-| PC 2        | FastEthernet0    | 192.168.0.2   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
+| PC 1        | eth0             | 192.168.0.1   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
+| PC 2        | eth0             | 192.168.0.2   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
 | Terminal    | Console          | —             | —                 | —              | Acesso local via cabo console |
 
 ---
@@ -68,9 +68,8 @@ flowchart LR
 ## 5. Requisitos
 
 - Ambiente **PNetLab** operacional
-- Imagem de roteador Cisco compatível:
-  - IOSv, CSR1000v, IOL ou equivalente
-- 1 nó **Ethernet Switch**
+- Imagem de **roteador Cisco** compatível: **IOL L3-ADVENTERPRISEK9-M-15.4-2T.bin**
+- 1 nó **Ethernet Switch** compatível: **L2-ADVENTERPRISEK9-M-15.2-IRON-20151103.bin**
 - 1 nó **VPCS**
 - 2 PCs **Linux**
 - Acesso ao console do roteador pelo navegador
