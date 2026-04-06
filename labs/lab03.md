@@ -146,9 +146,9 @@ flowchart TB
 
 Adicionar ao laboratório os seguintes nós:
 
-- **1 roteador Cisco** com suporte a multicast;
-- **2 switches Ethernet**;
-- **2 hosts**, preferencialmente Linux leves.
+- Imagem de **roteador Cisco** compatível: **IOL L3-ADVENTERPRISEK9-M-15.4-2T.bin**
+- 2 nó **Ethernet Switch** compatível: **L2-ADVENTERPRISEK9-M-15.2-IRON-20151103.bin**
+- **2 hosts**,  Linux leves.
 
 ### 6.2 Conexões da topologia
 
