@@ -151,6 +151,7 @@ Os critérios específicos de cada experimento serão informados no respectivo r
 
 | Laboratório | Tema | Link |
 |:---:|:------|------|
+| 00 | Comandos Linux | [Acessar](./labs/comandos.md) |
 | 01 | Introdução / primeiros passos | [Acessar](./labs/lab01.md) |
 | 02 | Configuração básica de roteadores no PNetLab | [Acessar](./labs/lab02.md) |
 | 03 | PIM-DM em topologia controlada | [Acessar](./labs/lab03.md) |
