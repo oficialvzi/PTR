@@ -48,8 +48,8 @@ A topologia do laboratório é composta por:
 flowchart LR
     T["🖥️ PC-PT<br>Terminal"] -. Cabo de Console .- R["📡 Router"]
     R -- "f0/0: 192.168.0.254<br>Senha = unb123" --- S["🔀 Switch"]
-    S --- PC1["💻 PC-PT<br>192.168.0.1"]
-    S --- PC2["💻 PC-PT<br>192.168.0.2"]
+    S --- PC1["💻 PC-1<br>192.168.0.1"]
+    S --- PC2["💻 PC-2<br>192.168.0.2"]
 ```
 
 ---
@@ -57,7 +57,7 @@ flowchart LR
 ## 4. Endereçamento IP
 
 | Dispositivo | Interface        | Endereço IP   | Máscara           | Gateway Padrão | Observação                    |
-|-------------|------------------|---------------|-------------------|----------------|-------------------------------|
+|-------------|------------------|:---------------:|-------------------|:----------------:|-------------------------------|
 | Router      | Fa0/0            | 192.168.0.254 | 255.255.255.0     | —              | Interface LAN do roteador     |
 | PC 1        | eth0             | 192.168.0.1   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
 | PC 2        | eth0             | 192.168.0.2   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
@@ -70,8 +70,7 @@ flowchart LR
 - Ambiente **PNetLab** operacional
 - Imagem de **roteador Cisco** compatível: **IOL L3-ADVENTERPRISEK9-M-15.4-2T.bin**
 - 1 nó **Ethernet Switch** compatível: **L2-ADVENTERPRISEK9-M-15.2-IRON-20151103.bin**
-- 1 nó **VPCS**
-- 2 PCs **Linux**
+- 2 nó **VPCS**
 - Acesso ao console do roteador pelo navegador
 
 ---
@@ -82,10 +81,10 @@ Nesta atividade, o cenário deve reproduzir uma topologia simples de rede local 
 
 ### 6.1 Dispositivos necessários
 
-Adicionar ao laboratório os seguintes nós no PNetLab:
+Adicionar ao laboratório os seguintes nós no PNetLab conforme o item 5 Requisitos:
 
-- **1 roteador Cisco** ou equivalente
-- **1 switch Cisco** ou equivalente
+- **1 roteador**
+- **1 switch**
 - **2 PCs** para a rede local
 - **1 terminal** para acesso via console ao roteador
 
@@ -191,7 +190,13 @@ copy running-config startup-config
 No terminal do **PC1**, executar:
 
 ```bash
-ip 192.168.0.10/24 192.168.0.254
+ip 192.168.0.1/24 192.168.0.254
+save
+```
+No terminal do **PC2**, executar:
+
+```bash
+ip 192.168.0.2/24 192.168.0.254
 save
 ```
 
@@ -212,13 +217,16 @@ show ssh
 
 ```bash
 ping 192.168.0.254
+ping 192.168.0.2
 ```
 
-Caso o ambiente permita cliente SSH no host utilizado, testar também:
+### 9.2 No PC2
 
 ```bash
-ssh -l admin 192.168.0.254
+ping 192.168.0.254
+ping 192.168.0.1
 ```
+
 
 ---
 
@@ -226,10 +234,10 @@ ssh -l admin 192.168.0.254
 
 Ao final da montagem, o laboratório deverá permitir:
 
-- acesso ao roteador via console pelo terminal;
-- comunicação entre o roteador e os dois PCs da LAN;
-- testes de conectividade com `ping` entre hosts e gateway;
-- continuidade das configurações básicas de administração do roteador.
+- Acesso ao roteador via console pelo terminal;
+- Comunicação entre o roteador e os dois PCs da LAN;
+- Testes de conectividade com `ping` entre hosts e gateway;
+- Continuidade das configurações básicas de administração do roteador.
 
 ---
 
@@ -254,18 +262,6 @@ O aluno deverá entregar:
 - evidência do acesso remoto via SSH, quando aplicável.
 
 > O aluno deve seguir rigorosamente os **roteiros** utilizando o modelo de [**relatório**](https://github.com/ProfessorLaerte/labredes/blob/main/labs/relatorio.md) e registrar os resultados conforme solicitado.
-
----
-
-## 14. Desafio extra
-
-Realize as modificações abaixo:
-
-1. Altere o hostname do roteador para `R1-LAB`.
-2. Configure uma descrição mais detalhada na interface.
-3. Mude o endereço IP da interface do roteador para `192.168.10.254/24`.
-4. Ajuste o IP do PC para a nova rede.
-5. Repita todos os testes de conectividade.
 
 ---
 
