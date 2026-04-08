@@ -1,3 +1,36 @@
+## Tabela de comandos do VPCS no PNetLab
+
+| Comando | O que faz | Exemplo |
+|---|---|---|
+| `ip <ip>/<máscara> <gateway>` | Configura endereço IP e gateway padrão da VPC | `ip 192.168.10.10/24 192.168.10.1` |
+| `ip <ip>/<máscara>` | Configura apenas o endereço IP, sem gateway | `ip 192.168.10.10/24` |
+| `ip dhcp` | Solicita configuração automática via DHCP | `ip dhcp` |
+| `dhcp` | Solicita IP via DHCP | `dhcp` |
+| `show` | Exibe a configuração atual da VPC | `show` |
+| `ping <ip>` | Testa conectividade com outro host | `ping 192.168.10.1` |
+| `ping <ip> -t` | Executa ping contínuo | `ping 192.168.10.1 -t` |
+| `trace <ip>` | Mostra o caminho até o destino, semelhante ao traceroute | `trace 8.8.8.8` |
+| `arp` | Exibe a tabela ARP da VPC | `arp` |
+| `arp -a` | Exibe as entradas ARP conhecidas | `arp -a` |
+| `save` | Salva a configuração atual da VPC | `save` |
+| `load` | Carrega a configuração salva anteriormente | `load` |
+| `clear` | Limpa a tela do terminal | `clear` |
+| `history` | Mostra o histórico de comandos digitados | `history` |
+| `echo <texto>` | Exibe um texto na tela | `echo teste de rede` |
+| `sleep <segundos>` | Aguarda a quantidade de segundos informada | `sleep 5` |
+| `help` | Mostra a ajuda de comandos disponíveis | `help` |
+| `?` | Mostra ajuda rápida dos comandos | `?` |
+| `version` | Exibe a versão do VPCS | `version` |
+| `quit` | Encerra a sessão atual | `quit` |
+| `exit` | Sai do terminal da VPC | `exit` |
+| `rlogin <ip>` | Abre conexão remota simples com outro equipamento, quando suportado | `rlogin 192.168.10.1` |
+| `set pcname <nome>` | Define o nome da VPC, quando suportado | `set pcname VPC1` |
+| `show ip` | Exibe informações IP da VPC, quando suportado | `show ip` |
+| `show arp` | Exibe a tabela ARP, quando suportado | `show arp` |
+| `relay` | Exibe ou ajusta parâmetros de relay, em versões que suportam o recurso | `relay` |
+| `debug` | Exibe informações de depuração, em versões que suportam esse comando | `debug` |
+
+
 # Comandos simples de rede no Linux Debian/Ubuntu
 
 | Comando | Descrição |
