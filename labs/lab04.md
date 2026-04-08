@@ -102,8 +102,8 @@ flowchart LR
 | R2          | G0/1      | 10.0.23.1     | 255.255.255.252   | -              |
 | R3          | G0/0      | 10.0.23.2     | 255.255.255.252   | -              |
 | R3          | G0/1      | 192.168.30.1  | 255.255.255.0     | -              |
-| Linux 1     | eth0      | 192.168.10.10 | 255.255.255.0     | 192.168.10.1   |
-| Linux 2     | eth0      | 192.168.30.10 | 255.255.255.0     | 192.168.30.1   |
+| VPC1        | eth0      | 192.168.10.10 | 255.255.255.0     | 192.168.10.1   |
+| VPC2        | eth0      | 192.168.30.10 | 255.255.255.0     | 192.168.30.1   |
 
 ---
 
@@ -112,15 +112,15 @@ flowchart LR
 Adicionar ao laboratório:
 
 - **3 roteadores Cisco** com suporte a RIP;
-- **2 hosts Linux simples**;
+- **2 hosts VPCs**;
 - enlaces ponto a ponto entre os roteadores.
 
 ### Conexões da topologia
 
-- conectar o **Linux 1** à interface **G0/0** do **R1**;
+- conectar o **VPC1** à interface **G0/0** do **R1**;
 - conectar a interface **G0/1** do **R1** à interface **G0/0** do **R2**;
 - conectar a interface **G0/1** do **R2** à interface **G0/0** do **R3**;
-- conectar o **Linux 2** à interface **G0/1** do **R3**.
+- conectar o **VPC2** à interface **G0/1** do **R3**.
 
 ### Resultado esperado da montagem
 
@@ -135,20 +135,19 @@ Ao final da montagem, o cenário deverá permitir:
 
 ## 8. Configuração básica dos hosts Linux
 
-### Linux 1
+### VPC1
+
 
 ```bash
-ip addr add 192.168.10.10/24 dev eth0
-ip link set eth0 up
-ip route add default via 192.168.10.1
+ip 192.168.10.10/24 192.168.10.1
+save
 ```
 
-### Linux 2
+### VPC2
 
 ```bash
-ip addr add 192.168.30.10/24 dev eth0
-ip link set eth0 up
-ip route add default via 192.168.30.1
+ip 192.168.30.10/24 192.168.30.1
+save
 ```
 
 ---
