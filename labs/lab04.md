@@ -84,10 +84,10 @@ Outro fenômeno clássico associado ao RIP é o problema de count to infinity. E
 
 ```mermaid
 flowchart LR
-    PC1["💻 Linux 1<br/>192.168.10.10/24"] --- R1["📡 R1<br/>G0/0: 192.168.10.1/24<br/>G0/1: 10.0.12.1/30"]
+    PC1["💻 VPC1<br/>192.168.10.10/24"] --- R1["📡 R1<br/>G0/0: 192.168.10.1/24<br/>G0/1: 10.0.12.1/30"]
     R1 --- R2["📡 R2<br/>G0/0: 10.0.12.2/30<br/>G0/1: 10.0.23.1/30"]
     R2 --- R3["📡 R3<br/>G0/0: 10.0.23.2/30<br/>G0/1: 192.168.30.1/24"]
-    R3 --- PC3["💻 Linux 2<br/>192.168.30.10/24"]
+    R3 --- PC3["💻 VPC2<br/>192.168.30.10/24"]
 ```
 
 ---
@@ -95,15 +95,15 @@ flowchart LR
 ## 6. Endereçamento IP
 
 | Dispositivo | Interface | Endereço IP   | Máscara           | Gateway        |
-|-------------|-----------|---------------|-------------------|:----------------:|
+|-------------|:-----------:|---------------|-------------------|:----------------:|
 | R1          | G0/0      | 192.168.10.1  | 255.255.255.0     | -              |
 | R1          | G0/1      | 10.0.12.1     | 255.255.255.252   | -              |
 | R2          | G0/0      | 10.0.12.2     | 255.255.255.252   | -              |
 | R2          | G0/1      | 10.0.23.1     | 255.255.255.252   | -              |
 | R3          | G0/0      | 10.0.23.2     | 255.255.255.252   | -              |
 | R3          | G0/1      | 192.168.30.1  | 255.255.255.0     | -              |
-| VPC1        | eth0      | 192.168.10.10 | 255.255.255.0     | 192.168.10.1   |
-| VPC2        | eth0      | 192.168.30.10 | 255.255.255.0     | 192.168.30.1   |
+| VPC1        | -      | 192.168.10.10 | 255.255.255.0     | 192.168.10.1   |
+| VPC2        | -      | 192.168.30.10 | 255.255.255.0     | 192.168.30.1   |
 
 ---
 
@@ -133,7 +133,7 @@ Ao final da montagem, o cenário deverá permitir:
 
 ---
 
-## 8. Configuração básica dos hosts Linux
+## 8. Configuração básica dos hosts 
 
 ### VPC1
 
@@ -247,7 +247,7 @@ show ip route
 show ip protocols
 ```
 
-No **Linux 1**, testar a comunicação fim a fim:
+No **VPC1**, testar a comunicação fim a fim:
 
 ```bash
 ping 192.168.30.10
@@ -263,7 +263,7 @@ Com a rede funcionando:
 
 - verificar a rota para `192.168.30.0/24` em **R1**;
 - verificar a rota para `192.168.10.0/24` em **R3**;
-- confirmar a conectividade entre **Linux 1** e **Linux 2**.
+- confirmar a conectividade entre **VPC1** e **VPC2**.
 
 ### Etapa 2 - Falha de enlace
 
@@ -283,7 +283,7 @@ end
 Após a falha:
 
 - repetir `show ip route` em **R1**, **R2** e **R3**;
-- testar `ping 192.168.30.10` a partir do **Linux 1**;
+- testar `ping 192.168.30.10` a partir do **VPC1**;
 - registrar em quanto tempo a rota deixa de ser utilizável;
 - observar quando a rede atinge novo estado estável.
 
@@ -305,7 +305,7 @@ debug ip rip
 
 - [ ] Topologia criada corretamente no PNetLab  
 - [ ] Interfaces dos roteadores configuradas com os endereços corretos  
-- [ ] Hosts Linux configurados com IP e gateway corretos  
+- [ ] Hosts VPC configurados com IP e gateway corretos  
 - [ ] RIPv2 habilitado nos três roteadores  
 - [ ] Comando `no auto-summary` aplicado  
 - [ ] Rotas RIP visíveis nas tabelas de roteamento  
