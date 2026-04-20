@@ -6,6 +6,30 @@
 
 ---
 
+<h2>Podcast desta Aula</h2>
+
+<table>
+  <tr>
+    <td width="320" align="center">
+      <a href="https://spotifycreators-web.app.link/e/HrOyLyXbv2b">
+        <img src="../images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="280">
+      </a>
+    </td>
+    <td valign="top">
+      <p>
+        O podcast <strong>Latência Zero</strong> apresenta discussões relacionadas a temas
+        abordados em aula, com ênfase em <strong>redes de computadores</strong>,
+        <strong>latência</strong>, <strong>infraestrutura de comunicação</strong> e
+        aspectos práticos da engenharia de redes.
+      </p>
+      <p>
+        <a href="https://spotifycreators-web.app.link/e/HrOyLyXbv2b">Episódio 5: Como o protocolo BGP sustenta a internet</a>
+      </p>
+    </td>
+  </tr>
+</table>
+
+
 ## 1. Objetivo
 
 Configurar o protocolo **BGP** no roteador da empresa para que ela possa **anunciar seu prefixo público à Internet** por meio de seus provedores.
