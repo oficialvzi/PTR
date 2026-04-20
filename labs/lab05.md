@@ -142,7 +142,7 @@ flowchart LR
 
 ## 5. Plano de endereçamento
 
-O cenário segue uma lógica simples com redes da faixa `172.16.0.0/16`, organizadas em sub-redes `/24`, o que facilita a configuração inicial e a visualização das redes.
+O cenário segue uma lógica simples com redes da faixa `172.16.0.0/16`, organizadas em sub-redes `/24`.
 
 ### 5.1 Redes utilizadas
 
@@ -216,6 +216,23 @@ Montar a topologia com:
 ---
 
 ## 7. Configuração básica das interfaces
+
+> Obs.: antes de configurar as interfaces dos roteadores, é interessante configurar os endereços das máquinas que representam as sub-redes, com seus respectivos gateways. É importante lembrar que o gateway de cada sub-rede será a interface do roteador que foi configurada como membro dessa mesma sub-rede.
+
+### Configuração para PC-BH-60-2 (Exemplo)
+
+```bash
+O formato básico é ip <ip_address> <subnet_mask> <gateway>
+
+ip 172.16.60.2 255.255.255.0 172.16.60.254
+show ip
+save
+
+```
+
+
+Repita o mesmo comando para todos os outros VPCs considerando a seção **5.3 Endereçamento dos hosts**
+ 
 
 ### 7.1 Router-RJ
 
