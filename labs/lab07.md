@@ -16,6 +16,76 @@ Configurar os roteadores **ISP1**, **ISP2** e **ISP3** para permitir o funcionam
 
 ## 2. Premissas do cenário
 
+### Diagrama lógico 
+
+```mermaid
+flowchart LR
+    %% ===== AS 1000 =====
+    subgraph AS1000["AS 1000"]
+        direction TB
+        PFX1["200.18.245.64 /27"]
+        SW1["SW1"]
+        LAN1["192.168.0.0 /24"]
+        R1["R1"]
+
+        SW1 --- R1
+        LAN1 --- SW1
+    end
+
+    %% ===== AS 100 =====
+    subgraph AS100["AS 100"]
+        direction TB
+        ISP1["ISP1"]
+    end
+
+    %% ===== AS 200 =====
+    subgraph AS200["AS 200"]
+        direction TB
+        ISP2["ISP2"]
+    end
+
+    %% ===== AS 300 =====
+    subgraph AS300["AS 300"]
+        direction TB
+        ISP3["ISP3"]
+        P181["181.0.0.0 /8"]
+        P182["182.0.0.0 /8"]
+        P183["183.0.0.0 /8"]
+        P184["184.0.0.0 /8"]
+        P185["185.0.0.0 /8"]
+    end
+
+    %% ===== Links =====
+    R1 ---|10.1.0.0 /30| ISP1
+    R1 ---|10.1.0.4 /30| ISP1 
+    R1 ---|10.2.0.0 /30| ISP2
+    ISP1 ---|191.1.0.0 /30| ISP3
+    ISP2 ---|191.2.0.0 /30| ISP3
+
+    %% ===== Cores dos nós =====
+    classDef empresa fill:#dbeafe,stroke:#1d4ed8,color:#111827,stroke-width:2px;
+    classDef isp1 fill:#dcfce7,stroke:#16a34a,color:#111827,stroke-width:2px;
+    classDef isp2 fill:#fef3c7,stroke:#d97706,color:#111827,stroke-width:2px;
+    classDef isp3 fill:#fee2e2,stroke:#dc2626,color:#111827,stroke-width:2px;
+    classDef prefixo fill:#f3f4f6,stroke:#6b7280,color:#111827,stroke-width:1.5px;
+    classDef lan fill:#e0f2fe,stroke:#0284c7,color:#111827,stroke-width:1.5px;
+
+    class R1,SW1 empresa;
+    class ISP1 isp1;
+    class ISP2 isp2;
+    class ISP3 isp3;
+    class PFX1,P181,P182,P183,P184,P185 prefixo;
+    class LAN1 lan;
+
+    %% ===== Estilo dos AS =====
+    style AS1000 fill:#eff6ff,stroke:#1d4ed8,stroke-width:2px,stroke-dasharray: 8 6
+    style AS100 fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,stroke-dasharray: 8 6
+    style AS200 fill:#fffbeb,stroke:#d97706,stroke-width:2px,stroke-dasharray: 8 6
+    style AS300 fill:#fef2f2,stroke:#dc2626,stroke-width:2px,stroke-dasharray: 8 6
+
+```
+
+
 Considerando a topologia do laboratório 06:
 
 - **R1** pertence ao **AS 1000**
