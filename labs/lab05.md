@@ -1,9 +1,8 @@
 # Laboratório 05 – Roteamento Dinâmico com RIP e OSPF
 
-**Disciplina:** Protocolos de Transporte e Roteamento  
-**Curso:** Engenharia de Redes de Comunicação  
-**Professor:** Prof. Dr. Laerte Peotta de Melo  
-**Ambiente:** PNetLab  
+**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
+**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+**Monitores:** Victor Lima dos Santos / Beatriz Silva Nascimento
 
 ---
 
@@ -385,45 +384,46 @@ Neste laboratório será utilizada apenas a **área 0**, com objetivo introdutó
 ### 12.1 Router-RJ
 
 ```bash
-configure terminal
-router ospf 1
- network 172.16.10.0 0.0.0.255 area 0
- network 172.16.20.0 0.0.0.255 area 0
- network 172.16.100.0 0.0.0.255 area 0
-end
-write memory
+Router-RJ> enable
+Router-RJ# configure terminal
+Router-RJ(config)# router ospf 64
+Router-RJ(config-router)# network 172.16.10.0 0.0.0.255 area 0
+Router-RJ(config-router)# network 172.16.20.0 0.0.0.255 area 0
+Router-RJ(config-router)# network 172.16.100.0 0.0.0.255 area 0
+Router-RJ(config-router)# end
 ```
 
 ### 12.2 Router-SP
 
 ```bash
-configure terminal
-router ospf 1
- network 172.16.100.0 0.0.0.255 area 0
- network 172.16.30.0 0.0.0.255 area 0
- network 172.16.40.0 0.0.0.255 area 0
- network 172.16.200.0 0.0.0.255 area 0
-end
-write memory
+Router-SP> enable
+Router-SP# configure terminal
+Router-SP(config)# router ospf 65
+Router-SP(config-router)# network 172.16.30.0 0.0.0.255 area 0
+Router-SP(config-router)# network 172.16.40.0 0.0.0.255 area 0
+Router-SP(config-router)# network 172.16.100.0 0.0.0.255 area 0
+Router-SP(config-router)# network 172.16.200.0 0.0.0.255 area 0
+Router-SP(config-router)# end
 ```
 
 ### 12.3 Router-BH
 
 ```bash
-configure terminal
-router ospf 1
- network 172.16.200.0 0.0.0.255 area 0
- network 172.16.50.0 0.0.0.255 area 0
- network 172.16.60.0 0.0.0.255 area 0
-end
-write memory
+Router-BH> enable
+Router-BH# configure terminal
+Router-BH(config)# router ospf 66
+Router-BH(config-router)# network 172.16.50.0 0.0.0.255 area 0
+Router-BH(config-router)# network 172.16.60.0 0.0.0.255 area 0
+Router-BH(config-router)# network 172.16.200.0 0.0.0.255 area 0
+Router-BH(config-router)# end
+
 ```
 
 ---
 
 ## 13. Verificação do OSPF
 
-### Comandos
+### Comandos em todos os roteadores
 
 ```bash
 show ip ospf neighbor
@@ -554,8 +554,6 @@ Verificar o impacto na propagação de rotas.
 
 ## 18. Entregáveis
 
-Cada grupo deverá entregar:
-
 - print da topologia no PNetLab;
 - print do `show ip route` com RIP;
 - print do `show ip route` com OSPF;
@@ -569,13 +567,7 @@ Cada grupo deverá entregar:
 
 ---
 
-## 19. Conclusão didática esperada
-
-Este laboratório é adequado para a fase inicial da disciplina porque trabalha uma topologia simples, com três roteadores e múltiplas LANs, permitindo ao estudante observar claramente a diferença entre um protocolo **distance-vector** e um protocolo **link-state**. O cenário também está alinhado ao plano de ensino, que prevê laboratórios guiados em ambiente emulado com implementação de **RIP** e **OSPF**.
-
----
-
-## 20. Referências
+## 19. Referências
 
 - BRITO, Samuel Henrique Bucke. *Laboratórios de Tecnologias Cisco em Infraestrutura de Redes*. 2. ed. São Paulo: Novatec, 2014.
 - LOBATO, Luiz Carlos. *Protocolos de Roteamento IP*. Rio de Janeiro: RNP/ESR, 2013.
