@@ -100,6 +100,8 @@ Ele permite:
 
 Por isso, o BGP é o protocolo mais importante quando falamos de **Internet, provedores e roteamento entre organizações**.
 
+<img width="2528" height="1684" alt="Gemini_Generated_Image_3zfes33zfes33zfe" src="https://github.com/user-attachments/assets/397132d9-8611-4244-ab43-10982897f2a5" />
+
 
 ---
 
