@@ -1,4 +1,4 @@
-# Laboratório 05 – Roteamento Dinâmico com RIP e OSPF
+# Laboratório 05 - Roteamento Dinâmico com RIP e OSPF
 
 **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
 **Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
@@ -25,11 +25,27 @@ Ao final deste laboratório, o estudante deverá ser capaz de:
 
 ---
 
-## 3. Fundamentação teórica resumida
+## 3. Fundamentação teórica 
 
-O **RIP** é um protocolo de roteamento do tipo **distance-vector**, que utiliza **contagem de saltos** como métrica, com limite de **15 hops**, sendo adequado para cenários menores e mais simples. O material-base do curso apresenta o RIP como parte fundamental da introdução ao roteamento dinâmico.
+O roteador precisa saber por onde encaminhar os pacotes para que eles cheguem ao destino correto. Para isso, ele mantém uma tabela de rotas, que funciona como um mapa interno da rede. Essas informações podem ser inseridas de duas formas: manualmente pelo administrador, no caso do roteamento estático, ou aprendidas automaticamente, por meio dos protocolos de roteamento dinâmico. No roteamento dinâmico, os roteadores trocam informações entre si para descobrir quais redes existem e qual é o melhor caminho até elas. Isso torna a rede mais flexível, porque as rotas podem ser atualizadas automaticamente quando ocorre alguma mudança, como a queda de um enlace ou a entrada de uma nova rede.
 
-O **OSPF** é um protocolo de roteamento do tipo **link-state**, baseado no algoritmo **SPF/Dijkstra**, com maior capacidade de escalabilidade, convergência mais eficiente e melhor organização lógica da rede. O plano de ensino da disciplina também destaca RIP e OSPF como tópicos centrais dos laboratórios em ambiente emulado.
+Os protocolos de roteamento dinâmico podem ser divididos em dois grandes grupos. O primeiro é o dos protocolos internos, chamados de IGP (Interior Gateway Protocol), usados dentro de uma mesma organização, como uma empresa, universidade ou órgão público. O segundo é o dos protocolos externos, chamados de EGP (Exterior Gateway Protocol), usados na comunicação entre redes diferentes na Internet.
+
+O RIP e o OSPF são dois protocolos de roteamento dinâmico do tipo IGP usados para permitir que os roteadores descubram automaticamente os melhores caminhos dentro de uma rede IP. Embora tenham a mesma finalidade, eles funcionam de formas diferentes e, por isso, se adaptam melhor a tipos distintos de cenário.
+
+O RIP é um protocolo do tipo distance-vector, baseado no algoritmo Bellman-Ford. Ele escolhe as rotas a partir da contagem de saltos, ou seja, considera quantos roteadores o pacote precisa atravessar até chegar ao destino. Quanto menor esse número, melhor a rota. Como o RIP aceita no máximo 15 saltos, ele é mais indicado para redes menores, mais simples e com pouca complexidade. O OSPF, por sua vez, é um protocolo do tipo link-state. Ele funciona de maneira mais avançada, pois cada roteador constrói uma visão lógica da topologia da rede e calcula o melhor caminho usando o algoritmo SPF/Dijkstra. Com isso, o OSPF oferece maior escalabilidade, convergência mais eficiente e uma organização lógica melhor da rede, sendo mais adequado para ambientes maiores e mais exigentes.
+
+O RIP funciona como pedir informação para alguém e receber a resposta assim:
+“Vá pelo caminho com menos cruzamentos.”
+Ele não analisa se a avenida é mais rápida, se há trânsito, se a estrada é melhor ou se existe um caminho mais eficiente. Ele só conta quantas “etapas” existem até o destino. É uma forma simples de decidir, e por isso funciona bem em trajetos curtos e pouco complexos.
+
+Já o OSPF se parece mais com usar um aplicativo de navegação, como um GPS mais inteligente.
+Ele não olha apenas quantas ruas existem no caminho. Ele considera a qualidade das vias, a capacidade delas e qual rota tende a ser melhor. Além disso, ele monta um “mapa” mais completo da região antes de escolher o trajeto. Por isso, consegue tomar decisões melhores em cenários maiores e mais complexos.
+
+
+<img width="2528" height="1684" alt="Gemini_Generated_Image_6kfjy46kfjy46kfj" src="https://github.com/user-attachments/assets/6a2d3467-6680-4292-aef1-a15a7491d3ab" />
+
+
 
 ---
 
@@ -37,9 +53,9 @@ O **OSPF** é um protocolo de roteamento do tipo **link-state**, baseado no algo
 
 A topologia possui três roteadores interligando três unidades:
 
-- **Router-RJ** — Rio de Janeiro
-- **Router-SP** — São Paulo
-- **Router-BH** — Belo Horizonte
+- **Router-RJ** - Rio de Janeiro
+- **Router-SP** - São Paulo
+- **Router-BH** - Belo Horizonte
 
 Cada unidade possui duas LANs locais, e os roteadores são interligados por duas redes WAN.
 
@@ -61,8 +77,8 @@ flowchart LR
   subgraph RJ["Rio de Janeiro"]
     direction TB
     RJR
-    SWRJ10["SW-RJ-10<br/>2960-24TT<br/>172.16.10.0/24"]
-    SWRJ20["SW-RJ-20<br/>2960-24TT<br/>172.16.20.0/24"]
+    SWRJ10["SW-RJ-10<br/>172.16.10.0/24"]
+    SWRJ20["SW-RJ-20<br/>172.16.20.0/24"]
 
     RJR --- SWRJ10
     RJR --- SWRJ20
@@ -84,8 +100,8 @@ flowchart LR
   subgraph SP["São Paulo"]
     direction TB
     SPR
-    SWSP30["SW-SP-30<br/>2960-24TT<br/>172.16.30.0/24"]
-    SWSP40["SW-SP-40<br/>2960-24TT<br/>172.16.40.0/24"]
+    SWSP30["SW-SP-30<br/>172.16.30.0/24"]
+    SWSP40["SW-SP-40<br/>172.16.40.0/24"]
 
     SPR --- SWSP30
     SPR --- SWSP40
@@ -107,8 +123,8 @@ flowchart LR
   subgraph BH["Belo Horizonte"]
     direction TB
     BHR
-    SWBH50["SW-BH-50<br/>2960-24TT<br/>172.16.50.0/24"]
-    SWBH60["SW-BH-60<br/>2960-24TT<br/>172.16.60.0/24"]
+    SWBH50["SW-BH-50<br/>172.16.50.0/24"]
+    SWBH60["SW-BH-60<br/>172.16.60.0/24"]
 
     BHR --- SWBH50
     BHR --- SWBH60
@@ -142,7 +158,43 @@ flowchart LR
 
 ## 5. Plano de endereçamento
 
+## Tipos de interfaces
+
+- **`f` = FastEthernet**  
+  Interface Ethernet de menor velocidade, muito comum em laboratórios e em equipamentos mais antigos.  
+  **Exemplo de uso:** conexão do roteador a uma rede local ou a um switch.  
+  **Exemplo de interface:** `f0/0`, `f0/1`
+
+- **`g` = GigabitEthernet**  
+  Interface Ethernet de maior velocidade, bastante usada em redes atuais.  
+  **Exemplo de uso:** uplink entre switches, conexão do roteador com a LAN principal ou com outro equipamento de maior capacidade.  
+  **Exemplo de interface:** `g0/0`, `g0/1`
+
+- **`s` = Serial**  
+  Interface serial, muito utilizada em cenários WAN e em laboratórios de roteamento entre roteadores.  
+  **Exemplo de uso:** enlace entre duas filiais ou conexão ponto a ponto entre roteadores.  
+  **Exemplo de interface:** `s0/0`, `s0/1`
+
+- **`lo` = Loopback**  
+  Interface lógica, não física, criada por software.  
+  **Exemplo de uso:** testes de conectividade, identificação estável do roteador e uso em protocolos de roteamento.  
+  **Exemplo de interface:** `lo0`
+
+- **`vlan` = interface lógica de VLAN**  
+  Interface virtual associada a uma VLAN, muito comum em switches camada 3.  
+  **Exemplo de uso:** gerenciamento do switch ou roteamento entre VLANs.  
+  **Exemplo de interface:** `interface vlan 10`
+
+- **`tunnel` = interface virtual de túnel**  
+  Interface lógica usada para encapsular tráfego e criar comunicação virtual entre dois pontos.  
+  **Exemplo de uso:** VPN, GRE ou transporte de IPv6 sobre IPv4.  
+  **Exemplo de interface:** `tunnel0`
+
+
 O cenário segue uma lógica simples com redes da faixa `172.16.0.0/16`, organizadas em sub-redes `/24`.
+
+
+
 
 ### 5.1 Redes utilizadas
 
