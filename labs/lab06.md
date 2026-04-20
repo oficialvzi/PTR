@@ -27,7 +27,7 @@ Ao final deste laboratório, o estudante deverá ser capaz de:
 
 ## 3. Fundamentação teórica 
 
-O cenário representa um pequeno trecho do núcleo operacional da Internet, com **três provedores** e **uma empresa** que precisa anunciar o bloco público **`200.18.245.64/27`**. O texto também informa que o **BGP** é um protocolo de roteamento **interdomínios**, usado entre **sistemas autônomos (AS)**.
+O cenário representa um pequeno trecho do núcleo operacional da Internet, com **três provedores** e **uma empresa** que precisa anunciar o bloco público **`200.18.245.64/27`**.  **BGP** é um protocolo de roteamento **interdomínios**, usado entre **sistemas autônomos (AS)**.
 
 O material informa ainda que:
 
