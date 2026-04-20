@@ -25,7 +25,85 @@ Ao final deste laboratório, o estudante deverá ser capaz de:
 
 ---
 
-## 3. Fundamentação teórica 
+## 3. Fundamentação teórica BGP 
+
+O **BGP (Border Gateway Protocol)** é o protocolo usado para trocar rotas entre **redes grandes diferentes**, chamadas de **Sistemas Autônomos (AS)**.  Na prática, ele ajuda um roteador a decidir **por qual provedor ou caminho externo** um pacote deve seguir para chegar a outra rede.
+
+> Pense assim: enquanto protocolos como **RIP** e **OSPF** costumam organizar rotas **dentro de uma empresa ou organização**, o **BGP** é usado para trocar rotas **entre empresas, provedores e a Internet**.
+
+O BGP(v4) está oficialmente definido na RFC 1771 (1995) e utiliza um algoritmo de roteamento dinâmico do tipo vetor-caminho, similar ao vetor-distância. A diferença principal é que cada “hop” do BGP representa o salto entre um AS inteiro para evitar a ocorrência de loop e não apenas entre roteadores distintos.
+
+De forma mais simples, o BGP funciona como uma **conversa entre grandes redes** para decidir por onde os dados devem passar. É como se cada rede dissesse:
+
+- “essas redes eu conheço”
+- “esse caminho passa por mim”
+- “para chegar lá, você pode usar esta rota”
+
+Ou seja, o BGP ajuda a escolher **qual caminho seguir para sair de uma rede e chegar em outra**.
+
+## eBGP
+
+O **eBGP** significa **External BGP**.
+
+Ele é usado quando a troca de rotas acontece entre roteadores que pertencem a **AS diferentes**, ou seja, entre **redes diferentes**.
+
+### Exemplo
+
+- uma empresa no **AS 1000**
+- conectada a um provedor no **AS 100**
+
+Nesse caso, a sessão entre eles é **eBGP**, porque estão em sistemas autônomos diferentes.
+
+De forma bem simples: o **eBGP conecta uma rede ao mundo externo**.
+
+## iBGP
+
+O **iBGP** significa **Internal BGP**.
+
+Ele é usado quando a troca de rotas acontece entre roteadores do **mesmo AS**, ou seja, **dentro da mesma rede grande**.
+
+### Exemplo
+
+- dois roteadores dentro do **AS 1000**
+- compartilhando entre si as rotas aprendidas externamente
+
+Nesse caso, a sessão entre eles é **iBGP**, porque os dois pertencem ao mesmo sistema autônomo.
+
+De forma simples: o **iBGP espalha essa informação dentro da própria rede**.
+
+## Analogia simples
+
+Imagine que cada **AS** é como um **país**.
+
+- **eBGP** é como a comunicação entre **países diferentes**
+- **iBGP** é como a comunicação entre **cidades do mesmo país**, repassando decisões que vieram do exterior
+
+Outra forma de imaginar é pensar em viagens:
+
+- **eBGP** é como conversar com pessoas de **outras cidades ou outros países** para saber como chegar até lá
+- **iBGP** é como avisar as pessoas da **sua própria cidade** qual estrada usar para sair dela
+
+## Resumindo
+
+- **BGP**: protocolo de roteamento entre sistemas autônomos
+- **eBGP**: troca de rotas entre **AS diferentes**
+- **iBGP**: troca de rotas **dentro do mesmo AS**
+
+O BGP não escolhe apenas o caminho mais curto.  
+
+Ele permite:
+
+- decidir por qual provedor sair;
+- controlar quais rotas serão anunciadas;
+- organizar o tráfego de forma mais estratégica;
+- aplicar regras e preferências de roteamento.
+
+Por isso, o BGP é o protocolo mais importante quando falamos de **Internet, provedores e roteamento entre organizações**.
+
+
+---
+
+## 4. Topologia do laboratório
 
 O cenário representa um pequeno trecho do núcleo operacional da Internet, com **três provedores** e **uma empresa** que precisa anunciar o bloco público **`200.18.245.64/27`**.  **BGP** é um protocolo de roteamento **interdomínios**, usado entre **sistemas autônomos (AS)**.
 
@@ -36,14 +114,17 @@ O material informa ainda que:
 - o **ISP2** pertence ao **AS 200**;
 - a senha das vizinhanças é **`SENHA`**.
 
----
+### Descrição do cenário
 
-## 4. Topologia do laboratório
+A **empresa** pertence ao **AS 1000** e possui o bloco público **200.18.245.64/27**, que será anunciado para a Internet usando o protocolo **BGP**. Internamente, a empresa também possui a rede local **192.168.0.0/24**, conectada ao roteador **R1** por meio do **SW1**. No roteador da empresa, também é criada a interface de loopback **11.11.11.11/32**, que será usada como origem da sessão BGP com o **ISP1**.
 
-O Laboratório 06 trabalha com uma empresa conectada a dois provedores, sendo:
+O roteador **R1** conecta-se ao **ISP1**, pertencente ao **AS 100**, por dois enlaces físicos, usando as redes **10.1.0.0/30** e **10.1.0.4/30**. Entretanto, a vizinhança BGP com o ISP1 não é feita pelos endereços físicos desses enlaces. Ela é estabelecida com o endereço **10.10.10.10/32**, que corresponde à **interface de loopback do ISP1**. Por isso, no roteador da empresa é necessário usar os comandos `update-source Loopback1` e `ebgp-multihop 2`, além de criar rotas estáticas para alcançar esse endereço pelos enlaces disponíveis.
 
-- um pareamento com o **ISP1** usando **loopback**;
-- um pareamento com o **ISP2** usando o endereço real da interface.
+A empresa também se conecta ao **ISP2**, pertencente ao **AS 200**, por meio da rede **10.2.0.0/30**. Nesse caso, a vizinhança BGP é feita diretamente com o endereço real da interface do provedor, **10.2.0.2**, sem necessidade de loopback remota.
+
+O **ISP1** conecta-se ao **ISP3**, pertencente ao **AS 300**, pela rede **191.1.0.0/30**. O **ISP2** também se conecta ao **ISP3**, usando a rede **191.2.0.0/30**. No **AS 300**, o roteador **ISP3** concentra vários prefixos externos já existentes no cenário, entre eles **181.0.0.0/8**, **182.0.0.0/8**, **183.0.0.0/8**, **184.0.0.0/8** e **185.0.0.0/8**.
+
+Dessa forma, o laboratório representa uma empresa anunciando seu prefixo público para dois provedores distintos, sendo um deles configurado com vizinhança via loopback e outro com vizinhança direta pela interface física. Esse arranjo permite estudar, de forma prática, o funcionamento do **BGP externo**, o anúncio de prefixos, o uso de `network`, o papel das interfaces de loopback e a formação de sessões entre diferentes sistemas autônomos.
 
 ### Diagrama lógico 
 
@@ -86,6 +167,7 @@ flowchart LR
 
     %% ===== Links =====
     R1 ---|10.1.0.0 /30| ISP1
+    R1 ---|10.1.0.4 /30| ISP1 
     R1 ---|10.2.0.0 /30| ISP2
     ISP1 ---|191.1.0.0 /30| ISP3
     ISP2 ---|191.2.0.0 /30| ISP3
