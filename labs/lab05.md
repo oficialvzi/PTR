@@ -86,7 +86,7 @@ Cada unidade possui duas LANs locais, e os roteadores são interligados por duas
 ```mermaid
 flowchart LR
   %% =========================
-  %% WAN entre roteadores
+  %% Roteadores
   %% =========================
   RJR["Router-RJ<br/>Rio de Janeiro"]
   SPR["Router-SP<br/>São Paulo"]
@@ -107,15 +107,15 @@ flowchart LR
     RJR --- SWRJ10
     RJR --- SWRJ20
 
-    PCRJ101["PC-RJ-10-1<br/>172.16.10.1"]
-    PCRJ102["PC-RJ-10-2<br/>172.16.10.2"]
-    PCRJ201["PC-RJ-20-1<br/>172.16.20.1"]
-    PCRJ202["PC-RJ-20-2<br/>172.16.20.2"]
+    VPCRJ1["VPC-RJ-1<br/>172.16.10.1"]
+    VPCRJ2["VPC-RJ-2<br/>172.16.10.2"]
+    VPCRJ3["VPC-RJ-3<br/>172.16.20.1"]
+    VPCRJ4["VPC-RJ-4<br/>172.16.20.2"]
 
-    SWRJ10 --- PCRJ101
-    SWRJ10 --- PCRJ102
-    SWRJ20 --- PCRJ201
-    SWRJ20 --- PCRJ202
+    SWRJ10 --- VPCRJ1
+    SWRJ10 --- VPCRJ2
+    SWRJ20 --- VPCRJ3
+    SWRJ20 --- VPCRJ4
   end
 
   %% =========================
@@ -130,15 +130,15 @@ flowchart LR
     SPR --- SWSP30
     SPR --- SWSP40
 
-    PCSP301["PC-SP-30-1<br/>172.16.30.1"]
-    PCSP302["PC-SP-30-2<br/>172.16.30.2"]
-    PCSP401["PC-SP-40-1<br/>172.16.40.1"]
-    PCSP402["PC-SP-40-2<br/>172.16.40.2"]
+    VPCSP1["VPC-SP-1<br/>172.16.30.1"]
+    VPCSP2["VPC-SP-2<br/>172.16.30.2"]
+    VPCSP3["VPC-SP-3<br/>172.16.40.1"]
+    VPCSP4["VPC-SP-4<br/>172.16.40.2"]
 
-    SWSP30 --- PCSP301
-    SWSP30 --- PCSP302
-    SWSP40 --- PCSP401
-    SWSP40 --- PCSP402
+    SWSP30 --- VPCSP1
+    SWSP30 --- VPCSP2
+    SWSP40 --- VPCSP3
+    SWSP40 --- VPCSP4
   end
 
   %% =========================
@@ -153,28 +153,34 @@ flowchart LR
     BHR --- SWBH50
     BHR --- SWBH60
 
-    PCBH501["PC-BH-50-1<br/>172.16.50.1"]
-    PCBH502["PC-BH-50-2<br/>172.16.50.2"]
-    PCBH601["PC-BH-60-1<br/>172.16.60.1"]
-    PCBH602["PC-BH-60-2<br/>172.16.60.2"]
+    VPCBH1["VPC-BH-1<br/>172.16.50.1"]
+    VPCBH2["VPC-BH-2<br/>172.16.50.2"]
+    VPCBH3["VPC-BH-3<br/>172.16.60.1"]
+    VPCBH4["VPC-BH-4<br/>172.16.60.2"]
 
-    SWBH50 --- PCBH501
-    SWBH50 --- PCBH502
-    SWBH60 --- PCBH601
-    SWBH60 --- PCBH602
+    SWBH50 --- VPCBH1
+    SWBH50 --- VPCBH2
+    SWBH60 --- VPCBH3
+    SWBH60 --- VPCBH4
   end
 
   %% =========================
-  %% Cores
+  %% Cores dos equipamentos
   %% =========================
   classDef router fill:#dbeafe,stroke:#1d4ed8,color:#111827,stroke-width:2px;
   classDef switch fill:#dcfce7,stroke:#16a34a,color:#111827,stroke-width:2px;
   classDef host fill:#fef3c7,stroke:#d97706,color:#111827,stroke-width:1.5px;
-  classDef wan fill:#fee2e2,stroke:#dc2626,color:#111827,stroke-width:2px;
 
   class RJR,SPR,BHR router;
   class SWRJ10,SWRJ20,SWSP30,SWSP40,SWBH50,SWBH60 switch;
-  class PCRJ101,PCRJ102,PCRJ201,PCRJ202,PCSP301,PCSP302,PCSP401,PCSP402,PCBH501,PCBH502,PCBH601,PCBH602 host;
+  class VPCRJ1,VPCRJ2,VPCRJ3,VPCRJ4,VPCSP1,VPCSP2,VPCSP3,VPCSP4,VPCBH1,VPCBH2,VPCBH3,VPCBH4 host;
+
+  %% =========================
+  %% Blocos dos estados
+  %% =========================
+  style RJ fill:transparent,stroke:#1d4ed8,stroke-width:2px,stroke-dasharray: 8 6
+  style SP fill:transparent,stroke:#16a34a,stroke-width:2px,stroke-dasharray: 8 6
+  style BH fill:transparent,stroke:#d97706,stroke-width:2px,stroke-dasharray: 8 6
 
 ```
 
@@ -264,18 +270,18 @@ O cenário segue uma lógica simples com redes da faixa `172.16.0.0/16`, organiz
 
 | Host | Endereço IP | Máscara | Gateway |
 |---|---|---|---|
-| PC-RJ-10-1 | 172.16.10.1 | 255.255.255.0 | 172.16.10.254 |
-| PC-RJ-10-2 | 172.16.10.2 | 255.255.255.0 | 172.16.10.254 |
-| PC-RJ-20-1 | 172.16.20.1 | 255.255.255.0 | 172.16.20.254 |
-| PC-RJ-20-2 | 172.16.20.2 | 255.255.255.0 | 172.16.20.254 |
-| PC-SP-30-1 | 172.16.30.1 | 255.255.255.0 | 172.16.30.254 |
-| PC-SP-30-2 | 172.16.30.2 | 255.255.255.0 | 172.16.30.254 |
-| PC-SP-40-1 | 172.16.40.1 | 255.255.255.0 | 172.16.40.254 |
-| PC-SP-40-2 | 172.16.40.2 | 255.255.255.0 | 172.16.40.254 |
-| PC-BH-50-1 | 172.16.50.1 | 255.255.255.0 | 172.16.50.254 |
-| PC-BH-50-2 | 172.16.50.2 | 255.255.255.0 | 172.16.50.254 |
-| PC-BH-60-1 | 172.16.60.1 | 255.255.255.0 | 172.16.60.254 |
-| PC-BH-60-2 | 172.16.60.2 | 255.255.255.0 | 172.16.60.254 |
+| VPC-RJ-10-1 | 172.16.10.1 | 255.255.255.0 | 172.16.10.254 |
+| VPC-RJ-10-2 | 172.16.10.2 | 255.255.255.0 | 172.16.10.254 |
+| VPC-RJ-20-1 | 172.16.20.1 | 255.255.255.0 | 172.16.20.254 |
+| VPC-RJ-20-2 | 172.16.20.2 | 255.255.255.0 | 172.16.20.254 |
+| VPC-SP-30-1 | 172.16.30.1 | 255.255.255.0 | 172.16.30.254 |
+| VPC-SP-30-2 | 172.16.30.2 | 255.255.255.0 | 172.16.30.254 |
+| VPC-SP-40-1 | 172.16.40.1 | 255.255.255.0 | 172.16.40.254 |
+| VPC-SP-40-2 | 172.16.40.2 | 255.255.255.0 | 172.16.40.254 |
+| VPC-BH-50-1 | 172.16.50.1 | 255.255.255.0 | 172.16.50.254 |
+| VPC-BH-50-2 | 172.16.50.2 | 255.255.255.0 | 172.16.50.254 |
+| VPC-BH-60-1 | 172.16.60.1 | 255.255.255.0 | 172.16.60.254 |
+| VPC-BH-60-2 | 172.16.60.2 | 255.255.255.0 | 172.16.60.254 |
 
 ---
 
