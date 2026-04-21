@@ -254,19 +254,19 @@ R1(config-if)# ip address 192.168.0.1 255.255.255.0
 
 R1(config-if)# no shut
 
-R1(config-if)# interface serial 2/0
+R1(config-if)# interface g0/1
 
 R1(config-if)# ip address 10.1.0.1 255.255.255.252
 
 R1(config-if)# no shut
 
-R1(config-if)# interface serial 2/1
+R1(config-if)# interface g0/2
 
 R1(config-if)# ip address 10.1.0.5 255.255.255.252
 
 R1(config-if)# no shut
 
-R1(config-if)# interface serial 2/2
+R1(config-if)# interface g0/3
 
 R1(config-if)# ip address 10.2.0.1 255.255.255.252
 
@@ -303,9 +303,9 @@ R1(config-router)# network 200.18.245.64 mask 255.255.255.224
 
 R1(config-router)# exit
 
-R1(config)# ip route 10.10.10.10 255.255.255.255 Serial2/0
+R1(config)# ip route 10.10.10.10 255.255.255.255 GigabitEthernet0/1
 
-R1(config)# ip route 10.10.10.10 255.255.255.255 Serial2/1
+R1(config)# ip route 10.10.10.10 255.255.255.255 GigabitEthernet0/2
 
 R1(config)# ip route 200.18.245.64 255.255.255.224 Null0
 ```
