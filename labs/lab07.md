@@ -128,43 +128,24 @@ Configure primeiro o **ISP3**, pois ele representa a rede externa com os prefixo
 
 ```bash
 ISP3> enable
-
 ISP3# configure terminal
-
 ISP3(config)# no ip domain lookup
-
-ISP3(config)# interface serial 2/0
-
+ISP3(config)# interface g0/0
 ISP3(config-if)# ip address 191.1.0.2 255.255.255.252
-
 ISP3(config-if)# no shut
-
-ISP3(config-if)# interface serial 2/1
-
+ISP3(config-if)# interface g0/1
 ISP3(config-if)# ip address 191.2.0.2 255.255.255.252
-
 ISP3(config-if)# no shut
-
 ISP3(config-if)# interface loopback 1
-
 ISP3(config-if)# ip address 181.0.0.1 255.0.0.0
-
 ISP3(config-if)# interface loopback 2
-
 ISP3(config-if)# ip address 182.0.0.1 255.0.0.0
-
 ISP3(config-if)# interface loopback 3
-
 ISP3(config-if)# ip address 183.0.0.1 255.0.0.0
-
 ISP3(config-if)# interface loopback 4
-
 ISP3(config-if)# ip address 184.0.0.1 255.0.0.0
-
 ISP3(config-if)# interface loopback 5
-
 ISP3(config-if)# ip address 185.0.0.1 255.0.0.0
-
 ISP3(config-if)# end
 ```
 
@@ -208,35 +189,20 @@ O **ISP1** possui dois enlaces físicos com o **R1**, além de uma loopback usad
 
 ```bash
 ISP1> enable
-
 ISP1# configure terminal
-
 ISP1(config)# no ip domain lookup
-
 ISP1(config)# interface loopback 0
-
 ISP1(config-if)# ip address 10.10.10.10 255.255.255.255
-
 ISP1(config-if)# no shut
-
-ISP1(config-if)# interface serial 2/0
-
+ISP1(config-if)# interface g0/0
 ISP1(config-if)# ip address 10.1.0.2 255.255.255.252
-
 ISP1(config-if)# no shut
-
-ISP1(config-if)# interface serial 2/1
-
+ISP1(config-if)# interface g0/1
 ISP1(config-if)# ip address 10.1.0.6 255.255.255.252
-
 ISP1(config-if)# no shut
-
-ISP1(config-if)# interface serial 2/2
-
+ISP1(config-if)# interface g0/2
 ISP1(config-if)# ip address 191.1.0.1 255.255.255.252
-
 ISP1(config-if)# no shut
-
 ISP1(config-if)# end
 ```
 
@@ -244,31 +210,18 @@ ISP1(config-if)# end
 
 ```bash
 ISP1> enable
-
 ISP1# configure terminal
-
 ISP1(config)# router bgp 100
-
 ISP1(config-router)# neighbor 11.11.11.11 remote-as 1000
-
 ISP1(config-router)# neighbor 11.11.11.11 password SENHA
-
 ISP1(config-router)# neighbor 11.11.11.11 ebgp-multihop 2
-
 ISP1(config-router)# neighbor 11.11.11.11 update-source Loopback0
-
 ISP1(config-router)# neighbor 191.1.0.2 remote-as 300
-
 ISP1(config-router)# neighbor 191.1.0.2 password SENHA
-
 ISP1(config-router)# network 10.10.10.10 mask 255.255.255.255
-
 ISP1(config-router)# exit
-
-ISP1(config)# ip route 11.11.11.11 255.255.255.255 Serial2/0
-
-ISP1(config)# ip route 11.11.11.11 255.255.255.255 Serial2/1
-
+ISP1(config)# ip route 11.11.11.11 255.255.255.255 GigabitEthernet0/0
+ISP1(config)# ip route 11.11.11.11 255.255.255.255 GigabitEthernet0/1
 ISP1(config)# end
 ```
 
@@ -282,23 +235,14 @@ O **ISP2** possui um enlace direto com o **R1** e um enlace com o **ISP3**.
 
 ```bash
 ISP2> enable
-
 ISP2# configure terminal
-
 ISP2(config)# no ip domain lookup
-
-ISP2(config)# interface serial 2/0
-
+ISP2(config)# interface g0/0
 ISP2(config-if)# ip address 10.2.0.2 255.255.255.252
-
 ISP2(config-if)# no shut
-
-ISP2(config-if)# interface serial 2/1
-
+ISP2(config-if)# interface g0/1
 ISP2(config-if)# ip address 191.2.0.1 255.255.255.252
-
 ISP2(config-if)# no shut
-
 ISP2(config-if)# end
 ```
 
