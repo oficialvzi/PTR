@@ -382,8 +382,6 @@ Durante a verificação, o aluno deve observar:
 
 ## 13. Entregáveis
 
-Cada grupo deve entregar:
-
 - print da topologia no emulador;
 - print do `show ip bgp summary`;
 - print do `show ip bgp`;
