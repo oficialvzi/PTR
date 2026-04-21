@@ -245,7 +245,7 @@ O cenário segue uma lógica simples com redes da faixa `172.16.0.0/16`, organiz
 
 | Interface | Endereço IP | Máscara | Função |
 |---|---|---|---|
-| `s0/0` | 172.16.100.1 | 255.255.255.0 | WAN para São Paulo |
+| `g0/0` | 172.16.100.1 | 255.255.255.0 | WAN para São Paulo |
 | `f0/0` | 172.16.10.254 | 255.255.255.0 | LAN RJ-10 |
 | `f0/1` | 172.16.20.254 | 255.255.255.0 | LAN RJ-20 |
 
@@ -253,16 +253,16 @@ O cenário segue uma lógica simples com redes da faixa `172.16.0.0/16`, organiz
 
 | Interface | Endereço IP | Máscara | Função |
 |---|---|---|---|
-| `s0/0` | 172.16.100.2 | 255.255.255.0 | WAN para Rio de Janeiro |
+| `g0/0` | 172.16.100.2 | 255.255.255.0 | WAN para Rio de Janeiro |
 | `f0/0` | 172.16.30.254 | 255.255.255.0 | LAN SP-30 |
 | `f0/1` | 172.16.40.254 | 255.255.255.0 | LAN SP-40 |
-| `s0/1` | 172.16.200.1 | 255.255.255.0 | WAN para Belo Horizonte |
+| `g0/1` | 172.16.200.1 | 255.255.255.0 | WAN para Belo Horizonte |
 
 #### Router-BH
 
 | Interface | Endereço IP | Máscara | Função |
 |---|---|---|---|
-| `s0/0` | 172.16.200.2 | 255.255.255.0 | WAN para São Paulo |
+| `g0/0` | 172.16.200.2 | 255.255.255.0 | WAN para São Paulo |
 | `f0/0` | 172.16.50.254 | 255.255.255.0 | LAN BH-50 |
 | `f0/1` | 172.16.60.254 | 255.255.255.0 | LAN BH-60 |
 
@@ -322,7 +322,7 @@ Repita o mesmo comando para todos os outros VPCs considerando a seção **5.3 En
 Router> enable
 Router# configure terminal
 Router(config)# hostname Router-RJ
-Router-RJ(config)# interface s0/0
+Router-RJ(config)# interface g0/0
 Router-RJ(config-if)# ip address 172.16.100.1 255.255.255.0
 Router-RJ(config-if)# no shut
 Router-RJ(config-if)# interface f0/0
@@ -341,13 +341,11 @@ Router-RJ(config-if)# end
 Router> enable
 Router# configure terminal
 Router(config)# hostname Router-SP
-Router-SP(config)# interface s0/0
+Router-SP(config)# interface g0/0
 Router-SP(config-if)# ip address 172.16.100.2 255.255.255.0
-Router-SP(config-if)# clock rate 500000
 Router-SP(config-if)# no shut
-Router-SP(config-if)# interface s0/1
+Router-SP(config-if)# interface g0/1
 Router-SP(config-if)# ip address 172.16.200.1 255.255.255.0
-Router-SP(config-if)# clock rate 500000
 Router-SP(config-if)# no shut
 Router-SP(config-if)# interface f0/0
 Router-SP(config-if)# ip address 172.16.30.254 255.255.255.0
@@ -365,7 +363,7 @@ Router-SP(config-if)# end
 Router> enable
 Router# configure terminal
 Router(config)# hostname Router-BH
-Router-BH(config)# interface s0/0
+Router-BH(config)# interface g0/0
 Router-BH(config-if)# ip address 172.16.200.2 255.255.255.0
 Router-BH(config-if)# no shut
 Router-BH(config-if)# interface f0/0
@@ -605,7 +603,7 @@ Verificar:
 
 ```bash
 configure terminal
-interface s0/1
+interface g0/1
  shutdown
 end
 ```
@@ -620,7 +618,7 @@ Restaurar:
 
 ```bash
 configure terminal
-interface s0/1
+interface g0/1
  no shutdown
 end
 ```
