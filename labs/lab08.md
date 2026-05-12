@@ -14,17 +14,14 @@ Aplicar políticas de roteamento **BGP** e integrar o **BGP** ao **OSPF** em um 
 
 ---
 
-## 2. Observação inicial
+## 2. **Importante:** Este laboratório é uma continuação das atividades anteriores. 
 
-> **Importante:** este laboratório é uma continuação das atividades anteriores.  
-> Considere que as configurações básicas de interfaces, endereçamento IP, conectividade inicial e topologia já foram realizadas anteriormente.  
-> Portanto, **não devem ser refeitas** as configurações iniciais da infraestrutura.  
-> Neste laboratório, o foco será apenas nas configurações **necessárias para continuidade das atividades**, especificamente:
+> Considere que as configurações básicas de interfaces, endereçamento IP, conectividade inicial e topologia já foram realizadas anteriormente.  Portanto, **não devem ser refeitas** as configurações iniciais da infraestrutura.  Neste laboratório, o foco será apenas nas configurações **necessárias para continuidade das atividades**, especificamente:
 > 
-> - OSPF interno no roteador da empresa;
-> - sessões eBGP com os provedores;
-> - política de preferência de saída;
-> - propagação controlada de rota default;
+> - OSPF interno no roteador da empresa.
+> - sessões eBGP com os provedores.
+> - política de preferência de saída.
+> - propagação controlada de rota default.
 > - análise de redundância e failover.
 
 ---
@@ -33,17 +30,17 @@ Aplicar políticas de roteamento **BGP** e integrar o **BGP** ao **OSPF** em um 
 
 Uma empresa do **AS 1000** possui o bloco público **200.18.245.64/27** e já está conectada a dois provedores:
 
-- **ISP1**, no **AS 100**, por dois enlaces físicos;
-- **ISP2**, no **AS 200**, por um enlace físico.
+- **ISP1**, no **AS 100**, por dois enlaces físicos
+- **ISP2**, no **AS 200**, por um enlace físico
 
 Os provedores alcançam o **AS 300**, onde existem diversos prefixos externos.  
 Com a infraestrutura básica já pronta, a empresa agora precisa:
 
-1. anunciar seu prefixo público para a Internet;
-2. preferir o **ISP1** como caminho principal de saída;
-3. manter o **ISP2** como contingência;
-4. usar **OSPF** para representar o domínio interno da empresa;
-5. propagar apenas a **rota default** no OSPF, evitando inserir prefixos externos desnecessários no domínio interno.
+1. anunciar seu prefixo público para a Internet
+2. preferir o **ISP1** como caminho principal de saída
+3. manter o **ISP2** como contingência
+4. usar **OSPF** para representar o domínio interno da empresa
+5. propagar apenas a **rota default** no OSPF, evitando inserir prefixos externos desnecessários no domínio interno
 
 ---
 
@@ -51,9 +48,9 @@ Com a infraestrutura básica já pronta, a empresa agora precisa:
 
 Neste laboratório, o **OSPF** será usado para representar o domínio interno da empresa, enquanto o **BGP** será usado na borda para:
 
-- anunciar o bloco público da empresa;
-- receber rotas externas;
-- aplicar política de preferência de saída.
+- anunciar o bloco público da empresa
+- receber rotas externas
+- aplicar política de preferência de saída
 
 A integração entre **OSPF** e **BGP** será feita de forma controlada.  
 Em vez de redistribuir várias rotas externas para o OSPF, será propagada apenas a **rota default**, mantendo o domínio interno mais limpo e mais simples de administrar.
@@ -140,20 +137,20 @@ flowchart LR
 
 Considere que os seguintes elementos **já estão configurados**:
 
-- interfaces físicas dos roteadores;
-- endereçamento IP básico;
-- conectividade entre os enlaces;
-- loopback do **R1**;
-- loopback do **ISP1**;
-- topologia montada no emulador.
+- interfaces físicas dos roteadores
+- endereçamento IP básico
+- conectividade entre os enlaces
+- loopback do **R1**
+- loopback do **ISP1**
+- topologia montada no emulador
 
 Neste laboratório, serão realizadas apenas as configurações referentes a:
 
-- **OSPF** no roteador da empresa;
-- **BGP** no roteador da empresa;
-- política BGP para preferência de saída;
-- propagação da rota default no OSPF;
-- testes de falha e verificação.
+- **OSPF** no roteador da empresa
+- **BGP** no roteador da empresa
+- política BGP para preferência de saída
+- propagação da rota default no OSPF
+- testes de falha e verificação
 
 ---
 
@@ -189,15 +186,10 @@ Neste laboratório, o OSPF representa o domínio interno da empresa.
 
 ```bash
 R1> enable
-
 R1# configure terminal
-
 R1(config)# router ospf 10
-
 R1(config-router)# network 192.168.0.0 0.0.0.255 area 0
-
 R1(config-router)# network 11.11.11.11 0.0.0.0 area 0
-
 R1(config-router)# end
 ```
 
@@ -209,33 +201,19 @@ Nesta etapa, será configurado o **BGP** apenas no roteador da empresa, consider
 
 ```bash
 R1> enable
-
 R1# configure terminal
-
 R1(config)# router bgp 1000
-
 R1(config-router)# neighbor 10.10.10.10 remote-as 100
-
 R1(config-router)# neighbor 10.10.10.10 password SENHA
-
 R1(config-router)# neighbor 10.10.10.10 ebgp-multihop 2
-
 R1(config-router)# neighbor 10.10.10.10 update-source Loopback1
-
 R1(config-router)# neighbor 10.2.0.2 remote-as 200
-
 R1(config-router)# neighbor 10.2.0.2 password SENHA
-
 R1(config-router)# network 200.18.245.64 mask 255.255.255.224
-
 R1(config-router)# exit
-
 R1(config)# ip route 10.10.10.10 255.255.255.255 Serial2/0
-
 R1(config)# ip route 10.10.10.10 255.255.255.255 Serial2/1
-
 R1(config)# ip route 200.18.245.64 255.255.255.224 Null0
-
 R1(config)# end
 ```
 
@@ -261,10 +239,10 @@ R1(config-router)# end
 
 ### Observação
 
-- O atributo **weight** é local ao roteador Cisco.
-- Neste caso, ele está sendo usado para demonstrar de forma simples a escolha de caminho preferencial.
-- Enquanto os dois caminhos estiverem disponíveis, o tráfego deve preferir o **ISP1**.
-- Em caso de falha do ISP1, a saída deve migrar para o **ISP2**.
+- O atributo **weight** é local ao roteador Cisco
+- Neste caso, ele está sendo usado para demonstrar de forma simples a escolha de caminho preferencial
+- Enquanto os dois caminhos estiverem disponíveis, o tráfego deve preferir o **ISP1**
+- Em caso de falha do ISP1, a saída deve migrar para o **ISP2**
 
 ---
 
@@ -304,10 +282,10 @@ R1(config-router)# end
 
 Depois de aplicar as configurações, verifique:
 
-- se as sessões BGP foram estabelecidas;
-- se o prefixo da empresa está sendo anunciado;
-- se o melhor caminho é o ISP1;
-- se a rota default está presente no domínio OSPF.
+- se as sessões BGP foram estabelecidas
+- se o prefixo da empresa está sendo anunciado
+- se o melhor caminho é o ISP1
+- se a rota default está presente no domínio OSPF
 
 ### Comandos sugeridos no R1
 
@@ -338,17 +316,17 @@ show running-config
 
 ### Procedimento
 
-1. Verifique o melhor caminho com todos os enlaces ativos.
-2. Desative um dos enlaces físicos com o **ISP1**.
-3. Observe se a sessão BGP com o ISP1 continua ativa por causa da loopback.
-4. Em seguida, desative a conectividade total com o **ISP1**.
-5. Verifique se a saída migra para o **ISP2**.
+1. Verifique o melhor caminho com todos os enlaces ativos
+2. Desative um dos enlaces físicos com o **ISP1**
+3. Observe se a sessão BGP com o ISP1 continua ativa por causa da loopback
+4. Em seguida, desative a conectividade total com o **ISP1**
+5. Verifique se a saída migra para o **ISP2**
 
 ### O que observar
 
-- o **ISP1** deve ser o caminho principal;
-- o **ISP2** deve assumir em caso de falha;
-- a rota default continua representando a saída do domínio interno.
+- o **ISP1** deve ser o caminho principal
+- o **ISP2** deve assumir em caso de falha
+- a rota default continua representando a saída do domínio interno
 
 ---
 
@@ -402,9 +380,9 @@ Cada aluno deve entregar relatório contendo:
 
 Ao concluir este laboratório, o estudante deve perceber que:
 
-- **OSPF** e **BGP** têm papéis diferentes e complementares.
-- **BGP** é usado para troca de rotas e políticas entre sistemas autônomos.
-- **OSPF** é mais adequado para o domínio interno.
-- A integração entre ambos deve ser seletiva.
-- Políticas BGP permitem controlar a saída da rede.
-- Redundância com múltiplos provedores aumenta a resiliência do ambiente.
+- **OSPF** e **BGP** têm papéis diferentes e complementares
+- **BGP** é usado para troca de rotas e políticas entre sistemas autônomos
+- **OSPF** é mais adequado para o domínio interno
+- A integração entre ambos deve ser seletiva
+- Políticas BGP permitem controlar a saída da rede
+- Redundância com múltiplos provedores aumenta a resiliência do ambiente
