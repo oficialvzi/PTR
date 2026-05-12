@@ -1,4 +1,4 @@
-# Lab 08 – Políticas BGP e integração com OSPF
+# Lab 08 - Políticas BGP e integração com OSPF
 
 **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
 **Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
