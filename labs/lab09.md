@@ -1,11 +1,10 @@
 # Lab 09 – Implementação de MPLS no Backbone
 
-**Disciplina:** Protocolos de Transporte e Roteamento  
-**Curso:** Engenharia de Redes de Comunicação  
-**Professor:** Prof. Dr. Laerte Peotta de Melo  
-**Ambiente:** PNetLab / GNS3  
-**Nível:** Intermediário
+**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
+**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+**Monitores:** Victor Lima dos Santos / Beatriz Silva Nascimento
 
+**Observação:** Este laboratório é continuação do **Laboratório 08**
 ---
 
 ## 1. Objetivo
@@ -30,7 +29,7 @@ Implementar um backbone **MPLS** simplificado na rede do provedor, dando continu
 
 ## 3. Situação-problema
 
-No laboratório anterior, a empresa do **AS 1000** estabeleceu conectividade com dois provedores e aplicou políticas BGP para definir caminho preferencial de saída. Agora, a operadora deseja evoluir sua infraestrutura e implantar um **backbone MPLS** entre seus roteadores, de modo que o transporte no núcleo passe a utilizar **comutação por rótulos**, preparando a rede para maior escalabilidade e para futuras ofertas de serviços avançados.
+No laboratório 08, a empresa do **AS 1000** estabeleceu conectividade com dois provedores e aplicou políticas BGP para definir caminho preferencial de saída. Agora, a operadora deseja evoluir sua infraestrutura e implantar um **backbone MPLS** entre seus roteadores, de modo que o transporte no núcleo passe a utilizar **comutação por rótulos**, preparando a rede para maior escalabilidade e para futuras ofertas de serviços avançados.
 
 ---
 
@@ -40,9 +39,15 @@ O **MPLS (Multiprotocol Label Switching)** é uma tecnologia que adiciona rótul
 
 Em um cenário simplificado de operadora, os papéis dos roteadores podem ser entendidos assim:
 
-- **CE (Customer Edge):** roteador do cliente;
-- **PE (Provider Edge):** roteador da operadora conectado ao cliente;
-- **P (Provider):** roteador interno do backbone da operadora.
+- **CE (Customer Edge)** é o roteador do cliente.
+Ele fica na empresa e recebe a conectividade oferecida pela operadora. Em geral, o CE não precisa conhecer MPLS; para ele, a comunicação com o provedor costuma parecer apenas um enlace IP normal.
+
+- **PE (Provider Edge)** é o roteador de borda da operadora, diretamente conectado ao CE.
+Ele faz a interface entre a rede do cliente e a nuvem do provedor. É no PE que a operadora trata as rotas do cliente, associa serviços e, em cenários mais avançados, trabalha com elementos como VRF e redistribuição das rotas do CE para processos internos da operadora.
+
+- **P (Provider)** é o roteador do núcleo da operadora.
+Ele fica dentro da nuvem MPLS e participa do transporte do tráfego no backbone. Diferentemente do PE, o roteador P não se conecta ao cliente; sua função principal é encaminhar pacotes com base em rótulos MPLS dentro da infraestrutura da operadora.
+
 
 Neste laboratório:
 
@@ -145,8 +150,6 @@ Neste laboratório, serão realizadas apenas as configurações referentes a:
 - backbone OSPF do provedor;
 - habilitação do MPLS no núcleo;
 - verificação de labels e encaminhamento.
-
-> **Padrão de interfaces adotado neste roteiro:** os comandos abaixo usam **FastEthernet**, e não interfaces seriais, para manter coerência com as imagens e com a montagem do cenário no emulador.
 
 ---
 
@@ -394,23 +397,7 @@ show ip route
 
 ---
 
-## 14. Etapa 6 – Relação entre Lab 08 e Lab 09
-
-Neste ponto, o aluno deve conseguir perceber a diferença entre os dois laboratórios:
-
-### No Lab 08
-- foco na borda da empresa;
-- escolha do provedor por política BGP;
-- integração entre BGP e OSPF.
-
-### No Lab 09
-- foco no backbone da operadora;
-- transporte interno por OSPF;
-- encaminhamento com labels por MPLS.
-
----
-
-## 15. Etapa 7 – Teste de observação
+## 14. Etapa 7 – Teste de observação
 
 Peça aos alunos que identifiquem:
 
@@ -422,7 +409,7 @@ Peça aos alunos que identifiquem:
 
 ---
 
-## 16. Questões para análise
+## 15. Questões para análise
 
 1. Qual é a principal diferença entre **roteamento IP tradicional** e **encaminhamento com MPLS**?
 2. Qual é a função do **OSPF** dentro do backbone do provedor?
@@ -435,7 +422,7 @@ Peça aos alunos que identifiquem:
 
 ---
 
-## 17. Critérios de avaliação
+## 16. Critérios de avaliação
 
 | Critério | Pontos |
 |---|---:|
@@ -449,11 +436,11 @@ Peça aos alunos que identifiquem:
 
 ---
 
-## 18. Entregáveis
+## 17. Entregáveis
 
-Cada grupo deve entregar:
+Cada aluno deve entregar:
 
-- print da topologia no emulador;
+- print da topologia no Pnetlab;
 - print do `show ip ospf neighbor` em pelo menos um roteador do backbone;
 - print do `show mpls interfaces`;
 - print do `show mpls ldp neighbor`;
@@ -461,12 +448,11 @@ Cada grupo deve entregar:
 - relatório curto contendo:
   - objetivo do laboratório;
   - papéis CE, PE e P no cenário;
-  - diferença entre Lab 08 e Lab 09;
   - conclusão sobre o uso de MPLS no backbone.
 
 ---
 
-## 19. Conclusão esperada
+## 18. Conclusão esperada
 
 Ao final deste laboratório, o estudante deve perceber que:
 
@@ -474,4 +460,3 @@ Ao final deste laboratório, o estudante deve perceber que:
 - o **OSPF** organiza a alcançabilidade interna do backbone;
 - o **MPLS** permite transportar o tráfego por meio de rótulos;
 - a nuvem da operadora possui lógica própria, diferente da rede do cliente;
-- o backbone MPLS complementa o cenário do laboratório anterior e prepara o caminho para estudos futuros, como VPN MPLS.
