@@ -198,7 +198,7 @@ Essas loopbacks serão úteis para o OSPF e para a identificação lógica dos L
 
 ---
 
-## 9. Etapa 1 – Configuração das loopbacks do backbone
+## 9. Configuração das loopbacks do backbone
 
 Configure apenas se ainda não tiver criado essas interfaces em atividades anteriores.
 
@@ -246,7 +246,7 @@ ISP3(config-if)# end
 
 ---
 
-## 10. Etapa 2 – OSPF no backbone do provedor
+## 10. OSPF no backbone do provedor
 
 O OSPF será usado como protocolo interno da operadora.  
 Nesta etapa, configure ou ajuste o OSPF apenas nos roteadores do backbone.
@@ -309,7 +309,7 @@ ISP3(config-router)# end
 
 ---
 
-## 11. Etapa 3 – Habilitação do MPLS no backbone
+## 11. Habilitação do MPLS no backbone
 
 Depois que o OSPF estiver funcional no backbone, habilite o MPLS apenas nos enlaces internos da operadora.
 
@@ -361,7 +361,7 @@ ISP3(config-if)# end
 
 ---
 
-## 12. Etapa 4 – Verificação do backbone OSPF
+## 12. Verificação do backbone OSPF
 
 Antes de validar o MPLS, verifique se o backbone OSPF da operadora está funcionando corretamente.
 
@@ -383,7 +383,7 @@ show ip interface brief
 
 ---
 
-## 13. Etapa 5 – Verificação do MPLS
+## 13. Verificação do MPLS
 
 Depois de habilitar o MPLS nos enlaces do backbone, verifique a distribuição de labels.
 
@@ -405,7 +405,7 @@ show ip route
 
 ---
 
-## 14. Etapa 7 – Teste de observação
+## 14. Teste de observação
 
 Peça aos alunos que identifiquem:
 
