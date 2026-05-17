@@ -15,10 +15,7 @@ Implementar um backbone **MPLS** simplificado na rede do provedor, dando continu
 
 ## 2. Observação inicial
 
-> **Importante:** este laboratório é uma continuação do **Lab 08**.  
-> Considere que a topologia, o endereçamento IP básico, a conectividade entre enlaces e as sessões BGP já foram previamente configuradas.  
-> Portanto, neste laboratório **não devem ser refeitas** as configurações básicas já concluídas.  
-> O foco agora será apenas nas configurações necessárias para:
+> **Importante:** este laboratório é uma continuação do **Lab 08**.  Considere que a topologia, o endereçamento IP básico, a conectividade entre enlaces e as sessões BGP já foram previamente configuradas.  Portanto, neste laboratório **não devem ser refeitas** as configurações básicas já concluídas.  O foco agora será apenas nas configurações necessárias para:
 >
 > - identificar os papéis **CE**, **PE** e **P**;
 > - ativar o **OSPF** no backbone do provedor, se ainda não estiver operacional;
@@ -26,8 +23,6 @@ Implementar um backbone **MPLS** simplificado na rede do provedor, dando continu
 > - verificar a distribuição de rótulos e o encaminhamento no backbone.
 
 <img width="1122" height="1402" alt="image" src="https://github.com/user-attachments/assets/9d0969f0-bdd3-4fa7-ba6f-681a07e5e2cf" />
-
-
 
 ---
 
@@ -55,16 +50,24 @@ Ele faz a interface entre a rede do cliente e a nuvem do provedor. É no PE que 
 
 - **P (Provider)** é o roteador do núcleo da operadora.
 Ele fica dentro da nuvem MPLS e participa do transporte do tráfego no backbone. Diferentemente do PE, o roteador P não se conecta ao cliente; sua função principal é encaminhar pacotes com base em rótulos MPLS dentro da infraestrutura da operadora.
-
+- **LDP significa Label Distribution Protocol:** Protocolo usado em redes MPLS para que os roteadores troquem entre si os rótulos (labels) que serão usados no encaminhamento dos pacotes.
+> **OBSERVAÇÃO:** 
+> Se o roteador ISP1 sabe, pelo OSPF, que para chegar à loopback do ISP3 deve passar por determinado enlace, o LDP vai permitir que os roteadores troquem informações como:
+> - “para esse destino, use o label X”
+> - “quando receber esse label, troque por Y”
+> - “ou retire o label antes de entregar no destino”
+> A principal função do LDP é: distribuir rótulos MPLS entre roteadores vizinhos para viabilizar o encaminhamento dos pacotes no backbone MPLS.
 
 Neste laboratório:
 
 - **R1** será tratado como **CE**;
 - **ISP1** e **ISP2** serão tratados como **PEs**;
 - **ISP3** será tratado como elemento central do backbone, assumindo o papel de **P**.
+- **OSPF → descobre o caminho**
+- **LDP → distribui os rótulos**
+- **MPLS → encaminha com base nesses rótulos**  
 
 O **OSPF** será usado como protocolo interno do backbone da operadora, enquanto o **MPLS** será habilitado nos enlaces da rede do provedor.
-
 ---
 
 ## 5. Topologia lógica
