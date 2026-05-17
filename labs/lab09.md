@@ -1,4 +1,4 @@
-# Lab 09 – Implementação de MPLS no Backbone
+# Lab 09 - Implementação de MPLS no Backbone
 
 **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
 **Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
