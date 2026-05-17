@@ -25,6 +25,10 @@ Implementar um backbone **MPLS** simplificado na rede do provedor, dando continu
 > - habilitar o **MPLS** nos enlaces do núcleo;
 > - verificar a distribuição de rótulos e o encaminhamento no backbone.
 
+<img width="1122" height="1402" alt="image" src="https://github.com/user-attachments/assets/9d0969f0-bdd3-4fa7-ba6f-681a07e5e2cf" />
+
+
+
 ---
 
 ## 3. Situação-problema
@@ -33,7 +37,11 @@ No laboratório 08, a empresa do **AS 1000** estabeleceu conectividade com dois 
 
 ---
 
-## 4. Fundamentação teórica resumida
+## 4. Fundamentação teórica 
+
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/d8de8415-8e0c-44d0-8262-23a9f384a619" />
+
+
 
 O **MPLS (Multiprotocol Label Switching)** é uma tecnologia que adiciona rótulos aos pacotes, permitindo que o encaminhamento no backbone ocorra com base nesses rótulos, e não apenas pela análise completa do cabeçalho IP a cada salto.
 
