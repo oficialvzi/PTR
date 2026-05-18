@@ -67,7 +67,8 @@ Neste laboratório:
 - **LDP → distribui os rótulos**
 - **MPLS → encaminha com base nesses rótulos**  
 
-O **OSPF** será usado como protocolo interno do backbone da operadora, enquanto o **MPLS** será habilitado nos enlaces da rede do provedor.
+O **OSPF** será usado como protocolo interno do backbone da operadora, enquanto o **MPLS** será habilitado nos enlaces da rede do provedor. 
+
 ---
 
 ## 5. Topologia lógica
