@@ -8,12 +8,16 @@
 
 ## Objetivo
 
-Implementar um **firewall de pacotes** em uma máquina Linux no PNetLab, posicionada entre **duas máquinas Linux básicas** — preferencialmente **Ubuntu Server** ou **Alpine Linux** — aplicando regras com `iptables` para controlar o tráfego entre duas redes distintas com base em endereço IP, protocolo e porta.
+Implementar um **firewall de pacotes** em uma máquina Linux no PNetLab, posicionada entre **duas máquinas Linux básicas** - preferencialmente **Ubuntu Server** ou **Alpine Linux** -aplicando regras com `iptables` para controlar o tráfego entre duas redes distintas com base em endereço IP, protocolo e porta.
 
 ---
 # Introdução
 
 Um **firewall de pacotes** é um mecanismo de segurança que analisa os pacotes de rede individualmente e decide se eles podem ou não atravessar um determinado ponto da rede. Essa decisão é tomada com base em informações presentes no cabeçalho do pacote, como **endereço IP de origem**, **endereço IP de destino**, **protocolo** e **porta de comunicação**. Em outras palavras, ele funciona como um filtro que verifica regras previamente definidas e permite ou bloqueia o tráfego conforme essas regras.
+
+<img width="1672" height="941" alt="ChatGPT Image 24 de mai  de 2026, 13_40_41" src="https://github.com/user-attachments/assets/2813a8a1-3f3b-44d1-9777-06e71ad97d92" />
+
+
 
 No Linux, uma das ferramentas clássicas para implementar esse tipo de controle é o **iptables**. Com ele, é possível criar regras para autorizar ou negar comunicações específicas entre redes, hosts e serviços. Em um laboratório, isso permite demonstrar de forma prática como uma máquina Linux pode atuar como firewall entre dois segmentos de rede, controlando o fluxo de pacotes de maneira simples e objetiva.
 
@@ -174,8 +178,8 @@ flowchart LR
 | Dispositivo | Interface | Endereço IP | Máscara | Gateway |
 |---|---|---|---|---|
 | Linux Cliente 1 | eth0 | 192.168.10.10 | 255.255.255.0 | 192.168.10.1 |
-| Linux Firewall | eth0 | 192.168.10.1 | 255.255.255.0 | — |
-| Linux Firewall | eth1 | 192.168.20.1 | 255.255.255.0 | — |
+| Linux Firewall | eth0 | 192.168.10.1 | 255.255.255.0 | - |
+| Linux Firewall | eth1 | 192.168.20.1 | 255.255.255.0 | - |
 | Linux Cliente 2 | eth0 | 192.168.20.10 | 255.255.255.0 | 192.168.20.1 |
 
 ---
