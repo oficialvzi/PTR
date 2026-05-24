@@ -8,16 +8,50 @@
 
 ## Objetivo
 
-Implementar um **firewall de pacotes** em uma máquina Linux no PNetLab, posicionada entre duas VPCs, aplicando regras com `iptables` para controlar o tráfego entre duas redes distintas com base em endereço IP, protocolo e porta.
+Implementar um **firewall de pacotes** em uma máquina Linux no PNetLab, posicionada entre **duas máquinas Linux básicas** — preferencialmente **Ubuntu Server** ou **Alpine Linux** — aplicando regras com `iptables` para controlar o tráfego entre duas redes distintas com base em endereço IP, protocolo e porta.
 
 ---
-## Introdução
+# Introdução
 
 Um **firewall de pacotes** é um mecanismo de segurança que analisa os pacotes de rede individualmente e decide se eles podem ou não atravessar um determinado ponto da rede. Essa decisão é tomada com base em informações presentes no cabeçalho do pacote, como **endereço IP de origem**, **endereço IP de destino**, **protocolo** e **porta de comunicação**. Em outras palavras, ele funciona como um filtro que verifica regras previamente definidas e permite ou bloqueia o tráfego conforme essas regras.
 
 No Linux, uma das ferramentas clássicas para implementar esse tipo de controle é o **iptables**. Com ele, é possível criar regras para autorizar ou negar comunicações específicas entre redes, hosts e serviços. Em um laboratório, isso permite demonstrar de forma prática como uma máquina Linux pode atuar como firewall entre dois segmentos de rede, controlando o fluxo de pacotes de maneira simples e objetiva.
 
 Diferentemente de um firewall stateful, que acompanha o estado das conexões, o firewall de pacotes analisa cada pacote de forma isolada. Por isso, o administrador precisa definir explicitamente o que será permitido e o que será bloqueado em cada direção do tráfego.
+
+## Regras de Políticas `iptables`
+
+| Política | Significado | Comportamento | Exemplo | Uso mais comum |
+|---|---|---|---|---|
+| `ACCEPT` | Aceitar por padrão | Se o pacote não casar com nenhuma regra, ele será permitido | `sudo iptables -P FORWARD ACCEPT` | Ambientes de teste ou cenários em que quase tudo é liberado |
+| `DROP` | Bloquear por padrão | Se o pacote não casar com nenhuma regra, ele será descartado silenciosamente | `sudo iptables -P FORWARD DROP` | Firewalls mais seguros, em que só passa o que foi explicitamente permitido |
+
+## Cadeias onde essas políticas são aplicadas
+
+| Cadeia | Função |
+|---|---|
+| `INPUT` | Tráfego destinado ao próprio host |
+| `OUTPUT` | Tráfego gerado pelo próprio host |
+| `FORWARD` | Tráfego que atravessa o host, como em roteadores e firewalls |
+
+## Exemplo prático
+
+| Comando | Efeito |
+|---|---|
+| `sudo iptables -P INPUT DROP` | Bloqueia por padrão o tráfego que chega ao host |
+| `sudo iptables -P OUTPUT ACCEPT` | Permite por padrão o tráfego gerado pelo host |
+| `sudo iptables -P FORWARD DROP` | Bloqueia por padrão o tráfego que atravessa o firewall |
+
+## Observação importante
+
+No uso prático, a política mais recomendada para firewall costuma ser:
+
+- `DROP` como padrão
+- regras `ACCEPT` apenas para o que realmente deve passar
+
+Isso segue a lógica de **negar tudo e liberar somente o necessário**.
+
+
 
 ## Principais comandos do `iptables`
 
@@ -49,7 +83,9 @@ De forma resumida, o `iptables` permite transformar uma máquina Linux em um **f
 
 ## Observação inicial
 
-> **Importante:** neste laboratório, a máquina Linux atuará como **roteador e firewall** entre duas redes.
+> **Importante:** neste laboratório, a máquina Linux central atuará como **roteador e firewall** entre duas redes.
+>
+> As máquinas das extremidades também serão **Linux básicos**, preferencialmente **Ubuntu Server** ou **Alpine Linux**, substituindo as VPCs do cenário original.
 >
 > O foco desta prática é o **firewall de pacotes**, portanto as regras serão baseadas em:
 >
@@ -58,7 +94,7 @@ De forma resumida, o `iptables` permite transformar uma máquina Linux em um **f
 > - protocolo;
 > - porta.
 >
-> Neste primeiro momento, **não será usada inspeção stateful**.  A comparação com firewall stateful será feita no Laboratório 10-B
+> Neste primeiro momento, **não será usada inspeção stateful**. A comparação com firewall stateful será feita no Laboratório 10-B.
 
 ---
 
@@ -72,17 +108,17 @@ Uma organização deseja controlar o tráfego entre uma rede interna e uma rede 
 
 ```mermaid
 flowchart LR
-    VPC1["VPC1<br/>192.168.10.10/24"]
+    HOST1["Linux Cliente 1<br/>Ubuntu/Alpine<br/>192.168.10.10/24"]
     FW["Linux Firewall<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24"]
-    VPC2["VPC2<br/>192.168.20.10/24"]
+    HOST2["Linux Cliente 2<br/>Ubuntu/Alpine<br/>192.168.20.10/24"]
 
-    VPC1 --- FW
-    FW --- VPC2
+    HOST1 --- FW
+    FW --- HOST2
 
     classDef host fill:#fef3c7,stroke:#d97706,color:#111827,stroke-width:1.5px;
     classDef fw fill:#dbeafe,stroke:#1d4ed8,color:#111827,stroke-width:2px;
 
-    class VPC1,VPC2 host;
+    class HOST1,HOST2 host;
     class FW fw;
 ```
 
@@ -92,10 +128,10 @@ flowchart LR
 
 | Dispositivo | Interface | Endereço IP | Máscara | Gateway |
 |---|---|---|---|---|
-| VPC1 | eth0 | 192.168.10.10 | 255.255.255.0 | 192.168.10.1 |
+| Linux Cliente 1 | eth0 | 192.168.10.10 | 255.255.255.0 | 192.168.10.1 |
 | Linux Firewall | eth0 | 192.168.10.1 | 255.255.255.0 | — |
 | Linux Firewall | eth1 | 192.168.20.1 | 255.255.255.0 | — |
-| VPC2 | eth0 | 192.168.20.10 | 255.255.255.0 | 192.168.20.1 |
+| Linux Cliente 2 | eth0 | 192.168.20.10 | 255.255.255.0 | 192.168.20.1 |
 
 ---
 
@@ -104,40 +140,52 @@ flowchart LR
 Considere que:
 
 - a topologia já foi montada no PNetLab;
-- a máquina Linux possui duas interfaces de rede;
-- as VPCs já estão ligadas aos segmentos corretos;
-- o sistema Linux possui `iptables` disponível.
+- a máquina Linux do meio possui duas interfaces de rede;
+- os dois hosts das extremidades são máquinas Linux básicas, preferencialmente **Ubuntu Server** ou **Alpine Linux**;
+- o sistema Linux do firewall possui `iptables` disponível.
 
 Neste laboratório, o foco será:
 
 - configurar IP nas interfaces;
-- ativar o roteamento IP no Linux;
+- ativar o roteamento IP no Linux firewall;
 - criar regras de firewall com `iptables`;
 - testar conectividade e bloqueios.
 
 ---
 
-## Configuração das VPCs
+## Configuração dos hosts Linux
 
-### VPC1
+### Linux Cliente 1
 
-```bash
-ip 192.168.10.10/24 192.168.10.1
-save
-```
-
-### VPC2
+Configure o endereço IP e a rota padrão:
 
 ```bash
-ip 192.168.20.10/24 192.168.20.1
-save
+sudo ip addr add 192.168.10.10/24 dev eth0
+sudo ip link set eth0 up
+sudo ip route add default via 192.168.10.1
 ```
+
+### Linux Cliente 2
+
+Configure o endereço IP e a rota padrão:
+
+```bash
+sudo ip addr add 192.168.20.10/24 dev eth0
+sudo ip link set eth0 up
+sudo ip route add default via 192.168.20.1
+```
+
+> Em algumas imagens Linux, pode ser necessário remover endereços pré-existentes antes da configuração. Exemplo:
+>
+> ```bash
+> sudo ip addr flush dev eth0
+> ```
 
 ---
 
-## Configuração básica da máquina Linux
+## Configuração básica da máquina Linux Firewall
 
-Configure os endereços IP das interfaces da máquina Linux.
+Configure os endereços IP das interfaces da máquina Linux central.
 
 ```bash
 sudo ip addr add 192.168.10.1/24 dev eth0
@@ -156,7 +204,7 @@ ip addr show
 
 ## Ativação do roteamento IP
 
-Para que a máquina Linux encaminhe pacotes entre as duas redes, é necessário ativar o roteamento IPv4.
+Para que a máquina Linux firewall encaminhe pacotes entre as duas redes, é necessário ativar o roteamento IPv4.
 
 ```bash
 sudo sysctl -w net.ipv4.ip_forward=1
@@ -178,15 +226,15 @@ O valor esperado é:
 
 ## Teste inicial sem firewall
 
-Antes de aplicar regras, teste a conectividade básica entre as duas VPCs.
+Antes de aplicar regras, teste a conectividade básica entre os dois hosts Linux.
 
-### A partir da VPC1
+### A partir do Linux Cliente 1
 
 ```bash
 ping 192.168.20.10
 ```
 
-### A partir da VPC2
+### A partir do Linux Cliente 2
 
 ```bash
 ping 192.168.10.10
@@ -218,18 +266,18 @@ sudo iptables -P FORWARD DROP
 
 Nesta etapa, será permitido apenas:
 
-- **ICMP** da VPC1 para a VPC2;
-- **HTTP** da VPC1 para a VPC2;
+- **ICMP** do Linux Cliente 1 para o Linux Cliente 2;
+- **HTTP** do Linux Cliente 1 para o Linux Cliente 2;
 - tráfego de retorno correspondente a essas permissões, de forma explícita.
 
-### Permitir ICMP da VPC1 para a VPC2
+### Permitir ICMP entre os dois hosts
 
 ```bash
 sudo iptables -A FORWARD -s 192.168.10.10 -d 192.168.20.10 -p icmp -j ACCEPT
 sudo iptables -A FORWARD -s 192.168.20.10 -d 192.168.10.10 -p icmp -j ACCEPT
 ```
 
-### Permitir HTTP da VPC1 para a VPC2
+### Permitir HTTP do Cliente 1 para o Cliente 2
 
 ```bash
 sudo iptables -A FORWARD -s 192.168.10.10 -d 192.168.20.10 -p tcp --dport 80 -j ACCEPT
@@ -246,7 +294,7 @@ Como a política padrão da cadeia `FORWARD` é `DROP`, qualquer outro tráfego 
 
 ### Teste de ICMP
 
-Na **VPC1**:
+No **Linux Cliente 1**:
 
 ```bash
 ping 192.168.20.10
@@ -254,7 +302,7 @@ ping 192.168.20.10
 
 Resultado esperado: **deve funcionar**.
 
-Na **VPC2**:
+No **Linux Cliente 2**:
 
 ```bash
 ping 192.168.10.10
@@ -264,39 +312,58 @@ Resultado esperado: **deve funcionar**, porque o ICMP foi liberado nos dois sent
 
 ### Teste de HTTP
 
-Para simular um serviço HTTP na VPC2, use o `nc` ou outro serviço simples em um host Linux, se disponível.  
-Se a VPC usada não suportar isso, o teste pode ser feito substituindo a VPC2 por uma VM Linux leve com serviço HTTP.
+No **Linux Cliente 2**, suba um serviço simples na porta 80.
 
-Exemplo com `nc` em um host Linux:
+#### Opção usando Python
 
 ```bash
-nc -l -p 80
+python3 -m http.server 80
 ```
 
-Na **VPC1**:
+#### Opção usando BusyBox HTTPD (comum no Alpine)
 
 ```bash
-telnet 192.168.20.10 80
+busybox httpd -f -p 80
+```
+
+No **Linux Cliente 1**, teste o acesso:
+
+```bash
+curl http://192.168.20.10
+```
+
+Se o `curl` não estiver instalado:
+
+```bash
+wget -O- http://192.168.20.10
 ```
 
 Resultado esperado: **deve funcionar**.
 
 ### Teste de Telnet não permitido
 
-Na **VPC1**:
+No **Linux Cliente 1**:
 
 ```bash
 telnet 192.168.20.10 23
 ```
 
-Resultado esperado: **deve falhar**.
-
-### Teste de acesso iniciado pela VPC2
-
-Na **VPC2**, tente iniciar conexão TCP para a VPC1 em uma porta qualquer:
+Se `telnet` não estiver disponível, pode usar:
 
 ```bash
-telnet 192.168.10.10 80
+nc -vz 192.168.20.10 23
+```
+
+Resultado esperado: **deve falhar**.
+
+### Teste de acesso iniciado pelo Cliente 2
+
+No **Linux Cliente 2**, tente iniciar conexão TCP para o Cliente 1 em uma porta qualquer.
+
+Exemplo com `nc`:
+
+```bash
+nc -vz 192.168.10.10 80
 ```
 
 Resultado esperado: **deve falhar**, pois não há regra permitindo esse tráfego.
@@ -369,7 +436,7 @@ sudo iptables -S
 7. O que muda quando a política padrão da cadeia `FORWARD` é `DROP`?
 8. Por que esse laboratório ainda não é considerado um firewall stateful?
 9. Qual a importância da ordem das regras no `iptables`?
-10. Em um ambiente real, quais serviços deveriam ser permitidos entre redes distintas?
+10. Quais vantagens práticas surgem ao usar hosts Linux básicos no lugar de VPCs neste laboratório?
 
 ---
 
@@ -390,10 +457,10 @@ sudo iptables -S
 
 ## Entregáveis
 
-Cada aluno deve entregar:
+Cada grupo deve entregar:
 
 - print da topologia no PNetLab;
-- print da configuração IP da máquina Linux;
+- print da configuração IP dos três Linux;
 - print do comando `iptables -L -n -v`;
 - evidência dos testes de:
   - ping permitido;
@@ -414,4 +481,5 @@ Ao final deste laboratório, o estudante deve perceber que:
 - o `iptables` permite controlar o tráfego com base em **IP, protocolo e porta**;
 - o roteamento entre redes depende da ativação do **IP forwarding**;
 - a política padrão de bloqueio ajuda a tornar o controle mais seguro;
+- o uso de **Ubuntu Server** ou **Alpine Linux** nos hosts amplia as possibilidades de teste em comparação com VPCs simples;
 - o firewall de pacotes analisa cada pacote de forma isolada, o que prepara o caminho para a comparação futura com um **firewall stateful**.
