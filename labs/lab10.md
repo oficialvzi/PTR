@@ -1,10 +1,8 @@
-# Lab 10A – Firewall de Pacotes com `iptables`
+# Lab 10 - Firewall de Pacotes com `iptables`
 
-**Disciplina:** Protocolos de Transporte e Roteamento  
-**Curso:** Engenharia de Redes de Comunicação  
-**Professor:** Prof. Dr. Laerte Peotta de Melo  
-**Ambiente:** PNetLab  
-**Nível:** Intermediário
+**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
+**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+**Monitores:** Victor Lima dos Santos / Beatriz Silva Nascimento  
 
 ---
 
@@ -49,7 +47,6 @@ Diferentemente de um firewall stateful, que acompanha o estado das conexões, o 
 De forma resumida, o `iptables` permite transformar uma máquina Linux em um **firewall de pacotes**, no qual cada regra determina quais pacotes podem passar e quais devem ser bloqueados. Isso torna o laboratório bastante útil para mostrar, na prática, como o controle de tráfego pode ser feito em redes reais.
 
 
-
 ## Observação inicial
 
 > **Importante:** neste laboratório, a máquina Linux atuará como **roteador e firewall** entre duas redes.
@@ -61,8 +58,7 @@ De forma resumida, o `iptables` permite transformar uma máquina Linux em um **f
 > - protocolo;
 > - porta.
 >
-> Neste primeiro momento, **não será usada inspeção stateful**.  
-> A comparação com firewall stateful poderá ser feita em um laboratório posterior.
+> Neste primeiro momento, **não será usada inspeção stateful**.  A comparação com firewall stateful será feita no Laboratório 10-B
 
 ---
 
