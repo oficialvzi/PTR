@@ -51,8 +51,6 @@ No uso prático, a política mais recomendada para firewall costuma ser:
 
 Isso segue a lógica de **negar tudo e liberar somente o necessário**.
 
-
-
 ## Principais comandos do `iptables`
 
 | Comando | Função principal | Exemplo | Explicação |
@@ -74,6 +72,53 @@ Isso segue a lógica de **negar tudo e liberar somente o necessário**.
 | `-s` | Definir IP de origem | `sudo iptables -A FORWARD -s 192.168.10.10 -j ACCEPT` | Filtra pacotes pelo endereço de origem. |
 | `-d` | Definir IP de destino | `sudo iptables -A FORWARD -d 192.168.20.10 -j ACCEPT` | Filtra pacotes pelo endereço de destino. |
 | `-p` | Definir protocolo | `sudo iptables -A FORWARD -p icmp -j ACCEPT` | Permite aplicar a regra apenas a um protocolo, como `icmp`, `tcp` ou `udp`. |
+
+## principais parâmetros de /proc/sys/net/ipv4
+
+| Parâmetro | O que controla | Valores comuns | Interpretação prática |
+|---|---|---|---|
+| `/proc/sys/net/ipv4/ip_forward` | Encaminhamento de pacotes IPv4 entre interfaces | `0`, `1` | `0` desabilita o roteamento; `1` permite que o Linux atue como roteador, gateway ou firewall entre redes |
+| `/proc/sys/net/ipv4/icmp_echo_ignore_all` | Resposta a requisições ICMP Echo (ping) | `0`, `1` | `0` permite responder a ping; `1` faz o host ignorar requisições de ping IPv4 |
+| `/proc/sys/net/ipv4/conf/all/rp_filter` | Reverse Path Filtering | `0`, `1`, `2` | Ajuda a reduzir spoofing. Pode afetar cenários com roteamento assimétrico, VPN e multi-homing |
+| `/proc/sys/net/ipv4/conf/all/accept_redirects` | Aceitação de redirecionamentos ICMP | `0`, `1` | Em servidores e firewalls normalmente fica em `0` por segurança |
+| `/proc/sys/net/ipv4/conf/all/send_redirects` | Envio de redirecionamentos ICMP | `0`, `1` | Em máquinas que atuam como firewall ou roteador Linux, costuma-se desabilitar para reduzir comportamento indesejado |
+| `/proc/sys/net/ipv4/conf/all/log_martians` | Registro de pacotes suspeitos | `0`, `1` | Útil para troubleshooting e detecção de tráfego anômalo ou spoofing |
+| `/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts` | Resposta a ICMP broadcast | `0`, `1` | Evita resposta a pings broadcast, o que ajuda na proteção básica contra abusos |
+| `/proc/sys/net/ipv4/tcp_syncookies` | Proteção contra SYN flood | `0`, `1` | Relevante para hosts e serviços expostos à rede |
+| `/proc/sys/net/ipv4/conf/all/proxy_arp` | Proxy ARP | `0`, `1` | Usado em cenários específicos de roteamento, transição e integração entre segmentos |
+| `/proc/sys/net/ipv4/conf/all/arp_ignore` | Política de resposta ARP | `0` a `8` | Importante em hosts com múltiplas interfaces, balanceamento e alta disponibilidade |
+| `/proc/sys/net/ipv4/conf/all/arp_announce` | Forma de anúncio ARP | `0`, `1`, `2` | Ajuda a evitar respostas ARP incorretas em ambientes com várias interfaces e redes |
+| `/proc/sys/net/ipv4/ip_local_port_range` | Faixa de portas efêmeras | dois números | Útil em troubleshooting de conexões, NAT e aplicações com muitas sessões simultâneas |
+| `/proc/sys/net/ipv4/tcp_fin_timeout` | Tempo de espera para conexões TCP em encerramento | valor numérico | Pode ser ajustado em servidores com grande volume de conexões |
+| `/proc/sys/net/ipv4/tcp_keepalive_time` | Tempo até envio de keepalive TCP | valor numérico | Útil em sessões persistentes, túneis e monitoramento de conexões ociosas |
+| `/proc/sys/net/ipv4/conf/all/secure_redirects` | Aceitação segura de redirects ICMP | `0`, `1` | Relevante em endurecimento de servidores e hosts administrativos |
+
+## Observações rápidas
+
+- `ip_forward` é um dos parâmetros mais importantes quando o Linux atua como **roteador**, **gateway**, **NAT** ou **firewall entre redes**.
+- `rp_filter`, `accept_redirects`, `send_redirects` e `log_martians` são muito usados em **hardening** e **troubleshooting**.
+- `arp_ignore` e `arp_announce` aparecem bastante em cenários com **múltiplas interfaces**, **clusters**, **VRRP/Keepalived**, **balanceamento** e **alta disponibilidade**.
+- `tcp_syncookies`, `tcp_fin_timeout` e `tcp_keepalive_time` são úteis para quem administra **servidores**, **firewalls Linux** e **appliances de rede**.
+
+## Exemplo de ajuste temporário com `sysctl`
+
+```bash
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo sysctl -w net.ipv4.conf.all.accept_redirects=0
+sudo sysctl -w net.ipv4.conf.all.send_redirects=0
+sudo sysctl -w net.ipv4.tcp_syncookies=1
+```
+
+## Exemplo de configuração persistente
+
+```conf
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.all.log_martians = 1
+net.ipv4.tcp_syncookies = 1
+```
+
 
 
 ## Síntese
@@ -457,7 +502,7 @@ sudo iptables -S
 
 ## Entregáveis
 
-Cada grupo deve entregar:
+Cada aluno deve entregar relatório contendo:
 
 - print da topologia no PNetLab;
 - print da configuração IP dos três Linux;
