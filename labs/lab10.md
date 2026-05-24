@@ -204,6 +204,8 @@ Neste laboratório, o foco será:
 
 ## Configuração dos hosts Linux
 
+> Você pode salvas as configurações abaixo para cada Linux usando o arquivo `sudo vi /opt/bootlocal.sh" 
+
 ### Linux Cliente 1
 
 Configure o endereço IP e a rota padrão:
@@ -233,6 +235,22 @@ sudo ip route add default via 192.168.20.1
 ---
 
 ## Configuração básica da máquina Linux Firewall
+
+### Configuração no Pnetlab
+
+```bash
+Image: linux-ubuntu-24.04-server
+Ethernet: 2
+MTU: 1500
+CPU: 2
+RAM: 4096 MB
+Console: VNC
+Qemu Arch: x86_64
+Qemu NIC: virtio-net-pci
+TPM: Disabled
+UEFI: desmarcado
+```
+
 
 Configure os endereços IP das interfaces da máquina Linux central.
 
