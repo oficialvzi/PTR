@@ -15,7 +15,8 @@ Implementar um **firewall de pacotes** em uma máquina Linux no PNetLab, posicio
 
 Um **firewall de pacotes** é um mecanismo de segurança que analisa os pacotes de rede individualmente e decide se eles podem ou não atravessar um determinado ponto da rede. Essa decisão é tomada com base em informações presentes no cabeçalho do pacote, como **endereço IP de origem**, **endereço IP de destino**, **protocolo** e **porta de comunicação**. Em outras palavras, ele funciona como um filtro que verifica regras previamente definidas e permite ou bloqueia o tráfego conforme essas regras.
 
-<img width="1672" height="941" alt="ChatGPT Image 24 de mai  de 2026, 13_40_41" src="https://github.com/user-attachments/assets/2813a8a1-3f3b-44d1-9777-06e71ad97d92" />
+<img width="1672" height="941" alt="ChatGPT Image 24 de mai  de 2026, 18_02_50" src="https://github.com/user-attachments/assets/81787ce4-4db1-4fe0-ba0d-6fe9ca2808ea" />
+
 
 
 
@@ -130,11 +131,9 @@ net.ipv4.tcp_syncookies = 1
 De forma resumida, o `iptables` permite transformar uma máquina Linux em um **firewall de pacotes**, no qual cada regra determina quais pacotes podem passar e quais devem ser bloqueados. Isso torna o laboratório bastante útil para mostrar, na prática, como o controle de tráfego pode ser feito em redes reais.
 
 
-## Observação inicial
-
-> **Importante:** neste laboratório, a máquina Linux central atuará como **roteador e firewall** entre duas redes.
+> **Importante:** neste laboratório, a máquina Linux central atuará como **roteador e firewall** entre duas redes. Para o servidor usar **Ubuntu-24.04-server**
 >
-> As máquinas das extremidades também serão **Linux básicos**, preferencialmente **Ubuntu Server** ou **Alpine Linux**, substituindo as VPCs do cenário original.
+> As máquinas das extremidades também serão **Linux básicos**, preferencialmente **Linux-Tiny-6.4**
 >
 > O foco desta prática é o **firewall de pacotes**, portanto as regras serão baseadas em:
 >
@@ -157,9 +156,9 @@ Uma organização deseja controlar o tráfego entre uma rede interna e uma rede 
 
 ```mermaid
 flowchart LR
-    HOST1["Linux Cliente 1<br/>Ubuntu/Alpine<br/>192.168.10.10/24"]
-    FW["Linux Firewall<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24"]
-    HOST2["Linux Cliente 2<br/>Ubuntu/Alpine<br/>192.168.20.10/24"]
+    HOST1["Linux Cliente 1<br/>Tinylinux-6.4<br/>192.168.10.10/24"]
+    FW["Linux Firewall<br/>Ubuntu-24.04-server<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24"]
+    HOST2["Linux Cliente 2<br/>Tinylinux-6.4<br/>192.168.20.10/24"]
 
     HOST1 --- FW
     FW --- HOST2
@@ -186,13 +185,6 @@ flowchart LR
 
 ## Premissas do laboratório
 
-Considere que:
-
-- a topologia já foi montada no PNetLab;
-- a máquina Linux do meio possui duas interfaces de rede;
-- os dois hosts das extremidades são máquinas Linux básicas, preferencialmente **Ubuntu Server** ou **Alpine Linux**;
-- o sistema Linux do firewall possui `iptables` disponível.
-
 Neste laboratório, o foco será:
 
 - configurar IP nas interfaces;
@@ -204,7 +196,22 @@ Neste laboratório, o foco será:
 
 ## Configuração dos hosts Linux
 
-> Você pode salvas as configurações abaixo para cada Linux usando o arquivo `sudo vi /opt/bootlocal.sh" 
+### Configuração no Pnetlab
+
+```bash
+Image: linux-tinycore-6.4
+Ethernet: 1
+MTU: 1500
+CPU: 1
+RAM: 2048 MB
+Console: VNC
+Qemu Arch: x86_64
+Qemu NIC: virtio-net-pci
+TPM: Disabled
+UEFI: desmarcado
+```
+
+> Você pode salvas as configurações abaixo para cada Linux usando o arquivo `sudo vi /opt/bootlocal.sh`
 
 ### Linux Cliente 1
 
@@ -387,7 +394,7 @@ No **Linux Cliente 2**, suba um serviço simples na porta 80.
 python3 -m http.server 80
 ```
 
-#### Opção usando BusyBox HTTPD (comum no Alpine)
+#### Opção usando BusyBox HTTPD 
 
 ```bash
 busybox httpd -f -p 80
