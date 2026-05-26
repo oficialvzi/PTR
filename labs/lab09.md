@@ -6,8 +6,34 @@
 
 **Observação:** Este laboratório é continuação do **Laboratório 08**
 
-https://open.spotify.com/episode/5RXovxuVQ6eLXa5pt2dUeR?si=dZE1TCGAQwyFAuxqumNnyQ
+
 ---
+
+<h2>Podcast desta Aula</h2>
+
+<table>
+  <tr>
+    <td width="320" align="center">
+      <a href="https://spotifycreators-web.app.link/e/HrOyLyXbv2b">
+        <img src="../images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="280">
+      </a>
+    </td>
+    <td valign="top">
+      <p>
+        O podcast <strong>Latência Zero</strong> apresenta discussões relacionadas a temas
+        abordados em aula, com ênfase em <strong>redes de computadores</strong>,
+        <strong>latência</strong>, <strong>infraestrutura de comunicação</strong> e
+        aspectos práticos da engenharia de redes.
+      </p>
+      <p>
+        <a href="https://open.spotify.com/episode/5RXovxuVQ6eLXa5pt2dUeR?si=dZE1TCGAQwyFAuxqumNnyQ">Episódio 6: A Engenharia de Rótulos do Protocolo MPLS</a>
+      </p>
+    </td>
+  </tr>
+</table>
+
+
+
 
 ## 1. Objetivo
 
