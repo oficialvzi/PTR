@@ -5,6 +5,8 @@
 **Monitores:** Victor Lima dos Santos / Beatriz Silva Nascimento
 
 **Observação:** Este laboratório é continuação do **Laboratório 08**
+
+https://open.spotify.com/episode/5RXovxuVQ6eLXa5pt2dUeR?si=dZE1TCGAQwyFAuxqumNnyQ
 ---
 
 ## 1. Objetivo
