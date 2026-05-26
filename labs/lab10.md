@@ -8,17 +8,15 @@
 
 ## Objetivo
 
-Implementar um **firewall de pacotes** em uma máquina Linux no PNetLab, posicionada entre **duas máquinas Linux básicas** - preferencialmente **Linux Tinycore-6.4**  - aplicando regras com `iptables` para controlar o tráfego entre duas redes distintas com base em endereço IP, protocolo e porta.
+Implementar um **firewall de pacotes** em uma máquina Linux no PNetLab, posicionada entre **duas máquinas Linux básicas** - preferencialmente **Linux Tinycore-6.4** - aplicando regras com `iptables` para controlar o tráfego entre duas redes distintas com base em endereço IP, protocolo e porta.
 
 ---
-# Introdução
+
+## Introdução
 
 Um **firewall de pacotes** é um mecanismo de segurança que analisa os pacotes de rede individualmente e decide se eles podem ou não atravessar um determinado ponto da rede. Essa decisão é tomada com base em informações presentes no cabeçalho do pacote, como **endereço IP de origem**, **endereço IP de destino**, **protocolo** e **porta de comunicação**. Em outras palavras, ele funciona como um filtro que verifica regras previamente definidas e permite ou bloqueia o tráfego conforme essas regras.
 
-<img width="1672" height="941" alt="ChatGPT Image 24 de mai  de 2026, 18_02_50" src="https://github.com/user-attachments/assets/81787ce4-4db1-4fe0-ba0d-6fe9ca2808ea" />
-
-
-
+<img width="1672" height="941" alt="ChatGPT Image 24 de mai de 2026, 18_02_50" src="https://github.com/user-attachments/assets/81787ce4-4db1-4fe0-ba0d-6fe9ca2808ea" />
 
 No Linux, uma das ferramentas clássicas para implementar esse tipo de controle é o **iptables**. Com ele, é possível criar regras para autorizar ou negar comunicações específicas entre redes, hosts e serviços. Em um laboratório, isso permite demonstrar de forma prática como uma máquina Linux pode atuar como firewall entre dois segmentos de rede, controlando o fluxo de pacotes de maneira simples e objetiva.
 
@@ -78,7 +76,7 @@ Isso segue a lógica de **negar tudo e liberar somente o necessário**.
 | `-d` | Definir IP de destino | `sudo iptables -A FORWARD -d 192.168.20.10 -j ACCEPT` | Filtra pacotes pelo endereço de destino. |
 | `-p` | Definir protocolo | `sudo iptables -A FORWARD -p icmp -j ACCEPT` | Permite aplicar a regra apenas a um protocolo, como `icmp`, `tcp` ou `udp`. |
 
-## principais parâmetros de /proc/sys/net/ipv4
+## Principais parâmetros de `/proc/sys/net/ipv4`
 
 | Parâmetro | O que controla | Valores comuns | Interpretação prática |
 |---|---|---|---|
@@ -124,12 +122,9 @@ net.ipv4.conf.all.log_martians = 1
 net.ipv4.tcp_syncookies = 1
 ```
 
-
-
 ## Síntese
 
 De forma resumida, o `iptables` permite transformar uma máquina Linux em um **firewall de pacotes**, no qual cada regra determina quais pacotes podem passar e quais devem ser bloqueados. Isso torna o laboratório bastante útil para mostrar, na prática, como o controle de tráfego pode ser feito em redes reais.
-
 
 > **Importante:** neste laboratório, a máquina Linux central atuará como **roteador e firewall** entre duas redes. Para o servidor usar **Ubuntu-24.04-server**
 >
@@ -196,7 +191,7 @@ Neste laboratório, o foco será:
 
 ## Configuração dos hosts Linux
 
-### Configuração no Pnetlab
+### Configuração no PNetLab
 
 ```bash
 Image: linux-tinycore-6.4
@@ -211,7 +206,7 @@ TPM: Disabled
 UEFI: desmarcado
 ```
 
-> Você pode salvas as configurações abaixo para cada Linux usando o arquivo `sudo vi /opt/bootlocal.sh`
+> Você pode salvar as configurações abaixo para cada Linux usando o arquivo `sudo vi /opt/bootlocal.sh`.
 
 ### Linux Cliente 1
 
@@ -243,7 +238,7 @@ sudo ip route add default via 192.168.20.1
 
 ## Configuração básica da máquina Linux Firewall
 
-### Configuração no Pnetlab
+### Configuração no PNetLab
 
 ```bash
 Image: linux-ubuntu-24.04-server
@@ -257,7 +252,6 @@ Qemu NIC: virtio-net-pci
 TPM: Disabled
 UEFI: desmarcado
 ```
-
 
 Configure os endereços IP das interfaces da máquina Linux central.
 
@@ -294,6 +288,40 @@ O valor esperado é:
 
 ```bash
 1
+```
+
+---
+
+## Bloqueio de ping com `sysctl`
+
+Além do uso do `iptables`, o Linux permite alterar o comportamento da pilha de rede com `sysctl`. Nesta etapa, será feito um teste simples para impedir que o firewall responda a requisições de ping.
+
+```bash
+sudo sysctl -w net.ipv4.icmp_echo_ignore_all=1
+cat /proc/sys/net/ipv4/icmp_echo_ignore_all
+```
+
+Valor esperado:
+
+```bash
+1
+```
+
+Teste a partir dos clientes:
+
+```bash
+ping 192.168.10.1
+ping 192.168.20.1
+```
+
+Resultado esperado: **o firewall não deve responder ao ping**.
+
+> **Observação:** essa configuração bloqueia apenas a resposta de ping destinada ao próprio firewall. Ela não substitui as regras de `iptables` e não bloqueia, por si só, o encaminhamento de pacotes ICMP entre as redes.
+
+Para reverter:
+
+```bash
+sudo sysctl -w net.ipv4.icmp_echo_ignore_all=0
 ```
 
 ---
@@ -394,7 +422,7 @@ No **Linux Cliente 2**, suba um serviço simples na porta 80.
 python3 -m http.server 80
 ```
 
-#### Opção usando BusyBox HTTPD 
+#### Opção usando BusyBox HTTPD
 
 ```bash
 busybox httpd -f -p 80
@@ -511,6 +539,7 @@ sudo iptables -S
 8. Por que esse laboratório ainda não é considerado um firewall stateful?
 9. Qual a importância da ordem das regras no `iptables`?
 10. Quais vantagens práticas surgem ao usar hosts Linux básicos no lugar de VPCs neste laboratório?
+11. Qual a diferença entre bloquear o ping com `sysctl` e bloquear ICMP com `iptables`?
 
 ---
 
