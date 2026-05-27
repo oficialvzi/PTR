@@ -25,24 +25,9 @@ No Linux, isso é feito com `iptables` e rastreamento de conexões do kernel, us
 - `--ctstate ESTABLISHED` Indica que o pacote faz parte de uma conexão já estabelecida, ou seja, de uma comunicação que já foi iniciada e aceita antes.
 - `--ctstate RELATED` Indica que o pacote está relacionado a uma conexão existente, mesmo que não pertença exatamente ao fluxo principal.
 
-Exemplo simples
-```bash
-sudo iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-```   
 
----
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/b801b7b0-77e1-44a8-82b2-9f266ca229f4" />
 
-## Relação com o Laboratório  10
-
-Este Laboratório oratório é uma continuação direta do **Laboratório  10**. Portanto, permanecem iguais:
-
-- topologia lógica;
-- plano de endereçamento;
-- configuração IP dos hosts;
-- configuração IP do firewall;
-- ativação do `net.ipv4.ip_forward=1`.
-
-O que muda neste Laboratório oratório é a lógica das regras.
 
 ---
 
@@ -129,7 +114,7 @@ sudo iptables -P FORWARD DROP
 
 ## Regra central do firewall stateful
 
-A principal diferença deste Laboratório oratório é permitir automaticamente o tráfego de retorno de conexões já estabelecidas.
+A principal diferença deste Laboratório é permitir automaticamente o tráfego de retorno de conexões já estabelecidas.
 
 ```bash
 sudo iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
@@ -255,7 +240,7 @@ Resultado esperado: **deve falhar**.
 
 Nesta atividade, os alunos devem comparar o comportamento do **Laboratório  10** e do **Laboratório  10B** na mesma topologia.
 
-### Etapa A — Executar o Laboratório  10
+### Etapa A - Executar o Laboratório  10
 
 Aplicar as regras do **firewall de pacotes** e observar que, para o tráfego funcionar, foi necessário criar:
 
@@ -267,14 +252,14 @@ Exemplo observado no Laboratório  10:
 - Cliente 1 inicia HTTP para Cliente 2;
 - o retorno precisou ser tratado por regra explícita.
 
-### Etapa B — Executar o Laboratório  10B
+### Etapa B - Executar o Laboratório  10B
 
 Substituir as regras anteriores pelas regras **stateful** deste Laboratório oratório e observar que agora basta:
 
 - permitir a conexão nova;
 - permitir `ESTABLISHED,RELATED`.
 
-### Etapa C — Realizar os mesmos testes nos dois Laboratório oratórios
+### Etapa C - Realizar os mesmos testes nos dois Laboratório
 
 Os alunos devem testar:
 
@@ -284,7 +269,7 @@ Os alunos devem testar:
 - nova conexão TCP iniciada pelo Cliente 2;
 - tentativa de Telnet.
 
-### Etapa D — Comparar a saída das regras
+### Etapa D - Comparar a saída das regras
 
 Executar em ambos os cenários:
 
@@ -365,7 +350,7 @@ sudo conntrack -L
 
 Cada aluno deve entregar relatório contendo:
 
-- print da topologia no PNetLaboratório ;
+- print da topologia no PNetLab ;
 - print da configuração IP dos três Linux;
 - print do comando `iptables -L -n -v`;
 - evidência dos testes de:
@@ -382,7 +367,7 @@ Cada aluno deve entregar relatório contendo:
 
 ## Conclusão esperada
 
-Ao final deste Laboratório oratório, o estudante deve perceber que:
+Ao final deste Laboratório, o aluno deve perceber que:
 
 - um firewall stateful acompanha o estado das conexões;
 - o `iptables`, com `conntrack`, permite liberar respostas automaticamente;
