@@ -206,7 +206,7 @@ TPM: Disabled
 UEFI: desmarcado
 ```
 
-> Você pode salvar as configurações abaixo para cada Linux usando o arquivo `sudo vi /opt/bootlocal.sh`.
+> Você pode salvar as configurações abaixo para cada Linux usando o arquivo `sudo vi /opt/bootlocal.sh`. Linux-tinycore não necessita de credenciais de login ou root.
 
 ### Linux Cliente 1
 
@@ -238,7 +238,11 @@ sudo ip route add default via 192.168.20.1
 
 ## Configuração básica da máquina Linux Firewall
 
+
+
 ### Configuração no PNetLab
+
+> Para configurar corretamente o teclado ABNT2 use o qemu options: `-machine type=pc,accel=kvm -vga virtio -usbdevice tablet -boot order=cd -cpu host -k pt-br`
 
 ```bash
 Image: linux-ubuntu-24.04-server
@@ -251,9 +255,14 @@ Qemu Arch: x86_64
 Qemu NIC: virtio-net-pci
 TPM: Disabled
 UEFI: desmarcado
+Qemu options: -machine type=pc,accel=kvm -vga virtio -usbdevice tablet -boot order=cd -cpu host -k pt-br
 ```
 
-Configure os endereços IP das interfaces da máquina Linux central.
+### Configure os endereços IP das interfaces da máquina Linux central.
+
+> **ATENÇÃO** credenciais utilizadas  
+> Ubuntu login: **user**  
+> password: **Test123**  
 
 ```bash
 sudo ip addr add 192.168.10.1/24 dev eth0
