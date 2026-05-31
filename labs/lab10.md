@@ -299,6 +299,15 @@ O valor esperado é:
 1
 ```
 
+### Configuração Persistente
+
+```bash
+vi /etc/sysctl.conf
+descomente net.ipv4.ip_forward=1
+:wq 
+```   
+
+
 ---
 
 ## Bloqueio de ping com `sysctl`
