@@ -334,6 +334,9 @@ ping 192.168.10.1
 ping 192.168.20.1
 ```
 
+No servidor Firewall executar o comando `tcpdump -i any -n icmp`  e observar o resultado.
+
+
 Resultado esperado: **o firewall não deve responder ao ping**.
 
 > **Observação:** essa configuração bloqueia apenas a resposta de ping destinada ao próprio firewall. Ela não substitui as regras de `iptables` e não bloqueia, por si só, o encaminhamento de pacotes ICMP entre as redes.
@@ -343,6 +346,10 @@ Para reverter:
 ```bash
 sudo sysctl -w net.ipv4.icmp_echo_ignore_all=0
 ```
+
+No servidor Firewall executar o comando `tcpdump -i any -n icmp`  e observar o resultado.
+
+> qual foi o comportamamento? O que aconteceu de diferente?
 
 ---
 
