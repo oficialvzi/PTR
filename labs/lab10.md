@@ -114,6 +114,8 @@ sudo sysctl -w net.ipv4.tcp_syncookies=1
 
 ## Exemplo de configuração persistente
 
+> edit e descomente `/etc/sysctl.conf`
+
 ```conf
 net.ipv4.ip_forward = 1
 net.ipv4.conf.all.accept_redirects = 0
