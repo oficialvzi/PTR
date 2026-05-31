@@ -149,13 +149,22 @@ Os critérios específicos de cada experimento serão informados no respectivo r
 
 ## Laboratórios
 
+## Laboratórios
+
 | Laboratório | Tema | Link |
-|:---:|:------|------|
-| 00 | Comandos Linux | [Acessar](./labs/comandos.md) |
-| 01 | Introdução / primeiros passos | [Acessar](./labs/lab01.md) |
+|:------------:|------|------|
+| 00 | Comandos Linux e VPCS no PNetLab | [Acessar](./labs/comandos.md) |
+| 01 | Configuração inicial no PNetLab | [Acessar](./labs/lab01.md) |
 | 02 | Configuração básica de roteadores no PNetLab | [Acessar](./labs/lab02.md) |
 | 03 | PIM-DM em topologia controlada | [Acessar](./labs/lab03.md) |
 | 04 | RIP e análise de convergência | [Acessar](./labs/lab04.md) |
+| 05 | Roteamento Dinâmico com RIP e OSPF | [Acessar](./labs/lab05.md) |
+| 06 | Roteamento Externo via BGP | [Acessar](./labs/lab06.md) |
+| 07 | Configuração dos Provedores (BGP Externo) | [Acessar](./labs/lab07.md) |
+| 08 | Políticas BGP e integração com OSPF | [Acessar](./labs/lab08.md) |
+| 09 | Implementação de MPLS no Backbone | [Acessar](./labs/lab09.md) |
+| 10 | Firewall de Pacotes com `iptables` | [Acessar](./labs/lab10.md) |
+| 10B | Firewall Stateful com `iptables` | [Acessar](./labs/lab10B.md) |
 
 
 
