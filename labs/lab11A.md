@@ -11,6 +11,10 @@
 
 Implementar um **Web Application Firewall (WAF)** em uma máquina Linux no PNetLab, utilizando **Nginx + ModSecurity + OWASP Core Rule Set (CRS)** em modo de **proxy reverso**, de forma que o tráfego HTTP entre um cliente e um servidor web interno seja inspecionado e controlado na **camada de aplicação**.
 
+- **Nginx**: servidor web e proxy reverso que recebe as requisições dos clientes e as encaminha para o servidor interno.
+- **ModSecurity**: mecanismo de firewall de aplicação que inspeciona requisições e respostas HTTP em busca de padrões suspeitos.
+- **OWASP Core Rule Set (CRS)**: conjunto de regras prontas para o ModSecurity, criado para detectar e bloquear ataques web comuns, como SQL Injection e XSS.
+
 Ao final deste laboratório, o estudante deverá ser capaz de:
 
 - compreender a função de um WAF;
