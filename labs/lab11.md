@@ -37,6 +37,10 @@ Na prática, isso permite bloquear comportamentos suspeitos mesmo quando o acess
 
 Neste laboratório, será utilizado o **ModSecurity**, em conjunto com o **OWASP Core Rule Set (CRS)**, para transformar uma máquina Linux em um **WAF reverso**, posicionada entre um cliente e um servidor web interno. O objetivo desta primeira parte é implantar a estrutura do WAF, publicar a aplicação web por meio do proxy reverso e validar o funcionamento do fluxo legítimo. A exploração de ataques e a análise aprofundada dos bloqueios ficam como continuidade natural para o **Lab 11B**.
 
+
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/2a8e289e-1353-4443-af0a-1c7c78010d20" />
+
+
 ---
 
 ## Relação com os Laboratórios 10 e 10B
