@@ -45,8 +45,6 @@ Neste laboratório, será utilizado o **ModSecurity**, em conjunto com o **OWASP
 
 ## Proxy Reverso
 
-# Proxy Reverso
-
 Um proxy reverso é um servidor intermediário que recebe as requisições dos clientes e as encaminha para um ou mais servidores internos, devolvendo depois a resposta ao cliente.
 
 Na prática, o cliente acha que está falando diretamente com o serviço, mas na verdade está falando primeiro com o proxy reverso. Esse proxy fica “na frente” da aplicação.
