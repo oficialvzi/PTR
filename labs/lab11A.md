@@ -574,7 +574,7 @@ O host intermediário atua como **proxy reverso com inspeção HTTP**, o que sig
 
 ## Entregáveis
 
-Cada aluno ou grupo deve entregar:
+Cada aluno deve entregar:
 
 - print da topologia no PNetLab;
 - print da configuração IP dos três hosts;
