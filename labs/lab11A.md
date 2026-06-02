@@ -25,6 +25,8 @@ Ao final deste laboratório, o estudante deverá ser capaz de:
 
 Nos laboratórios anteriores, o controle de tráfego foi feito inicialmente com um **firewall de pacotes**, que toma decisões com base em informações como endereço IP, protocolo e porta, e depois com um **firewall stateful**, que também acompanha o estado das conexões. Esses mecanismos são fundamentais para a segurança da rede, mas não conseguem, sozinhos, analisar em profundidade o conteúdo de uma requisição web.
 
+## Web Application Firewall (WAF)
+
 Um **Web Application Firewall (WAF)** atua em um nível mais alto, inspecionando o tráfego **HTTP/HTTPS** e aplicando regras voltadas à proteção de aplicações web. Em vez de decidir apenas se a porta 80 ou 443 pode ser usada, o WAF analisa elementos como:
 
 - URL requisitada;
@@ -40,6 +42,25 @@ Neste laboratório, será utilizado o **ModSecurity**, em conjunto com o **OWASP
 
 <img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/2a8e289e-1353-4443-af0a-1c7c78010d20" />
 
+
+## Proxy Reverso
+
+# Proxy Reverso
+
+Um proxy reverso é um servidor intermediário que recebe as requisições dos clientes e as encaminha para um ou mais servidores internos, devolvendo depois a resposta ao cliente.
+
+Na prática, o cliente acha que está falando diretamente com o serviço, mas na verdade está falando primeiro com o proxy reverso. Esse proxy fica “na frente” da aplicação.
+
+
+<img width="1672" height="941" alt="ChatGPT Image 2 de jun  de 2026, 16_26_17" src="https://github.com/user-attachments/assets/704f19da-b314-406e-8b82-31b51a15cc3e" />
+
+## Funções principais de um proxy reverso
+
+- Ocultar o servidor interno: O cliente acessa o proxy, não o servidor real.
+- Distribuir requisições: Pode enviar tráfego para vários servidores backend, fazendo balanceamento de carga.
+- Aplicar segurança: Pode atuar com WAF, TLS/HTTPS, autenticação, filtragem e limitação de acesso.
+- Melhorar desempenho: Pode fazer cache, compressão e otimização de conexões.
+- Centralizar publicação de serviços: Vários sites ou aplicações podem ser publicados por um único ponto de entrada.
 
 ---
 
@@ -124,7 +145,6 @@ Neste laboratório, o foco será:
 Pode ser usado:
 
 - TinyCore Linux
-- Alpine Linux
 - Ubuntu básico
 
 ### Linux WAF
@@ -138,7 +158,6 @@ ou
 Pode ser usado:
 
 - Ubuntu Server
-- Alpine Linux
 - Debian Server
 
 ---
