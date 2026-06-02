@@ -1,9 +1,9 @@
-# Lab 11A - Implementação de WAF com ModSecurity e OWASP CRS no PNetLab
+# Lab 11A - Implementação de WAF com ModSecurity e OWASP CRS 
 
 **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
 **Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
-**Ambiente:** PNetLab  
-**Tema:** Proteção de aplicações web com Web Application Firewall
+**Monitores:** Victor Lima dos Santos / Beatriz Silva Nascimento  
+**Tema:** Proteção de aplicações web com Web Application Firewall  
 
 ---
 
