@@ -29,6 +29,9 @@ Neste **Lab 12**, o foco será um novo tipo de mecanismo: o **IDS/IPS**.
 - **IDS (Intrusion Detection System)**: sistema que monitora o tráfego e gera alertas quando identifica padrões suspeitos.
 - **IPS (Intrusion Prevention System)**: sistema que, além de detectar, também pode atuar para bloquear ou prevenir tráfego considerado malicioso.
 
+<img width="1672" height="941" alt="ChatGPT Image 2 de jun  de 2026, 22_02_47" src="https://github.com/user-attachments/assets/d3e4e4c1-1511-44ac-9603-ce11f8116e2a" />
+
+
 O **Suricata** é uma ferramenta amplamente usada nesse contexto, pois permite:
 
 - inspeção de tráfego em tempo real;
