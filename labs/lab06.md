@@ -107,6 +107,10 @@ Outra forma de imaginar é pensar em viagens:
 - **eBGP** é como conversar com pessoas de **outras cidades ou outros países** para saber como chegar até lá
 - **iBGP** é como avisar as pessoas da **sua própria cidade** qual estrada usar para sair dela
 
+<img width="1672" height="941" alt="ChatGPT Image 3 de jun  de 2026, 18_57_06" src="https://github.com/user-attachments/assets/0a70cad5-1634-4ae7-a539-b973ba63046b" />
+
+
+
 ## Resumindo
 
 - **BGP**: protocolo de roteamento entre sistemas autônomos
@@ -123,8 +127,6 @@ Ele permite:
 - aplicar regras e preferências de roteamento.
 
 Por isso, o BGP é o protocolo mais importante quando falamos de **Internet, provedores e roteamento entre organizações**.
-
-<img width="2528" height="1684" alt="Gemini_Generated_Image_3zfes33zfes33zfe" src="https://github.com/user-attachments/assets/397132d9-8611-4244-ab43-10982897f2a5" />
 
 
 ---
