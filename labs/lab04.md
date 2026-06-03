@@ -77,7 +77,8 @@ A lentidão da convergência do RIP está relacionada ao uso de temporizadores e
 Outro fenômeno clássico associado ao RIP é o problema de count to infinity. Esse problema ocorre quando roteadores trocam informações incorretas sobre uma rede que deixou de existir, aumentando gradualmente a métrica até que ela atinja o valor 16, considerado infinito no contexto do protocolo. Esse comportamento pode prolongar a convergência e gerar loops temporários. Para reduzir esse tipo de problema, o RIP incorpora mecanismos como split horizon, poison reverse e triggered updates. O split horizon evita que uma rota aprendida por uma interface seja anunciada de volta por essa mesma interface. O poison reverse marca explicitamente uma rota como inalcançável ao reenviá-la. Já os triggered updates permitem acelerar a propagação de mudanças sem depender exclusivamente do próximo ciclo periódico de atualização.
 
 
-<img width="1448" height="1086" alt="ChatGPT Image 3 de jun  de 2026, 18_40_16" src="https://github.com/user-attachments/assets/a76e226e-9205-4b47-a73e-86191aaafbd9" />
+<img width="1448" height="1086" alt="ChatGPT Image 3 de jun  de 2026, 18_44_29" src="https://github.com/user-attachments/assets/9e08fb19-31e2-40d9-9bfc-8a3117ad80e8" />
+
 
 
 > IMPORTANTE> RIP utiliza **UDP porta 520** para o envio de atualizações. Isso reforça a ideia de que protocolos de roteamento também operam sobre camadas e mecanismos bem definidos da pilha TCP/IP. o roteamento dinâmico não é apenas uma configuração isolada, mas parte do comportamento sistêmico da rede.
