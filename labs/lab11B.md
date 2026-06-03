@@ -332,8 +332,8 @@ Caso o ambiente esteja estável, o professor pode pedir uma pequena atividade de
 - discutir se o evento representa ataque real, falso positivo ou teste didático;
 - propor ajuste futuro sem desabilitar a proteção inteira.
 
-> Esta etapa é opcional e recomendada apenas se o tempo da aula permitir.
-
+> Esta etapa é opcional.
+> 
 ---
 
 ## Questões para análise
