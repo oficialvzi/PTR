@@ -67,7 +67,8 @@ Já o OSPF se parece mais com usar um aplicativo de navegação, como um GPS mai
 Ele não olha apenas quantas ruas existem no caminho. Ele considera a qualidade das vias, a capacidade delas e qual rota tende a ser melhor. Além disso, ele monta um “mapa” mais completo da região antes de escolher o trajeto. Por isso, consegue tomar decisões melhores em cenários maiores e mais complexos.
 
 
-<img width="2528" height="1684" alt="Gemini_Generated_Image_6kfjy46kfjy46kfj" src="https://github.com/user-attachments/assets/6a2d3467-6680-4292-aef1-a15a7491d3ab" />
+<img width="1672" height="941" alt="ChatGPT Image 3 de jun  de 2026, 18_52_35" src="https://github.com/user-attachments/assets/248289db-3b15-4815-8141-792b69968450" />
+
 
 
 
