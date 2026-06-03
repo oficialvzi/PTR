@@ -50,7 +50,8 @@ Implementar um backbone **MPLS** simplificado na rede do provedor, dando continu
 > - habilitar o **MPLS** nos enlaces do núcleo;
 > - verificar a distribuição de rótulos e o encaminhamento no backbone.
 
-<img width="1122" height="1402" alt="image" src="https://github.com/user-attachments/assets/9d0969f0-bdd3-4fa7-ba6f-681a07e5e2cf" />
+<img width="1672" height="941" alt="ChatGPT Image 3 de jun  de 2026, 19_08_58" src="https://github.com/user-attachments/assets/f78c5d0c-56b9-4a63-9cc3-527917900655" />
+
 
 ---
 
