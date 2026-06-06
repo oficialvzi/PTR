@@ -6,6 +6,30 @@
 
 ---
 
+<h2>Podcast desta Aula</h2>
+
+<table>
+  <tr>
+    <td width="320" align="center">
+      <a href="https://spotifycreators-web.app.link/e/HrOyLyXbv2b">
+        <img src="../images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="280">
+      </a>
+    </td>
+    <td valign="top">
+      <p>
+        O podcast <strong>Latência Zero</strong> apresenta discussões relacionadas a temas
+        abordados em aula, com ênfase em <strong>redes de computadores</strong>,
+        <strong>latência</strong>, <strong>infraestrutura de comunicação</strong> e
+        aspectos práticos da engenharia de redes.
+      </p>
+      <p>
+        <a href="https://open.spotify.com/episode/6mSMblRBIjOvmX0AgsO1ln?si=ccYN8DnmSEuR6XSJgDvBAA">Episódio 7: Firewall com Amnésia (Stateless)</a>
+      </p>
+    </td>
+  </tr>
+</table>
+
+
 ## Objetivo
 
 Implementar um **firewall de pacotes** em uma máquina Linux no PNetLab, posicionada entre **duas máquinas Linux básicas** - preferencialmente **Linux Tinycore-6.4** - aplicando regras com `iptables` para controlar o tráfego entre duas redes distintas com base em endereço IP, protocolo e porta.
