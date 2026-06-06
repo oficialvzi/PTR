@@ -11,7 +11,7 @@
 <table>
   <tr>
     <td width="320" align="center">
-      <a href="https://spotifycreators-web.app.link/e/4Wu544oVN1b">
+      <a href="https://open.spotify.com/show/59S06LhFsKlyvfLFQCJ8fK">
         <img src="../images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="280">
       </a>
     </td>
