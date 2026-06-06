@@ -23,7 +23,7 @@
         aspectos práticos da engenharia de redes.
       </p>
       <p>
-        <a href="https://spotifycreators-web.app.link/e/HrOyLyXbv2b">Episódio 5: Como o protocolo BGP sustenta a internet</a>
+        <a href="https://open.spotify.com/episode/5h5COkh8c51req9tUxZhzs?si=20722c87de1b41aa">Episódio 5: Como o protocolo BGP sustenta a internet</a>
       </p>
     </td>
   </tr>
