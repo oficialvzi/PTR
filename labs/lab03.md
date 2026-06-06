@@ -23,7 +23,7 @@
         aspectos práticos da engenharia de redes.
       </p>
       <p>
-        <a href="https://spotifycreators-web.app.link/e/4Wu544oVN1b">Episódio 1: Engenharia do Roteamento Multicast PIM-DM</a>
+        <a href="https://open.spotify.com/episode/4DYXfykVe2M5XiUSHmoW7H?si=577680b5f45749a3">Episódio 1: Engenharia do Roteamento Multicast PIM-DM</a>
       </p>
     </td>
   </tr>
