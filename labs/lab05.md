@@ -22,7 +22,7 @@
         aspectos práticos da engenharia de redes.
       </p>
       <p>
-        <a href="https://spotifycreators-web.app.link/e/Cc0Kpdi0u2b">Episódio 4: RIP versus OSPF na prática</a>
+        <a href="https://open.spotify.com/episode/6ha3fZPjrfBp8ZQNyIfTps?si=754a105ed6474063">Episódio 4: RIP versus OSPF na prática</a>
       </p>
     </td>
   </tr>
