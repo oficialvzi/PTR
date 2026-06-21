@@ -1,11 +1,10 @@
 # Lab 13B - Segurança no DHCP: Servidor Falso, Análise e Mitigação
 
-Disciplina: Protocolos de Transporte e Roteamento  
-Curso: Engenharia de Redes de Comunicação  
-Professor: Prof. Dr. Laerte Peotta de Melo  
-Ambiente: PNetLab  
-Tema: Segurança no DHCP  
-Continuação do: Lab 13 - Configuração e Análise do Protocolo DHCP
+**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
+**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+**Professor:** Prof. Dr. Laerte Peotta de Melo  
+**Tema:** Segurança no DHCP  
+**Continuação do: Lab 13 - Configuração e Análise do Protocolo DHCP**
 
 ---
 
@@ -516,7 +515,7 @@ ping 192.168.0.254
 
 ## 18. Atividade de Entrega
 
-Cada grupo deverá entregar um relatório contendo:
+Cada aluno deverá entregar um relatório contendo:
 
 - topologia utilizada no PNetLab;
 - configuração do servidor DHCP legítimo;
