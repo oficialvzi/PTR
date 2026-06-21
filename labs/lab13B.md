@@ -453,14 +453,7 @@ flowchart LR
     class ROGUE rogue;
 ```
 
-
-Em uma rede corporativa, somente a porta conectada ao servidor DHCP legítimo ou ao roteador autorizado deve ser marcada como **trusted**.
-
-As portas de usuários devem permanecer como **untrusted**. Assim, se um usuário conectar um servidor DHCP indevido, o switch bloqueia as respostas DHCP Offer e DHCP ACK vindas dessa porta.
-
----
-
-## 14. Exemplo Conceitual em Switch Cisco
+### Configuração Switch
 
 > Esta etapa é conceitual. A aplicação prática depende do tipo de switch usado no PNetLab.
 
@@ -488,6 +481,124 @@ Verificação:
 show ip dhcp snooping
 show ip dhcp snooping binding
 ```
+
+
+### 13.1 Teste Simples - Porta Untrusted com Servidor DHCP Não Autorizado
+
+Em uma rede corporativa, somente a porta conectada ao servidor DHCP legítimo ou ao roteador autorizado deve ser marcada como **trusted**.
+
+As portas de usuários devem permanecer como **untrusted**. Assim, se um usuário conectar um servidor DHCP indevido, o switch bloqueia as respostas DHCP Offer e DHCP ACK vindas dessa porta.
+
+## Objetivo
+
+Observar o comportamento de uma porta configurada como **untrusted** quando um servidor DHCP não autorizado tenta responder solicitações DHCP na rede.
+
+Este teste tem como objetivo verificar, de forma simples, se o mecanismo de **DHCP Snooping** impede que respostas DHCP falsas sejam entregues aos clientes.
+
+---
+
+### 13.2. Manter o servidor DHCP legítimo ativo
+
+Confirme que o servidor DHCP legítimo está ativo e conectado à porta **trusted** do switch.
+
+No servidor DHCP legítimo:
+
+```bash
+sudo systemctl status isc-dhcp-server
+```
+
+Caso o serviço esteja parado:
+
+```bash
+sudo systemctl start isc-dhcp-server
+```
+
+---
+
+### 13.3. Ativar o servidor DHCP não autorizado
+
+Ative o servidor DHCP não autorizado conectado à porta **untrusted**.
+
+O objetivo não é validar a configuração detalhada desse servidor, mas apenas observar se suas respostas serão bloqueadas pelo switch.
+
+---
+
+### 13.4. Liberar o endereço IP no cliente
+
+No cliente DHCP, libere o endereço IP atual:
+
+```bash
+sudo dhclient -r eth0
+```
+
+---
+
+### 13.5. Solicitar novo endereço IP
+
+Ainda no cliente, solicite novamente um endereço IP:
+
+```bash
+sudo dhclient -v eth0
+```
+
+---
+
+### 13.6. Verificar o endereço recebido
+
+No cliente, verifique a configuração recebida:
+
+```bash
+ip -br addr
+ip route
+cat /etc/resolv.conf
+```
+
+---
+
+## 13.7 Resultado Esperado
+
+O cliente deve receber configuração apenas do servidor DHCP legítimo.
+
+A porta **untrusted** deve impedir que o servidor DHCP não autorizado entregue respostas DHCP aos clientes.
+
+O cliente **não deve receber**:
+
+- gateway vindo do servidor não autorizado;
+- DNS vindo do servidor não autorizado;
+- endereço IP fora da faixa legítima;
+- configurações diferentes das definidas no servidor DHCP autorizado.
+
+---
+
+## 13.8 Verificação no Switch
+
+No switch, verifique o funcionamento do DHCP Snooping:
+
+```bash
+show ip dhcp snooping
+show ip dhcp snooping binding
+show ip dhcp snooping statistics
+```
+
+Procure por indícios de pacotes DHCP bloqueados ou descartados na porta **untrusted**.
+
+---
+
+## 13.9 Resultado Esperado
+
+Se o DHCP Snooping estiver funcionando corretamente, o servidor DHCP não autorizado pode até tentar responder às solicitações dos clientes, mas suas mensagens DHCP serão bloqueadas pela porta **untrusted**.
+
+Assim, apenas o servidor DHCP legítimo, conectado à porta **trusted**, será capaz de entregar configurações válidas aos clientes da rede.
+
+---
+
+## Questões de Análise
+
+1. O cliente recebeu endereço do servidor legítimo ou do servidor não autorizado?
+2. A porta **untrusted** bloqueou as respostas DHCP falsas?
+3. Qual comando no switch permite verificar estatísticas do DHCP Snooping?
+4. Por que servidores DHCP devem estar conectados somente a portas **trusted**?
+5. O que poderia acontecer se a porta do servidor não autorizado fosse configurada como **trusted** por engano?
 
 ---
 
