@@ -1,12 +1,11 @@
 # Lab 13 - Configuração e Análise do Protocolo DHCP
 
-Disciplina: Protocolos de Transporte e Roteamento  
-Curso: Engenharia de Redes de Comunicação  
-Professor: Prof. Dr. Laerte Peotta de Melo  
-Ambiente: PNetLab  
-Tema: DHCP - Dynamic Host Configuration Protocol
+**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
+**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+**Tema:** DHCP - Dynamic Host Configuration Protocol  
 
 ---
+
 
 ## 1. Objetivo
 
@@ -46,8 +45,7 @@ Request   -> o cliente solicita o endereço oferecido
 ACK       -> o servidor confirma a concessão
 ```
 
-<img width="1491" height="1055" alt="ChatGPT Image 21 de jun  de 2026, 16_45_54" src="https://github.com/user-attachments/assets/3fbcb4e0-7601-47ea-a608-42ec29ba5212" />
-
+<img width="1448" height="1086" alt="ChatGPT Image 21 de jun  de 2026, 16_50_28" src="https://github.com/user-attachments/assets/927308fb-36f9-418f-86de-8923a3b1192a" />
 
 
 
