@@ -409,7 +409,7 @@ Modelo conceitual:
 flowchart LR
     DHCP["Servidor DHCP legítimo<br/>192.168.0.1/24"]
 
-    P1["Porta trusted<br/>Fa0/1"]
+    P1["Porta trusted<br/>Fa0/1<br/>permite respostas DHCP"]
 
     SW["Switch<br/>DHCP Snooping habilitado"]
 
@@ -423,6 +423,10 @@ flowchart LR
     C3["Cliente 3<br/>DHCP<br/>192.168.0.102"]
     C4["Cliente 4<br/>DHCP<br/>192.168.0.103"]
 
+    ROGUE["Servidor DHCP não autorizado<br/>Rogue DHCP<br/>ex.: 192.168.0.254"]
+
+    P6["Porta untrusted<br/>Fa0/6<br/>bloqueia respostas DHCP falsas"]
+
     DHCP --- P1 --- SW
 
     SW --- P2 --- C1
@@ -430,17 +434,23 @@ flowchart LR
     SW --- P4 --- C3
     SW --- P5 --- C4
 
+    SW --- P6 --- ROGUE
+
+    ROGUE -. "DHCPOFFER / DHCPACK bloqueados" .-> P6
+
     classDef server fill:#dcfce7,stroke:#15803d,color:#111827,stroke-width:2px;
     classDef trusted fill:#bbf7d0,stroke:#15803d,color:#111827,stroke-width:2px;
     classDef switch fill:#dbeafe,stroke:#1d4ed8,color:#111827,stroke-width:2px;
     classDef untrusted fill:#fee2e2,stroke:#dc2626,color:#111827,stroke-width:2px;
     classDef client fill:#fef3c7,stroke:#d97706,color:#111827,stroke-width:1.5px;
+    classDef rogue fill:#fecaca,stroke:#991b1b,color:#111827,stroke-width:3px;
 
     class DHCP server;
     class P1 trusted;
     class SW switch;
-    class P2,P3,P4,P5 untrusted;
+    class P2,P3,P4,P5,P6 untrusted;
     class C1,C2,C3,C4 client;
+    class ROGUE rogue;
 ```
 
 
