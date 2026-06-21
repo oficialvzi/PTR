@@ -458,8 +458,6 @@ sudo dhclient -v eth0
 
 ## 15. Reserva DHCP por MAC Address
 
-Esta etapa é opcional.
-
 No Cliente 1, descubra o endereço MAC:
 
 ```bash
