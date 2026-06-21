@@ -119,25 +119,6 @@ No PNetLab, crie a seguinte topologia:
 4. Conecte todos os dispositivos ao switch.
 5. Inicie todos os nós.
 
-A topologia deve ficar semelhante a:
-
-```text
-              +----------------+
-              | Servidor DHCP  |
-              | 192.168.0.1/24 |
-              +--------+-------+
-                       |
-                    +--+--+
-                    | SW  |
-                    +--+--+
-        +-----------+--+--+-----------+
-        |           |     |           |
-   +----+---+  +----+---+ +----+---+ +----+---+
-   |Cliente1|  |Cliente2| |Cliente3| |Cliente4|
-   | DHCP   |  | DHCP   | | DHCP   | | DHCP   |
-   +--------+  +--------+ +--------+ +--------+
-```
-
 ---
 
 ## 7. Configuração do Servidor DHCP
