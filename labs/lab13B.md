@@ -405,9 +405,44 @@ Ele separa as portas em dois grupos:
 
 Modelo conceitual:
 
-```text
-Servidor DHCP legítimo ---- porta trusted ---- Switch ---- portas untrusted ---- Clientes
+```mermaid
+flowchart LR
+    DHCP["Servidor DHCP legítimo<br/>192.168.0.1/24"]
+
+    P1["Porta trusted<br/>Fa0/1"]
+
+    SW["Switch<br/>DHCP Snooping habilitado"]
+
+    P2["Porta untrusted<br/>Fa0/2"]
+    P3["Porta untrusted<br/>Fa0/3"]
+    P4["Porta untrusted<br/>Fa0/4"]
+    P5["Porta untrusted<br/>Fa0/5"]
+
+    C1["Cliente 1<br/>DHCP<br/>192.168.0.100"]
+    C2["Cliente 2<br/>DHCP<br/>192.168.0.101"]
+    C3["Cliente 3<br/>DHCP<br/>192.168.0.102"]
+    C4["Cliente 4<br/>DHCP<br/>192.168.0.103"]
+
+    DHCP --- P1 --- SW
+
+    SW --- P2 --- C1
+    SW --- P3 --- C2
+    SW --- P4 --- C3
+    SW --- P5 --- C4
+
+    classDef server fill:#dcfce7,stroke:#15803d,color:#111827,stroke-width:2px;
+    classDef trusted fill:#bbf7d0,stroke:#15803d,color:#111827,stroke-width:2px;
+    classDef switch fill:#dbeafe,stroke:#1d4ed8,color:#111827,stroke-width:2px;
+    classDef untrusted fill:#fee2e2,stroke:#dc2626,color:#111827,stroke-width:2px;
+    classDef client fill:#fef3c7,stroke:#d97706,color:#111827,stroke-width:1.5px;
+
+    class DHCP server;
+    class P1 trusted;
+    class SW switch;
+    class P2,P3,P4,P5 untrusted;
+    class C1,C2,C3,C4 client;
 ```
+
 
 Em uma rede corporativa, somente a porta conectada ao servidor DHCP legítimo ou ao roteador autorizado deve ser marcada como **trusted**.
 
