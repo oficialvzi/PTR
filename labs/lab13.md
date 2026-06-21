@@ -45,9 +45,7 @@ Request   -> o cliente solicita o endereço oferecido
 ACK       -> o servidor confirma a concessão
 ```
 
-<img width="1448" height="1086" alt="ChatGPT Image 21 de jun  de 2026, 16_50_28" src="https://github.com/user-attachments/assets/927308fb-36f9-418f-86de-8923a3b1192a" />
-
-
+<img width="1448" height="1086" alt="ChatGPT Image 21 de jun  de 2026, 16_50_28" src="https://github.com/user-attachments/assets/de81010d-24be-4d57-80c9-ee1d59524dbe" />
 
 ---
 
