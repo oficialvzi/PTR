@@ -45,6 +45,10 @@ Isso pode causar:
 
 Este laboratório não tem objetivo ofensivo. A finalidade é **didática e defensiva**, permitindo que o estudante compreenda o risco e saiba reconhecer sinais de configuração DHCP indevida.
 
+<img width="1448" height="1086" alt="ChatGPT Image 21 de jun  de 2026, 18_12_49" src="https://github.com/user-attachments/assets/407eb79a-671c-4bc0-a82d-d9abb88d2f66" />
+
+
+
 ---
 
 ## 3. Topologia Base
