@@ -1,5 +1,66 @@
 # Instalação Completa: LineageOS + Magisk + Kali NetHunter no Xiaomi Mi 9 Lite (pyxis)
 
+# Compatibilidade com Outros Aparelhos
+
+Embora este guia tenha sido elaborado utilizando um Xiaomi Mi 9 Lite (Pyxis), os procedimentos apresentados podem ser adaptados para outros smartphones Android compatíveis com LineageOS, Magisk e Kali NetHunter.
+
+Antes de iniciar a instalação em outro dispositivo, recomenda-se verificar:
+
+## Requisitos Mínimos
+
+- Bootloader desbloqueável.
+- Suporte oficial ou comunitário ao LineageOS.
+- Suporte ao Magisk.
+- Compatibilidade com Kali NetHunter Rootless ou NetHunter Full.
+- Espaço livre mínimo de 15 GB para instalação do Kali.
+- Pelo menos 4 GB de RAM (recomendado).
+- Android 12 ou superior (preferencialmente Android 14 ou Android 15).
+
+## Verificações Recomendadas
+
+Consultar:
+
+- Disponibilidade do LineageOS para o dispositivo.
+- Compatibilidade do NetHunter no site oficial.
+- Existência de recovery compatível (Lineage Recovery, TWRP ou OrangeFox).
+- Compatibilidade do kernel com recursos avançados de segurança.
+- Suporte a Monitor Mode e Packet Injection, caso o objetivo seja auditoria Wi-Fi.
+
+## Recursos que Podem Variar Entre Dispositivos
+
+| Recurso | Dependência |
+|-----------|-------------|
+| Root com Magisk | Compatibilidade do boot.img |
+| Kali Chroot | Espaço disponível |
+| KeX (Interface Gráfica) | Memória RAM |
+| HID Attacks | Kernel e suporte USB |
+| BadUSB | Kernel e hardware |
+| Monitor Mode Interno | Driver Wi-Fi |
+| Packet Injection | Driver Wi-Fi |
+| SDR | Hardware adicional |
+| USB Arsenal | Suporte OTG |
+
+## Recomendação
+
+Para laboratórios de redes, cibersegurança e testes educacionais, recomenda-se utilizar dispositivos com ampla documentação e suporte da comunidade, como:
+
+- Xiaomi Mi 9 Lite (Pyxis)
+- Xiaomi Poco X3 Pro
+- Xiaomi Poco F3
+- Xiaomi Redmi Note 10 Pro
+- OnePlus 7/7T
+- OnePlus 8
+- Google Pixel 6
+- Google Pixel 7
+- Google Pixel 8
+
+## Observação Importante
+
+A instalação do Kali NetHunter em outros dispositivos é perfeitamente possível, desde que sejam seguidas as recomendações de compatibilidade do fabricante da ROM, do Magisk e da documentação oficial do NetHunter.
+
+A compatibilidade dos recursos avançados (Monitor Mode, Packet Injection, HID e USB Arsenal) depende principalmente do kernel e dos drivers disponibilizados para cada aparelho.
+
+
 ## 1. Ambiente
 
 ### Aparelho
