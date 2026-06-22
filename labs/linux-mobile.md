@@ -8,6 +8,12 @@
 - Codinome: `pyxis`
 - Bootloader desbloqueado
 
+
+<img width="1536" height="1024" alt="ChatGPT Image 22 de jun  de 2026, 19_16_38" src="https://github.com/user-attachments/assets/aa0b3d03-bb48-408a-9a2d-66465a69d4f7" />
+
+
+
+
 ### Computador
 
 - Windows
