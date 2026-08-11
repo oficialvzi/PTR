@@ -16,7 +16,7 @@
     
 - Relacionar teoria de roteamento com comportamento real da rede
     
-
+>DICA: Execute o comando `setxkbmap -model pc105 -layout br -variant abnt2` tente colar com Ctrl+Shift+V
 ---
 
 ## Cenário do Laboratório
