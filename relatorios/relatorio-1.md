@@ -2,7 +2,7 @@
 **Arthur Choi Braga - 242014300**
 
 ## Parte 1 - Setup da topologia
-![foto topologia](/images/topologia.png)
+![foto topologia](/images/lab1/topologia.png)
 
 Primeiro foi feito a criação dos dois PCs Linux (PC1 e PC2) e depois o roteador VyOs. Após isso, foi feito a conexão dos dois computadores com o roteador.
 ## Parte 2 - Configuração de endereçamento IP
@@ -58,10 +58,10 @@ Do Host A (PC1) para o roteador:
 *RESULTADO:* Sucesso, pois o PC1 está mandando pacotes para o roteador.
 
 #### Pings PC1
-![pings-pc1](../images/ping-pc1.jpeg)
+![pings-pc1](../images/lab1/ping-pc1.jpeg)
 
 #### Pings PC2
-![pings-pc2](../images/ping-pc2.jpeg)
+![pings-pc2](../images/lab1/ping-pc2.jpeg)
 
 ---
 ### Discussão orientada
@@ -85,7 +85,7 @@ Agora para fazerem os Hosts conseguirem conversar entre si, precisamos configura
 `ip route add default via 192.168.20.1`
 
 #### Server configurado
-![pings-pc2](../images/server.jpeg)
+![pings-pc2](../images/lab1/server.jpeg)
 
 
 ### 5. Novo teste 
@@ -96,17 +96,17 @@ Agora, realizo o novo teste com o gateway padrão configurado, esperando agora o
 **Resultado esperado:** sucesso
 
 #### Ping com gateway padrão configurado
-![pings-pc2](../images/ping-pc2.jpeg
+![pings-pc2](../images/lab1/ping-pc2.jpeg)
 
 
 ### 6. Tabelas iproute
 Agora, para finalizar, aqui estão as tabelas 'iproute' de cada PC.
 
 #### iproute PC1
-![pings-pc1](../images/iproute-pc1.jpeg)
+![pings-pc1](../images/lab1/iproute-pc1.jpeg)
 
 #### iproute PC2
-![pings-pc1](../images/iproute-pc2.jpeg)
+![pings-pc1](../images/lab1/iproute-pc2.jpeg)
 
 ### Discussão orientada
 
