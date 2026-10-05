@@ -195,13 +195,7 @@ Os laboratórios práticos estão organizados de acordo com a progressão temát
 |:------------:|------|:-------:|
 | **09** | Implementação de MPLS e LDP no Backbone | [Acessar](./labs/lab09.md) |
 
-### Módulo 4: Serviços de Rede e Infraestrutura
-| Laboratório | Tema | Roteiro |
-|:------------:|------|:-------:|
-| **13** | Configuração e Análise do Protocolo DHCP | [Acessar](./labs/lab13.md) |
-| **13B** | Segurança em DHCP: Rogue Server, Análise e Mitigação (DHCP Snooping) | [Acessar](./labs/lab13B.md) |
-
-### Módulo 5: Segurança de Redes e Aplicação
+### Módulo 4: Segurança de Redes e Aplicação
 | Laboratório | Tema | Roteiro |
 |:------------:|------|:-------:|
 | **10** | Firewall de Pacotes Stateless com `iptables` | [Acessar](./labs/lab10.md) |
@@ -217,11 +211,7 @@ Os laboratórios práticos estão organizados de acordo com a progressão temát
 | Documento | Descrição | Link |
 |-----------|-----------|:----:|
 | **Comandos de Rede** | Tabela rápida de comandos para VPCS e distribuições Debian/Ubuntu | [Acessar](./labs/comandos.md) |
-| **Ambiente Móvel & Auditoria** | Guia de instalação LineageOS + Magisk + Kali NetHunter (Xiaomi Pyxis) | [Acessar](./labs/linux-mobile.md) |
 
 ---
 
 > Este repositório é de uso acadêmico e destina-se exclusivamente às atividades da disciplina.
-
-
-

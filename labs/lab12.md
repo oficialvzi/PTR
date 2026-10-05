@@ -493,5 +493,5 @@ Ao final deste laboratório, o estudante deve perceber que:
 
 ---
 
-[← Anterior: Laboratório 11B](lab11B.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 13 →](lab13.md)
+[← Anterior: Laboratório 11B](lab11B.md) | [Índice Geral (README)](../README.md)
 
