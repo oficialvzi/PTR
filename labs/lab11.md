@@ -1,4 +1,4 @@
-# Laboratório 10B - Firewall Stateful com `iptables`
+# Laboratório 11 - Firewall Stateful com `iptables`
 
 **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
 **Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
@@ -15,7 +15,7 @@ Implementar um **firewall stateful** em uma máquina Linux no PNetLab , reutiliz
 
 No **Laboratório  10**, o controle foi feito com um **firewall de pacotes**. Nesse modelo, cada pacote é tratado de forma isolada e, por isso, normalmente é necessário criar regras explícitas de ida e de volta.
 
-No **Laboratório  10B**, o firewall passa a acompanhar o **estado das conexões**. Com isso, é possível permitir o início de uma comunicação e deixar que o tráfego de retorno seja aceito automaticamente quando ele pertencer a uma sessão já estabelecida.
+No **Laboratório 11**, o firewall passa a acompanhar o **estado das conexões**. Com isso, é possível permitir o início de uma comunicação e deixar que o tráfego de retorno seja aceito automaticamente quando ele pertencer a uma sessão já estabelecida.
 
 No Linux, isso é feito com `iptables` e rastreamento de conexões do kernel, usando principalmente:
 
@@ -237,23 +237,23 @@ Resultado esperado: **deve falhar**.
 
 ## Atividade comparativa para visualizar a diferença entre filtro de pacotes e stateful
 
-Nesta atividade, os alunos devem comparar o comportamento do **Laboratório  10** e do **Laboratório  10B** na mesma topologia.
+Nesta atividade, os alunos devem comparar o comportamento do **Laboratório 10** e do **Laboratório 11** na mesma topologia.
 
-### Etapa A - Executar o Laboratório  10
+### Etapa A - Executar o Laboratório 10
 
 Aplicar as regras do **firewall de pacotes** e observar que, para o tráfego funcionar, foi necessário criar:
 
 - regra de ida;
 - regra de volta.
 
-Exemplo observado no Laboratório  10:
+Exemplo observado no Laboratório 10:
 
 - Cliente 1 inicia HTTP para Cliente 2;
 - o retorno precisou ser tratado por regra explícita.
 
-### Etapa B - Executar o Laboratório  10B
+### Etapa B - Executar o Laboratório 11
 
-Substituir as regras anteriores pelas regras **stateful** deste Laboratório oratório e observar que agora basta:
+Substituir as regras anteriores pelas regras **stateful** deste Laboratório e observar que agora basta:
 
 - permitir a conexão nova;
 - permitir `ESTABLISHED,RELATED`.
@@ -285,7 +285,7 @@ sudo conntrack -L
 
 ### Tabela para preenchimento pelos alunos
 
-| Teste | Laboratório  10 - Filtro de pacotes | Laboratório  10B - Stateful |
+| Teste | Laboratório 10 - Filtro de pacotes | Laboratório 11 - Stateful |
 |---|---|---|
 | Ping iniciado pelo Cliente 1 |  |  |
 | Retorno da comunicação |  |  |
@@ -324,7 +324,7 @@ sudo conntrack -L
 4. O que caracteriza um pacote no estado `NEW`?
 5. Qual a principal vantagem de usar regras stateful em relação ao Laboratório  10?
 6. Por que o Cliente 2 não conseguiu iniciar novas conexões para o Cliente 1?
-7. O que mudou na quantidade e na lógica das regras entre Laboratório  10 e Laboratório  10B?
+7. O que mudou na quantidade e na lógica das regras entre o Laboratório 10 e o Laboratório 11?
 8. Em que tipo de ambiente um firewall stateful tende a ser mais adequado?
 9. O firewall stateful elimina a necessidade de política de bloqueio padrão? Explique.
 10. O que a atividade comparativa mostrou de forma mais clara sobre a diferença entre os dois modelos?
@@ -356,7 +356,7 @@ Cada aluno deve entregar relatório contendo:
   - ping iniciado pelo Cliente 2 e falhando;
   - HTTP iniciado pelo Cliente 1 e funcionando;
   - tentativa de Telnet bloqueada;
-- tabela comparativa preenchida entre **Laboratório 10** e **Laboratório 10B**;
+- tabela comparativa preenchida entre **Laboratório 10** e **Laboratório 11**;
 - texto curto explicando a diferença entre firewall de pacotes e firewall stateful;
 - respostas completas às questões para análise.
 
@@ -374,5 +374,5 @@ Ao final deste Laboratório, o aluno deve perceber que:
 
 ---
 
-[← Anterior: Laboratório 10](lab10.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 11A →](lab11A.md)
+[← Anterior: Laboratório 10](lab10.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 12 →](lab12.md)
 

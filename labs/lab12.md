@@ -1,65 +1,93 @@
-# Laboratório 12 - Implementação de IDS/IPS com Suricata no PNetLab
+# Laboratório 12 - Implementação de WAF com ModSecurity e OWASP CRS
 
 **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
 **Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
-**Tema:** Detecção e prevenção de intrusões em tráfego de rede
+**Tema:** Proteção de aplicações web com Web Application Firewall  
 
 ---
 
 ## Objetivo
 
-Implementar um ambiente de **IDS/IPS** no PNetLab utilizando **Suricata** em uma máquina Linux posicionada entre duas redes, permitindo ao estudante:
+Implementar um **Web Application Firewall (WAF)** em uma máquina Linux no PNetLab, utilizando **Nginx + ModSecurity + OWASP Core Rule Set (CRS)** em modo de **proxy reverso**, de forma que o tráfego HTTP entre um cliente e um servidor web interno seja inspecionado e controlado na **camada de aplicação**.
 
-- compreender a diferença entre **firewall tradicional**, **WAF** e **IDS/IPS**;
-- instalar e configurar o Suricata em modo de monitoramento;
-- observar alertas gerados a partir da inspeção de tráfego;
-- analisar logs e eventos de segurança;
-- comparar proteção em camada de rede, transporte e aplicação.
+- **Nginx**: servidor web e proxy reverso que recebe as requisições dos clientes e as encaminha para o servidor interno.
+- **ModSecurity**: mecanismo de firewall de aplicação que inspeciona requisições e respostas HTTP em busca de padrões suspeitos.
+- **OWASP Core Rule Set (CRS)**: conjunto de regras prontas para o ModSecurity, criado para detectar e bloquear ataques web comuns, como SQL Injection e XSS.
+
+Ao final deste laboratório, o estudante deverá ser capaz de:
+
+- compreender a função de um WAF;
+- diferenciar WAF de firewall de pacotes e firewall stateful;
+- implantar um proxy reverso com inspeção HTTP;
+- validar acesso legítimo a uma aplicação web;
+- observar o ponto de inserção do WAF na arquitetura da rede.
 
 ---
 
 ## Introdução
 
-Nos laboratórios anteriores, a proteção foi evoluindo em camadas.
+Nos laboratórios anteriores, o controle de tráfego foi feito inicialmente com um **firewall de pacotes**, que toma decisões com base em informações como endereço IP, protocolo e porta, e depois com um **firewall stateful**, que também acompanha o estado das conexões. Esses mecanismos são fundamentais para a segurança da rede, mas não conseguem, sozinhos, analisar em profundidade o conteúdo de uma requisição web.
 
-No **Lab 10**, foi implementado um **firewall de pacotes**, capaz de tomar decisões com base em endereço IP, protocolo e porta. No **Lab 10B**, esse modelo foi ampliado para um **firewall stateful**, com acompanhamento do estado das conexões. No **Lab 11A** e no **Lab 11B**, a proteção avançou para a **camada de aplicação**, com uso de **WAF**, capaz de inspecionar requisições HTTP e bloquear padrões suspeitos.
+## Web Application Firewall (WAF)
 
-Neste **Lab 12**, o foco será um novo tipo de mecanismo: o **IDS/IPS**.
+Um **Web Application Firewall (WAF)** atua em um nível mais alto, inspecionando o tráfego **HTTP/HTTPS** e aplicando regras voltadas à proteção de aplicações web. Em vez de decidir apenas se a porta 80 ou 443 pode ser usada, o WAF analisa elementos como:
 
-- **IDS (Intrusion Detection System)**: sistema que monitora o tráfego e gera alertas quando identifica padrões suspeitos.
-- **IPS (Intrusion Prevention System)**: sistema que, além de detectar, também pode atuar para bloquear ou prevenir tráfego considerado malicioso.
+- URL requisitada;
+- parâmetros enviados;
+- cabeçalhos HTTP;
+- corpo da requisição;
+- padrões de ataque comuns contra aplicações.
 
-<img width="1672" height="941" alt="ChatGPT Image 2 de jun  de 2026, 22_02_47" src="https://github.com/user-attachments/assets/d3e4e4c1-1511-44ac-9603-ce11f8116e2a" />
+Na prática, isso permite bloquear comportamentos suspeitos mesmo quando o acesso à aplicação web é legítimo do ponto de vista da rede. Ou seja, a porta 80 pode estar aberta, a conexão pode estar estabelecida corretamente, mas ainda assim a requisição pode ser barrada por conter um padrão perigoso.
+
+Neste laboratório, será utilizado o **ModSecurity**, em conjunto com o **OWASP Core Rule Set (CRS)**, para transformar uma máquina Linux em um **WAF reverso**, posicionada entre um cliente e um servidor web interno. O objetivo desta primeira parte é implantar a estrutura do WAF, publicar a aplicação web por meio do proxy reverso e validar o funcionamento do fluxo legítimo. A exploração de ataques e a análise aprofundada dos bloqueios ficam como continuidade natural para o **Lab 13**.
 
 
-O **Suricata** é uma ferramenta amplamente usada nesse contexto, pois permite:
+<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/2a8e289e-1353-4443-af0a-1c7c78010d20" />
 
-- inspeção de tráfego em tempo real;
-- uso de regras de detecção;
-- geração de alertas e logs estruturados;
-- identificação de eventos em protocolos como IP, TCP, UDP, ICMP, DNS e HTTP.
 
-Neste laboratório, a ênfase será a **implantação do Suricata** e a **observação de alertas em modo IDS**.
+## Proxy Reverso
+
+Um proxy reverso é um servidor intermediário que recebe as requisições dos clientes e as encaminha para um ou mais servidores internos, devolvendo depois a resposta ao cliente.
+
+Na prática, o cliente acha que está falando diretamente com o serviço, mas na verdade está falando primeiro com o proxy reverso. Esse proxy fica “na frente” da aplicação.
+
+
+<img width="1672" height="941" alt="ChatGPT Image 2 de jun  de 2026, 16_26_17" src="https://github.com/user-attachments/assets/704f19da-b314-406e-8b82-31b51a15cc3e" />
+
+## Funções principais de um proxy reverso
+
+- Ocultar o servidor interno: O cliente acessa o proxy, não o servidor real.
+- Distribuir requisições: Pode enviar tráfego para vários servidores backend, fazendo balanceamento de carga.
+- Aplicar segurança: Pode atuar com WAF, TLS/HTTPS, autenticação, filtragem e limitação de acesso.
+- Melhorar desempenho: Pode fazer cache, compressão e otimização de conexões.
+- Centralizar publicação de serviços: Vários sites ou aplicações podem ser publicados por um único ponto de entrada.
 
 ---
 
-## Relação com os laboratórios anteriores
+## Relação com os Laboratórios 10 e 11
 
-| Laboratório | Tecnologia | Foco principal |
+Este laboratório deve ser entendido como continuação direta do processo de evolução das defesas em rede:
+
+- **Lab 10**: firewall de pacotes com `iptables`
+- **Lab 11**: firewall stateful com `conntrack`
+- **Lab 12**: firewall de aplicação com inspeção de tráfego HTTP
+
+### Síntese comparativa
+
+| Tecnologia | Camada de atuação | Exemplo de decisão |
 |---|---|---|
-| Lab 10 | Firewall de pacotes | Filtragem por IP, protocolo e porta |
-| Lab 10B | Firewall stateful | Rastreamento de conexões |
-| Lab 11A | WAF | Publicação protegida via proxy reverso |
-| Lab 11B | WAF | Testes de ataques web e análise de logs |
-| Lab 12 | IDS/IPS com Suricata | Detecção e análise de tráfego suspeito |
+| Firewall de pacotes | Rede / Transporte | Permitir ou bloquear TCP/80 |
+| Firewall stateful | Rede / Transporte com estado | Permitir retorno de conexão já estabelecida |
+| WAF | Aplicação | Permitir acesso à página, mas bloquear requisição maliciosa |
 
 ---
 
 ## Situação-problema
 
-Uma organização já possui firewall e WAF para proteger sua infraestrutura. Mesmo assim, a equipe de segurança precisa de uma camada adicional que permita **detectar padrões suspeitos no tráfego da rede**, registrar eventos e apoiar a investigação de incidentes.
+Uma organização já protege sua rede com um firewall tradicional, permitindo apenas o tráfego necessário entre suas redes. Posteriormente, passou a usar firewall stateful para melhorar o controle das conexões e reduzir regras redundantes. Ainda assim, a equipe percebe que uma aplicação web interna continua exposta a riscos, já que qualquer usuário com acesso à porta HTTP pode enviar requisições maliciosas.
 
-Para isso, será implantado um **sensor IDS/IPS** entre duas redes, de forma que o tráfego passe por inspeção e gere alertas quando forem identificadas assinaturas suspeitas.
+Para aumentar a proteção, a organização decide implantar um **WAF** entre os clientes e o servidor web interno, de forma que o serviço continue acessível, mas com inspeção de conteúdo na camada de aplicação.
 
 ---
 
@@ -68,18 +96,19 @@ Para isso, será implantado um **sensor IDS/IPS** entre duas redes, de forma que
 ```mermaid
 flowchart LR
     CLIENT["Linux Cliente<br/>192.168.10.10/24"]
-    IDS["Linux IDS/IPS<br/>Ubuntu Server<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24<br/>Suricata"]
-    SERVER["Linux Servidor<br/>192.168.20.10/24<br/>Nginx"]
-    CLIENT --- IDS
-    IDS --- SERVER
+    WAF["Linux WAF<br/>Ubuntu Server<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24<br/>Nginx + ModSecurity + CRS"]
+    WEB["Servidor Web Interno<br/>192.168.20.10/24"]
+
+    CLIENT --- WAF
+    WAF --- WEB
 
     classDef host fill:#fef3c7,stroke:#d97706,color:#111827,stroke-width:1.5px;
-    classDef ids fill:#dbeafe,stroke:#1d4ed8,color:#111827,stroke-width:2px;
-    classDef srv fill:#dcfce7,stroke:#16a34a,color:#111827,stroke-width:1.5px;
+    classDef waf fill:#dbeafe,stroke:#1d4ed8,color:#111827,stroke-width:2px;
+    classDef web fill:#dcfce7,stroke:#16a34a,color:#111827,stroke-width:1.5px;
 
     class CLIENT host;
-    class IDS ids;
-    class SERVER srv;
+    class WAF waf;
+    class WEB web;
 ```
 
 ---
@@ -89,363 +118,445 @@ flowchart LR
 | Dispositivo | Interface | Endereço IP | Máscara | Gateway |
 |---|---|---|---|---|
 | Linux Cliente | eth0 | 192.168.10.10 | 255.255.255.0 | 192.168.10.1 |
-| Linux IDS/IPS | eth0 | 192.168.10.1 | 255.255.255.0 | - |
-| Linux IDS/IPS | eth1 | 192.168.20.1 | 255.255.255.0 | - |
-| Linux Servidor | eth0 | 192.168.20.10 | 255.255.255.0 | 192.168.20.1 |
+| Linux WAF | eth0 | 192.168.10.1 | 255.255.255.0 | - |
+| Linux WAF | eth1 | 192.168.20.1 | 255.255.255.0 | - |
+| Servidor Web Interno | eth0 | 192.168.20.10 | 255.255.255.0 | 192.168.20.1 |
 
 ---
 
 ## Premissas do laboratório
 
-Neste laboratório, considere que:
+Neste laboratório, o foco será:
 
-- os equipamentos **já estão com a rede configurada**;
-- o **Nginx já está instalado** no servidor;
-- o tráfego entre cliente, sensor e servidor já pode ser testado;
-- o foco será exclusivamente na **implantação do Suricata** e na **análise dos eventos gerados**.
+- configurar o endereçamento IP dos três hosts;
+- instalar e preparar o servidor web interno;
+- instalar o Nginx no host intermediário;
+- instalar e habilitar o ModSecurity;
+- ativar o OWASP CRS;
+- configurar o WAF como **proxy reverso**;
+- validar o acesso legítimo ao serviço publicado.
 
-> Neste primeiro momento, a proposta principal é trabalhar com **detecção**. O uso de **IPS com bloqueio ativo** pode ser explorado depois, com integração ao `iptables` ou `NFQUEUE`.
-
----
-
-## Validação inicial do ambiente
-
-Antes de instalar o Suricata, valide se o cenário já está funcional.
-
-### No cliente
-
-```bash
-ping 192.168.10.1
-ping 192.168.20.10
-curl http://192.168.20.10
-```
-
-### No servidor
-
-```bash
-ping 192.168.20.1
-ping 192.168.10.10
-curl http://127.0.0.1
-```
-
-### No IDS/IPS
-
-```bash
-ping 192.168.10.10
-ping 192.168.20.10
-```
-
-Resultado esperado:
-
-- conectividade IP entre os elementos;
-- resposta HTTP do servidor;
-- ambiente pronto para monitoramento.
+> Neste primeiro laboratório, a ênfase está na **implantação do WAF** e na **publicação da aplicação web**. Testes de ataques, tuning de regras e análise de bloqueios podem ser aprofundados no **Lab 13**.
 
 ---
 
-## Verificação do encaminhamento IP no sensor
+## Sugestão de imagens no PNetLab
 
-No Linux IDS/IPS:
+### Linux Cliente
+Pode ser usado:
+
+- TinyCore Linux
+- Ubuntu básico
+
+### Linux WAF
+Recomendado:
+
+- **Ubuntu Server 24.04**  
+ou  
+- **Ubuntu Server 22.04**
+
+### Servidor Web Interno
+Pode ser usado:
+
+- Ubuntu Server
+- Debian Server
+
+---
+
+## Configuração dos hosts
+
+### Linux Cliente
+
+Configure o endereço IP e a rota padrão:
 
 ```bash
-cat /proc/sys/net/ipv4/ip_forward
+sudo ip addr add 192.168.10.10/24 dev eth0
+sudo ip link set eth0 up
+sudo ip route add default via 192.168.10.1
 ```
 
-Se o valor não for `1`, habilite:
+### Servidor Web Interno
+
+Configure o endereço IP e a rota padrão:
+
+```bash
+sudo ip addr add 192.168.20.10/24 dev eth0
+sudo ip link set eth0 up
+sudo ip route add default via 192.168.20.1
+```
+
+### Linux WAF
+
+Configure as duas interfaces:
+
+```bash
+sudo ip addr add 192.168.10.1/24 dev eth0
+sudo ip addr add 192.168.20.1/24 dev eth1
+sudo ip link set eth0 up
+sudo ip link set eth1 up
+```
+
+Verifique:
+
+```bash
+ip addr show
+```
+
+---
+
+## Ativação do roteamento IP no WAF
+
+Embora o WAF opere principalmente como proxy reverso, é recomendável manter o host preparado para encaminhamento entre interfaces quando necessário.
 
 ```bash
 sudo sysctl -w net.ipv4.ip_forward=1
 ```
 
-Para persistência:
+Confirmar:
 
 ```bash
-echo "net.ipv4.ip_forward = 1" | sudo tee -a /etc/sysctl.conf
-sudo sysctl -p
+cat /proc/sys/net/ipv4/ip_forward
+```
+
+Valor esperado:
+
+```bash
+1
 ```
 
 ---
 
-## Verificação do serviço web
+## Teste inicial de conectividade
 
-Como o **Nginx já está instalado**, apenas confirme se o serviço está ativo no servidor:
+Antes da implantação do WAF, valide a conectividade entre os hosts.
+
+### No Linux Cliente
 
 ```bash
-sudo systemctl status nginx
-curl http://127.0.0.1
+ping 192.168.10.1
 ```
 
----
-
-## Instalação do Suricata
-
-No Linux IDS/IPS:
+### No Servidor Web
 
 ```bash
-sudo apt update
-sudo apt install -y suricata
+ping 192.168.20.1
 ```
 
-Verificar versão:
+### No Linux WAF
 
 ```bash
-suricata --build-info
-```
-
-Verificar serviço:
-
-```bash
-sudo systemctl status suricata
-```
-
----
-
-## Localização dos arquivos principais
-
-Em instalações típicas no Ubuntu:
-
-- configuração principal: `/etc/suricata/suricata.yaml`
-- regras: `/var/lib/suricata/rules/`
-- logs: `/var/log/suricata/`
-
----
-
-## Atualização das regras
-
-Atualize as regras do Suricata:
-
-```bash
-sudo suricata-update
-```
-
-Após a atualização, reinicie o serviço:
-
-```bash
-sudo systemctl restart suricata
-```
-
----
-
-## Interfaces de captura
-
-Antes de iniciar testes, identifique os nomes corretos das interfaces:
-
-```bash
-ip -br addr
-```
-
-Exemplo esperado:
-
-- `eth0` voltada para a rede 192.168.10.0/24
-- `eth1` voltada para a rede 192.168.20.0/24
-
----
-
-## Execução do Suricata em modo IDS
-
-Para testes controlados, você pode parar o serviço e executar manualmente o Suricata em foreground.
-
-```bash
-sudo systemctl stop suricata
-```
-
-Executar na interface desejada:
-
-```bash
-sudo suricata -i eth0 -v
-```
-
-> Dependendo do cenário, pode ser mais interessante monitorar `eth0`, `eth1` ou ambas em configuração mais avançada. Neste laboratório inicial, uma interface já é suficiente para observar o comportamento da ferramenta.
-
----
-
-## Testes de tráfego legítimo
-
-### Ping
-
-No cliente:
-
-```bash
+ping 192.168.10.10
 ping 192.168.20.10
 ```
 
-### HTTP
+---
 
-No cliente:
+## Preparação do servidor web interno
 
-```bash
-curl http://192.168.20.10
-```
+No servidor web interno, instale um serviço HTTP simples.
 
-### Conexão simples na porta 80
+### Opção com Nginx
 
 ```bash
-nc -vz 192.168.20.10 80
+sudo apt update
+sudo apt install -y nginx
 ```
 
-### Resultado esperado
+### Criar uma página simples
 
-- o tráfego deve continuar funcionando normalmente;
-- o Suricata deve registrar fluxos e possivelmente eventos, dependendo das regras ativas;
-- os alunos devem perceber que o IDS monitora sem necessariamente bloquear.
+```bash
+echo "<h1>Servidor Web Interno OK</h1>" | sudo tee /var/www/html/index.html
+```
+
+### Verificar o serviço
+
+```bash
+sudo systemctl enable nginx
+sudo systemctl start nginx
+sudo systemctl status nginx
+```
+
+### Teste local no próprio servidor
+
+```bash
+curl http://127.0.0.1
+```
+
+Resultado esperado: a página HTML deve ser exibida.
 
 ---
 
-## Observação dos logs
+## Instalação do Nginx no host WAF
 
-Abra outro terminal no Linux IDS/IPS.
-
-### Alertas simples
+No Linux WAF:
 
 ```bash
-sudo tail -f /var/log/suricata/fast.log
+sudo apt update
+sudo apt install -y nginx
 ```
 
-### Eventos estruturados
+Verifique:
 
 ```bash
-sudo tail -f /var/log/suricata/eve.json
-```
-
-### Estatísticas
-
-```bash
-sudo tail -f /var/log/suricata/stats.log
+sudo systemctl enable nginx
+sudo systemctl start nginx
+sudo systemctl status nginx
 ```
 
 ---
 
-## Testes de tráfego suspeito controlado
+## Instalação do ModSecurity no host WAF
 
-> Execute somente em ambiente de laboratório.
-
-### Varredura simples com Nmap
-
-No cliente, se o `nmap` estiver disponível:
+Instale o módulo do ModSecurity e componentes necessários:
 
 ```bash
-sudo apt install -y nmap
-nmap -sS 192.168.20.10
+sudo apt install -y libnginx-mod-http-modsecurity modsecurity-crs
+```
+
+> Dependendo da imagem Linux e do repositório disponível, os nomes dos pacotes podem variar ligeiramente. O importante é garantir:
+>
+> - módulo ModSecurity para Nginx;
+> - conjunto de regras OWASP CRS.
+
+---
+
+## Habilitação do ModSecurity
+
+Verifique o arquivo principal de configuração do ModSecurity. Em muitas instalações, ele está em:
+
+```bash
+/etc/modsecurity/modsecurity.conf
+```
+
+Se necessário, copie o arquivo recomendado:
+
+```bash
+sudo cp /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+```
+
+Edite o parâmetro:
+
+```bash
+SecRuleEngine DetectionOnly
+```
+
+e altere para:
+
+```bash
+SecRuleEngine On
+```
+
+Exemplo com `sed`:
+
+```bash
+sudo sed -i 's/SecRuleEngine DetectionOnly/SecRuleEngine On/' /etc/modsecurity/modsecurity.conf
+```
+
+---
+
+## Ativação do OWASP CRS
+
+Verifique a localização do CRS. Em instalações comuns no Ubuntu, ele pode estar em:
+
+```bash
+/etc/modsecurity/crs/
 ```
 
 ou
 
 ```bash
-nmap -sV 192.168.20.10
+/usr/share/modsecurity-crs/
 ```
 
-### Requisição HTTP suspeita
+Se necessário, copie o arquivo de exemplo:
 
 ```bash
-curl "http://192.168.20.10/?q=<script>alert(1)</script>"
+sudo cp /usr/share/modsecurity-crs/crs-setup.conf.example /etc/modsecurity/crs/crs-setup.conf
 ```
-
-### Tentativa de path traversal
-
-```bash
-curl "http://192.168.20.10/../../../etc/passwd"
-```
-
-### Interpretação esperada
-
-- o Suricata pode gerar alertas dependendo do conjunto de regras ativo;
-- os eventos devem aparecer em `fast.log` e/ou `eve.json`;
-- nem todo tráfego suspeito necessariamente acionará uma regra, e isso também faz parte da análise.
 
 ---
 
-## Diferença entre IDS e IPS
+## Configuração do Nginx como proxy reverso com WAF
 
-### IDS
-- monitora;
-- detecta;
-- registra;
-- alerta.
+Crie ou edite a configuração do site padrão do Nginx no WAF.
 
-### IPS
-- monitora;
-- detecta;
-- pode bloquear ou descartar tráfego.
-
-Neste laboratório, o ambiente está inicialmente configurado como **IDS**.
-
----
-
-## Comparação didática com os laboratórios anteriores
-
-| Recurso | Firewall de pacotes | Stateful | WAF | IDS/IPS |
-|---|---|---|---|---|
-| Filtrar por IP e porta | Sim | Sim | Não é o foco | Pode observar |
-| Acompanhar estado de conexão | Não | Sim | Parcialmente | Pode analisar |
-| Inspecionar conteúdo HTTP | Não | Não | Sim | Sim, dependendo das regras |
-| Gerar alerta de comportamento suspeito | Limitado | Limitado | Sim | Sim |
-| Bloquear automaticamente | Sim | Sim | Sim | Somente em modo IPS |
-
----
-
-## Exemplo de leitura de evento
-
-Os alunos devem observar nos logs informações como:
-
-- horário do evento;
-- IP de origem;
-- IP de destino;
-- protocolo envolvido;
-- mensagem da assinatura;
-- severidade e categoria, quando disponíveis.
-
-No caso do `eve.json`, pode ser útil filtrar:
+Exemplo de arquivo:
 
 ```bash
-sudo grep '"alert"' /var/log/suricata/eve.json
+sudo vi /etc/nginx/sites-available/default
 ```
 
-ou usar `jq`, se disponível.
+Conteúdo sugerido:
+
+```nginx
+server {
+    listen 80;
+    server_name _;
+
+    modsecurity on;
+    modsecurity_rules_file /etc/nginx/modsec/main.conf;
+
+    location / {
+        proxy_pass http://192.168.20.10;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
 
 ---
 
-## Atividade opcional: criação de regra local simples
+## Arquivo principal de regras do Nginx + ModSecurity
 
-O professor pode propor uma regra local para detectar um ping.
-
-Exemplo de regra local em:
+Crie o arquivo:
 
 ```bash
-/etc/suricata/rules/local.rules
+sudo mkdir -p /etc/nginx/modsec
+sudo vi /etc/nginx/modsec/main.conf
 ```
 
-Conteúdo:
+Conteúdo sugerido:
 
 ```conf
-alert icmp any any -> any any (msg:"ICMP detectado no laboratorio"; sid:1000001; rev:1;)
+Include /etc/modsecurity/modsecurity.conf
+Include /usr/share/modsecurity-crs/crs-setup.conf
+Include /usr/share/modsecurity-crs/rules/*.conf
 ```
 
-Depois, garantir que o arquivo esteja incluído no `suricata.yaml` e reiniciar o Suricata.
+> Em algumas distribuições, o caminho do CRS pode mudar. Ajuste conforme a instalação real.
 
-Gerar tráfego ICMP:
+---
+
+## Teste e recarga do Nginx
+
+Verifique a sintaxe:
 
 ```bash
-ping 192.168.20.10
+sudo nginx -t
 ```
 
-Resultado esperado: alerta correspondente nos logs.
+Se estiver correto:
 
-> Esta etapa é opcional, mostra como assinaturas podem ser personalizadas.
+```bash
+sudo systemctl restart nginx
+```
+
+Verifique o serviço:
+
+```bash
+sudo systemctl status nginx
+```
+
+---
+
+## Teste funcional do proxy reverso
+
+No **Linux Cliente**, faça o acesso ao IP do WAF:
+
+```bash
+curl http://192.168.10.1
+```
+
+Resultado esperado:
+
+- o cliente deve receber a página hospedada no servidor web interno;
+- o acesso deve ocorrer **via WAF**, e não diretamente ao backend.
+
+---
+
+## Teste comparativo de acesso direto e indireto
+
+### Acesso via WAF
+
+No cliente:
+
+```bash
+curl http://192.168.10.1
+```
+
+### Acesso direto ao backend
+
+Se houver rota direta, teste:
+
+```bash
+curl http://192.168.20.10
+```
+
+### O que observar
+
+- o acesso correto para publicação deve ser via **WAF**;
+- o backend idealmente deve ficar menos exposto ao cliente;
+- o WAF passa a ser o ponto principal de entrada para o serviço web.
+
+---
+
+## Verificação de logs
+
+### Logs do Nginx
+
+```bash
+sudo tail -f /var/log/nginx/access.log
+```
+
+```bash
+sudo tail -f /var/log/nginx/error.log
+```
+
+### Logs do ModSecurity
+
+Dependendo da configuração, o log pode estar em:
+
+```bash
+/var/log/modsec_audit.log
+```
+
+ou em outro caminho definido no `modsecurity.conf`.
+
+Exemplo:
+
+```bash
+sudo tail -f /var/log/modsec_audit.log
+```
+
+---
+
+## Observações didáticas importantes
+
+Ao final desta etapa, o aluno deve perceber que:
+
+- o cliente acessa o serviço web pelo IP do WAF;
+- o servidor web interno continua existindo atrás da proteção;
+- o WAF analisa o conteúdo HTTP antes de encaminhar ao backend;
+- a proteção agora ocorre na **camada de aplicação**, e não apenas em IP, porta ou estado da conexão.
+
+---
+
+## Diferença em relação aos Labs 10 e 11
+
+### No Lab 10
+O host intermediário filtrava pacotes com `iptables`.
+
+### No Lab 11
+O host intermediário passou a considerar estados de conexão.
+
+### No Lab 12
+O host intermediário atua como **proxy reverso com inspeção HTTP**, o que significa que ele entende melhor o serviço publicado e pode aplicar políticas específicas sobre requisições web.
 
 ---
 
 ## Questões para análise
 
-1. O que diferencia IDS de IPS?
-2. Qual o papel do Suricata neste laboratório?
-3. Por que o IDS/IPS complementa o firewall e o WAF?
-4. O que os logs do `fast.log` mostram?
-5. O que o arquivo `eve.json` oferece de vantagem em relação ao `fast.log`?
-6. Todo tráfego suspeito gera alerta automaticamente? Explique.
-7. Qual a diferença entre detectar e bloquear?
-8. Por que uma varredura de portas pode ser relevante para um IDS?
-9. O IDS substitui firewall ou WAF? Explique.
-10. Qual foi a principal evidência prática da utilidade de um IDS no laboratório?
+1. O que caracteriza um WAF?
+2. Qual é a principal diferença entre um WAF e um firewall stateful?
+3. Por que o WAF é mais adequado para proteger aplicações web do que um firewall tradicional?
+4. Qual é a função do ModSecurity neste laboratório?
+5. Qual é a função do OWASP CRS?
+6. O que significa operar o WAF como **proxy reverso**?
+7. Por que o acesso ao backend deve preferencialmente ocorrer por meio do WAF?
+8. Que vantagens práticas surgem ao separar cliente, WAF e servidor web em redes distintas?
+9. O WAF substitui a necessidade de firewall de rede? Explique.
+10. Qual a principal evolução conceitual entre os Labs 10, 11 e 12?
 
 ---
 
@@ -453,11 +564,11 @@ Resultado esperado: alerta correspondente nos logs.
 
 | Critério | Pontuação |
 |---|---:|
-| Validação e operacionalidade da topologia base | 1,5 |
-| Instalação, configuração de interfaces e modo de operação do Suricata | 2,0 |
-| Atualização e configuração de regras de detecção de assinaturas | 2,0 |
-| Geração e análise de tráfego legítimo vs. tráfego suspeito/malicioso | 2,5 |
-| Análise forense de logs (`fast.log`, `eve.json`) e respostas às questões para análise | 2,0 |
+| Configuração correta da topologia e endereçamento IP | 1,5 |
+| Instalação e validação do servidor web interno (backend) | 1,5 |
+| Instalação do Nginx e configuração do proxy reverso no WAF | 2,5 |
+| Ativação e configuração do ModSecurity com OWASP CRS | 2,5 |
+| Verificação de logs e respostas técnicas às questões para análise | 2,0 |
 | **Total** | **10,0** |
 
 ---
@@ -467,16 +578,15 @@ Resultado esperado: alerta correspondente nos logs.
 Cada aluno deve entregar:
 
 - print da topologia no PNetLab;
-- print da configuração IP dos hosts;
-- print da versão ou status do Suricata;
-- print do `fast.log`;
-- print do `eve.json` ou de trecho relevante;
-- evidência de pelo menos um tráfego legítimo;
-- evidência de pelo menos um teste suspeito;
-- relatório curto explicando:
-  - o que foi detectado;
-  - o que não foi detectado;
-  - por que IDS/IPS complementa as outras tecnologias estudadas;
+- print da configuração IP dos três hosts;
+- print do `nginx -t` no WAF;
+- print do acesso bem-sucedido do cliente ao serviço via WAF;
+- print dos logs do Nginx;
+- print dos logs do ModSecurity, se já houver eventos registrados;
+- relatório curto contendo:
+  - objetivo do laboratório;
+  - descrição do fluxo Cliente → WAF → Servidor Web;
+  - explicação da diferença entre firewall tradicional, stateful e WAF;
 - respostas completas às questões para análise.
 
 ---
@@ -485,13 +595,13 @@ Cada aluno deve entregar:
 
 Ao final deste laboratório, o estudante deve perceber que:
 
-- o **IDS/IPS** acrescenta visibilidade e capacidade de detecção à segurança da rede;
-- o **Suricata** pode monitorar tráfego real e gerar eventos detalhados;
-- a análise de logs é parte essencial da operação de segurança;
-- firewall, WAF e IDS/IPS não competem entre si, mas se complementam;
-- a segurança em redes modernas exige múltiplas camadas de proteção e observabilidade.
+- um **WAF** protege aplicações web em um nível superior ao firewall tradicional;
+- o uso de **proxy reverso** permite centralizar a proteção do serviço publicado;
+- o **ModSecurity** com **OWASP CRS** fornece uma base prática para inspeção de tráfego HTTP;
+- a porta 80 pode continuar aberta, mas o conteúdo da requisição passa a ser analisado;
+- o WAF representa uma nova camada de defesa, complementar aos mecanismos estudados anteriormente.
 
 ---
 
-[← Anterior: Laboratório 11B](lab11B.md) | [Índice Geral (README)](../README.md)
+[← Anterior: Laboratório 11](lab11.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 13 →](lab13.md)
 

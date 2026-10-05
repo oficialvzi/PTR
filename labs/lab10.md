@@ -638,5 +638,5 @@ Ao final deste laboratório, o estudante deve perceber que:
 
 ---
 
-[← Anterior: Laboratório 09](lab09.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 10B →](lab10B.md)
+[← Anterior: Laboratório 09](lab09.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 11 →](lab11.md)
 

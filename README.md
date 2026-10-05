@@ -199,10 +199,10 @@ Os laboratórios práticos estão organizados de acordo com a progressão temát
 | Laboratório | Tema | Roteiro |
 |:------------:|------|:-------:|
 | **10** | Firewall de Pacotes Stateless com `iptables` | [Acessar](./labs/lab10.md) |
-| **10B** | Firewall Stateful com `iptables` e Conntrack | [Acessar](./labs/lab10B.md) |
-| **11A** | Implementação de WAF com ModSecurity e OWASP CRS | [Acessar](./labs/lab11A.md) |
-| **11B** | Testes de Ataques Web e Análise de Logs no WAF | [Acessar](./labs/lab11B.md) |
-| **12** | Implementação de IDS/IPS com Suricata no PNetLab | [Acessar](./labs/lab12.md) |
+| **11** | Firewall Stateful com `iptables` e Conntrack | [Acessar](./labs/lab11.md) |
+| **12** | Implementação de WAF com ModSecurity e OWASP CRS | [Acessar](./labs/lab12.md) |
+| **13** | Testes de Ataques Web e Análise de Logs no WAF | [Acessar](./labs/lab13.md) |
+| **14** | Implementação de IDS/IPS com Suricata no PNetLab | [Acessar](./labs/lab14.md) |
 
 ---
 

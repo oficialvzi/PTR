@@ -1,4 +1,4 @@
-# Laboratório 11B - Testes de Ataques Web e Análise de Logs no WAF
+# Laboratório 13 - Testes de Ataques Web e Análise de Logs no WAF
 
 **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
 **Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
@@ -8,7 +8,7 @@
 
 ## Objetivo
 
-Dar continuidade ao **Lab 11A**, realizando testes controlados de requisições HTTP legítimas e maliciosas contra o ambiente protegido por **Nginx + ModSecurity + OWASP CRS**, de modo que o estudante consiga:
+Dar continuidade ao **Lab 12**, realizando testes controlados de requisições HTTP legítimas e maliciosas contra o ambiente protegido por **Nginx + ModSecurity + OWASP CRS**, de modo que o estudante consiga:
 
 - observar o comportamento do WAF diante de tráfego normal e suspeito;
 - identificar bloqueios gerados por regras do OWASP CRS;
@@ -22,9 +22,9 @@ Dar continuidade ao **Lab 11A**, realizando testes controlados de requisições 
 
 ## Introdução
 
-No **Lab 11A**, o aluno implantou um **proxy reverso com WAF**, posicionando o Linux WAF entre o cliente e o servidor web interno. Nessa etapa, o foco foi a instalação, a publicação do serviço e a validação do acesso legítimo.
+No **Lab 12**, o aluno implantou um **proxy reverso com WAF**, posicionando o Linux WAF entre o cliente e o servidor web interno. Nessa etapa, o foco foi a instalação, a publicação do serviço e a validação do acesso legítimo.
 
-No **Lab 11B**, o foco passa a ser o **comportamento do WAF diante de diferentes tipos de requisição HTTP**. O objetivo é mostrar que, mesmo com a porta 80 liberada e a comunicação TCP funcionando normalmente, ainda assim uma requisição pode ser bloqueada quando apresenta sinais de ataque na camada de aplicação.
+No **Lab 13**, o foco passa a ser o **comportamento do WAF diante de diferentes tipos de requisição HTTP**. O objetivo é mostrar que, mesmo com a porta 80 liberada e a comunicação TCP funcionando normalmente, ainda assim uma requisição pode ser bloqueada quando apresenta sinais de ataque na camada de aplicação.
 
 Este laboratório é importante porque torna visível a principal diferença entre os mecanismos estudados até aqui:
 
@@ -34,14 +34,14 @@ Este laboratório é importante porque torna visível a principal diferença ent
 
 ---
 
-## Relação com os Labs 10, 10B e 11A
+## Relação com os Labs 10, 11 e 12
 
 | Laboratório | Tecnologia | Foco principal |
 |---|---|---|
 | Lab 10 | Firewall de pacotes | Filtragem por IP, protocolo e porta |
-| Lab 10B | Firewall stateful | Filtragem com rastreamento de conexão |
-| Lab 11A | WAF em proxy reverso | Publicação e inspeção HTTP |
-| Lab 11B | WAF com testes práticos | Bloqueio e análise de requisições maliciosas |
+| Lab 11 | Firewall stateful | Filtragem com rastreamento de conexão |
+| Lab 12 | WAF em proxy reverso | Publicação e inspeção HTTP |
+| Lab 13 | WAF com testes práticos | Bloqueio e análise de requisições maliciosas |
 
 ---
 
@@ -101,7 +101,7 @@ flowchart LR
 
 ## Pré-requisitos
 
-Este laboratório pressupõe que o **Lab 11A** já esteja funcional, com os seguintes itens concluídos:
+Este laboratório pressupõe que o **Lab 12** já esteja funcional, com os seguintes itens concluídos:
 
 - endereçamento IP configurado;
 - servidor web interno respondendo;
@@ -355,7 +355,7 @@ Caso o ambiente esteja estável, o professor pode pedir uma pequena atividade de
 
 | Critério | Pontuação |
 |---|---:|
-| Validação e operacionalidade do ambiente herdado do Lab 11A | 1,5 |
+| Validação e operacionalidade do ambiente herdado do Lab 12 | 1,5 |
 | Execução correta dos testes de tráfego legítimo (curl / HTTP) | 1,5 |
 | Execução dos testes de tráfego malicioso (SQLi, XSS, Path Traversal) | 2,5 |
 | Coleta, análise e correlação dos logs do Nginx e ModSecurity | 2,5 |
@@ -390,9 +390,9 @@ Ao final deste laboratório, o estudante deve concluir que:
 - a proteção web depende da inspeção do conteúdo HTTP;
 - é possível manter um serviço publicado e, ao mesmo tempo, bloquear padrões suspeitos;
 - logs são parte essencial da operação e da investigação;
-- o **Lab 11B** torna visível, de forma prática, a diferença entre **permitir a conexão** e **permitir a requisição**.
+- o **Lab 13** torna visível, de forma prática, a diferença entre **permitir a conexão** e **permitir a requisição**.
 
 ---
 
-[← Anterior: Laboratório 11A](lab11A.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 12 →](lab12.md)
+[← Anterior: Laboratório 12](lab12.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 14 →](lab14.md)
 
