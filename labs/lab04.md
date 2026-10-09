@@ -353,7 +353,36 @@ Depois:
 
 ---
 
-## 16. Critérios de avaliação
+## 16. Uso de Inteligência Artificial
+
+Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da Inteligência Artificial da Faculdade de Tecnologia (FT/UnB), aprovada pelo Conselho da FT em 30/09/2026.
+
+**Regime desta atividade:** uso permitido.
+
+Ferramentas de IA podem apoiar o estudo do RIP e dos mecanismos de convergência de protocolos vetor-distância. As configurações, as medições de convergência e as saídas de comandos devem ser produzidas pelo próprio estudante no PNetLab.
+
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+
+**Condutas vedadas:**
+
+- fabricar ou alterar saídas de comandos, capturas, dados ou referências;
+- apresentar como própria uma resposta substancialmente elaborada por IA sem contribuição intelectual compatível;
+- omitir o uso relevante de IA;
+- inserir em plataformas externas dados pessoais, senhas, chaves ou capturas de redes reais.
+
+**Declaração:** obrigatória quando a IA tiver influência relevante sobre o conteúdo, a análise, a interpretação ou as conclusões do relatório. Anexar ao relatório:
+
+| Campo | Preenchimento |
+| :--- | :--- |
+| Ferramenta e versão | |
+| Finalidade | |
+| Etapas do trabalho em que foi empregada | |
+| Natureza da contribuição | |
+| Validação humana realizada | |
+
+---
+
+## 17. Critérios de avaliação
 
 | Critério | Pontos |
 |---|---:|
@@ -367,7 +396,7 @@ Depois:
 
 ---
 
-## 17. Entregáveis
+## 18. Entregáveis
 
 O aluno deverá entregar:
 - captura de tela da topologia montada no PNetLab;
@@ -375,11 +404,12 @@ O aluno deverá entregar:
 - saídas de `show ip route` antes e depois da falha de enlace;
 - evidência do `ping` antes e depois da falha;
 - respostas completas às questões para análise;
-- breve relatório síntese com análise do tempo de convergência observado e conclusão.
+- breve relatório síntese com análise do tempo de convergência observado e conclusão;
+- declaração de uso de IA generativa, conforme a seção "Uso de Inteligência Artificial" (obrigatória se houve uso relevante de IA).
 
 ---
 
-## 18. Conclusão
+## 19. Conclusão
 
 Este laboratório amplia a complexidade das práticas anteriores ao introduzir um protocolo de roteamento dinâmico e a análise do comportamento da rede diante de falhas. A configuração do **RIPv2** em uma topologia com múltiplos roteadores permite ao aluno compreender como rotas são propagadas, aprendidas e removidas.
 

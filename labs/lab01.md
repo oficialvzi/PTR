@@ -221,6 +221,35 @@ Relacionar explicitamente com:
 
 ---
 
+## Uso de Inteligência Artificial
+
+Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da Inteligência Artificial da Faculdade de Tecnologia (FT/UnB), aprovada pelo Conselho da FT em 30/09/2026.
+
+**Regime desta atividade:** uso permitido.
+
+Ferramentas de IA podem apoiar o estudo da decisão de roteamento e da leitura de tabelas de rotas e a revisão do texto das respostas. A montagem da topologia, as configurações e as saídas de `ip route` e `ping` devem ser produzidas pelo próprio estudante no PNetLab.
+
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+
+**Condutas vedadas:**
+
+- fabricar ou alterar saídas de comandos, capturas, dados ou referências;
+- apresentar como própria uma resposta substancialmente elaborada por IA sem contribuição intelectual compatível;
+- omitir o uso relevante de IA;
+- inserir em plataformas externas dados pessoais, senhas, chaves ou capturas de redes reais.
+
+**Declaração:** obrigatória quando a IA tiver influência relevante sobre o conteúdo, a análise, a interpretação ou as conclusões do relatório. Anexar ao relatório:
+
+| Campo | Preenchimento |
+| :--- | :--- |
+| Ferramenta e versão | |
+| Finalidade | |
+| Etapas do trabalho em que foi empregada | |
+| Natureza da contribuição | |
+| Validação humana realizada | |
+
+---
+
 ## Critérios de avaliação
 
 | Critério | Pontos |
@@ -242,7 +271,8 @@ O aluno deverá enviar relatório técnico contendo:
 - evidência da configuração IP e tabela de rotas (`ip route`) em Host A, Host B e Roteador;
 - evidência dos testes de ping (falha inicial antes do gateway e sucesso após a configuração);
 - respostas completas e fundamentadas às **Questões para análise**;
-- breve relatório síntese com objetivo, comandos utilizados e conclusão.
+- breve relatório síntese com objetivo, comandos utilizados e conclusão;
+- declaração de uso de IA generativa, conforme a seção "Uso de Inteligência Artificial" (obrigatória se houve uso relevante de IA).
 
 ---
 

@@ -249,7 +249,36 @@ Ao final da montagem, o laboratório deverá permitir:
 
 ---
 
-## 12. Critérios de avaliação
+## 12. Uso de Inteligência Artificial
+
+Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da Inteligência Artificial da Faculdade de Tecnologia (FT/UnB), aprovada pelo Conselho da FT em 30/09/2026.
+
+**Regime desta atividade:** uso permitido.
+
+Ferramentas de IA podem apoiar o estudo da configuração básica de roteadores e a interpretação de mensagens de erro. As configurações, as saídas dos comandos de verificação e as capturas de tela devem ser produzidas pelo próprio estudante no PNetLab.
+
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+
+**Condutas vedadas:**
+
+- fabricar ou alterar saídas de comandos, capturas, dados ou referências;
+- apresentar como própria uma resposta substancialmente elaborada por IA sem contribuição intelectual compatível;
+- omitir o uso relevante de IA;
+- inserir em plataformas externas dados pessoais, senhas, chaves ou capturas de redes reais.
+
+**Declaração:** obrigatória quando a IA tiver influência relevante sobre o conteúdo, a análise, a interpretação ou as conclusões do relatório. Anexar ao relatório:
+
+| Campo | Preenchimento |
+| :--- | :--- |
+| Ferramenta e versão | |
+| Finalidade | |
+| Etapas do trabalho em que foi empregada | |
+| Natureza da contribuição | |
+| Validação humana realizada | |
+
+---
+
+## 13. Critérios de avaliação
 
 | Critério | Pontos |
 |---|---:|
@@ -263,7 +292,7 @@ Ao final da montagem, o laboratório deverá permitir:
 
 ---
 
-## 13. Entregáveis
+## 14. Entregáveis
 
 O aluno deverá entregar:
 - captura de tela da topologia no PNetLab;
@@ -272,11 +301,12 @@ O aluno deverá entregar:
 - evidência do teste de `ping` entre PCs e roteador;
 - evidência do acesso remoto via SSH;
 - respostas completas às questões para análise;
-- breve relatório síntese com objetivo e conclusão.
+- breve relatório síntese com objetivo e conclusão;
+- declaração de uso de IA generativa, conforme a seção "Uso de Inteligência Artificial" (obrigatória se houve uso relevante de IA).
 
 ---
 
-## 14. Conclusão
+## 15. Conclusão
 
 Este laboratório introduz a configuração básica de roteadores no PNetLab e estabelece as competências mínimas necessárias para os próximos cenários da disciplina. Dominar CLI, interface IP, acesso remoto e testes de conectividade é essencial antes da evolução para protocolos de roteamento e atividades de diagnóstico mais avançadas.
 

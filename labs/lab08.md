@@ -344,7 +344,36 @@ show running-config
 
 ---
 
-## 15. Critérios de avaliação
+## 15. Uso de Inteligência Artificial
+
+Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da Inteligência Artificial da Faculdade de Tecnologia (FT/UnB), aprovada pelo Conselho da FT em 30/09/2026.
+
+**Regime desta atividade:** uso permitido.
+
+Ferramentas de IA podem apoiar o estudo das políticas BGP (LOCAL_PREF, AS_PATH *prepending*) e da redistribuição entre BGP e OSPF. As configurações, os testes de falha e as saídas de verificação devem ser produzidos pelo próprio estudante no PNetLab.
+
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+
+**Condutas vedadas:**
+
+- fabricar ou alterar saídas de comandos, capturas, dados ou referências;
+- apresentar como própria uma resposta substancialmente elaborada por IA sem contribuição intelectual compatível;
+- omitir o uso relevante de IA;
+- inserir em plataformas externas dados pessoais, senhas, chaves ou capturas de redes reais.
+
+**Declaração:** obrigatória quando a IA tiver influência relevante sobre o conteúdo, a análise, a interpretação ou as conclusões do relatório. Anexar ao relatório:
+
+| Campo | Preenchimento |
+| :--- | :--- |
+| Ferramenta e versão | |
+| Finalidade | |
+| Etapas do trabalho em que foi empregada | |
+| Natureza da contribuição | |
+| Validação humana realizada | |
+
+---
+
+## 16. Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -357,7 +386,7 @@ show running-config
 
 ---
 
-## 16. Entregáveis
+## 17. Entregáveis
 
 Cada aluno deve entregar relatório contendo:
 
@@ -371,11 +400,12 @@ Cada aluno deve entregar relatório contendo:
   - descrição da política aplicada;
   - explicação da integração OSPF/BGP;
   - análise do comportamento em caso de falha;
-- respostas completas às questões para análise.
+- respostas completas às questões para análise;
+- declaração de uso de IA generativa, conforme a seção "Uso de Inteligência Artificial" (obrigatória se houve uso relevante de IA).
 
 ---
 
-## 17. Conclusão esperada
+## 18. Conclusão esperada
 
 Ao concluir este laboratório, o estudante deve perceber que:
 
