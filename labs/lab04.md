@@ -76,7 +76,9 @@ A lentidão da convergência do RIP está relacionada ao uso de temporizadores e
 Outro fenômeno clássico associado ao RIP é o problema de count to infinity. Esse problema ocorre quando roteadores trocam informações incorretas sobre uma rede que deixou de existir, aumentando gradualmente a métrica até que ela atinja o valor 16, considerado infinito no contexto do protocolo. Esse comportamento pode prolongar a convergência e gerar loops temporários. Para reduzir esse tipo de problema, o RIP incorpora mecanismos como split horizon, poison reverse e triggered updates. O split horizon evita que uma rota aprendida por uma interface seja anunciada de volta por essa mesma interface. O poison reverse marca explicitamente uma rota como inalcançável ao reenviá-la. Já os triggered updates permitem acelerar a propagação de mudanças sem depender exclusivamente do próximo ciclo periódico de atualização.
 
 
-<img width="1448" height="1086" alt="ChatGPT Image 3 de jun  de 2026, 18_44_29" src="https://github.com/user-attachments/assets/9e08fb19-31e2-40d9-9bfc-8a3117ad80e8" />
+<img width="1448" height="1086" alt="Infográfico do laboratório de RIP: topologia R1, R2 e R3 com VPC1 e VPC2, falha no enlace 10.0.23.0/30, configuração do RIPv2, mecanismos de prevenção de laços e etapas do experimento de convergência" src="https://github.com/user-attachments/assets/9e08fb19-31e2-40d9-9bfc-8a3117ad80e8" />
+
+*Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 
 
@@ -361,7 +363,7 @@ Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da
 
 Ferramentas de IA podem apoiar o estudo do RIP e dos mecanismos de convergência de protocolos vetor-distância. As configurações, as medições de convergência e as saídas de comandos devem ser produzidas pelo próprio estudante no PNetLab.
 
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
 
 **Condutas vedadas:**
 

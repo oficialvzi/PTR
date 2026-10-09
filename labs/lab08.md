@@ -352,7 +352,7 @@ Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da
 
 Ferramentas de IA podem apoiar o estudo das políticas BGP (LOCAL_PREF, AS_PATH *prepending*) e da redistribuição entre BGP e OSPF. As configurações, os testes de falha e as saídas de verificação devem ser produzidos pelo próprio estudante no PNetLab.
 
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
 
 **Condutas vedadas:**
 

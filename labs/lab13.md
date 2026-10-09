@@ -359,7 +359,7 @@ Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da
 
 Ferramentas de IA podem apoiar o estudo das classes de ataque web e a interpretação dos registros do WAF. Os testes, os registros de *log* analisados e as conclusões devem ser produzidos pelo próprio estudante, exclusivamente no ambiente de laboratório autorizado.
 
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
 
 **Condutas vedadas:**
 

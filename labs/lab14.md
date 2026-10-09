@@ -29,7 +29,9 @@ Neste **Lab 14**, o foco será um novo tipo de mecanismo: o **IDS/IPS**.
 - **IDS (Intrusion Detection System)**: sistema que monitora o tráfego e gera alertas quando identifica padrões suspeitos.
 - **IPS (Intrusion Prevention System)**: sistema que, além de detectar, também pode atuar para bloquear ou prevenir tráfego considerado malicioso.
 
-<img width="1672" height="941" alt="ChatGPT Image 2 de jun  de 2026, 22_02_47" src="https://github.com/user-attachments/assets/d3e4e4c1-1511-44ac-9603-ce11f8116e2a" />
+<img width="1672" height="941" alt="Infográfico do Suricata em modo IDS e IPS: tráfego HTTP legítimo encaminhado, requisições maliciosas detectadas, exemplos de regras e rede do laboratório" src="https://github.com/user-attachments/assets/d3e4e4c1-1511-44ac-9603-ce11f8116e2a" />
+
+*Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 
 O **Suricata** é uma ferramenta amplamente usada nesse contexto, pois permite:
@@ -457,7 +459,7 @@ Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da
 
 Ferramentas de IA podem apoiar o estudo de IDS/IPS, da sintaxe de regras do Suricata e a interpretação de eventos. A instalação, os testes de tráfego, os eventos registrados e as regras locais devem ser produzidos pelo próprio estudante, exclusivamente no ambiente de laboratório autorizado.
 
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
 
 **Condutas vedadas:**
 

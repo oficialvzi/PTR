@@ -108,7 +108,9 @@ Outra forma de imaginar é pensar em viagens:
 - **eBGP** é como conversar com pessoas de **outras cidades ou outros países** para saber como chegar até lá
 - **iBGP** é como avisar as pessoas da **sua própria cidade** qual estrada usar para sair dela
 
-<img width="1672" height="941" alt="laboratorio 6 roteamento entre sistemas autonomos" src="https://github.com/user-attachments/assets/a7d2063d-f1ca-4e2b-b2e0-9280a5867965" />
+<img width="1672" height="941" alt="Infográfico do BGP no Laboratório 06: AS 1000 da empresa conectado ao ISP1 (AS 100) e ao ISP2 (AS 200), ISP3 (AS 300), anúncio do prefixo 200.18.245.64/27 e diferença entre eBGP e iBGP" src="https://github.com/user-attachments/assets/a7d2063d-f1ca-4e2b-b2e0-9280a5867965" />
+
+*Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 
 
@@ -437,7 +439,7 @@ Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da
 
 Ferramentas de IA podem apoiar o estudo do BGP, de seus atributos e mensagens e a interpretação de capturas. As configurações, as capturas no Wireshark e as saídas de verificação devem ser produzidas pelo próprio estudante no PNetLab.
 
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
 
 **Condutas vedadas:**
 

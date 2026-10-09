@@ -91,7 +91,9 @@ No modelo multicast, os receptores passam a fazer parte de um **grupo multicast*
 
 Entre os modos de operação do PIM, o **PIM Dense Mode (PIM-DM)** foi projetado para ambientes em que os receptores estão distribuídos de forma relativamente densa na rede, isto é, quando se supõe que muitos segmentos da topologia desejam receber o tráfego multicast. Seu funcionamento baseia-se na lógica de **flood and prune** (Inundar e Podar). Inicialmente, quando surge um fluxo multicast, o roteador propaga o tráfego para todas as interfaces habilitadas para PIM-DM, exceto aquela pela qual o pacote foi recebido. Em seguida, os roteadores que não possuem receptores interessados enviam mensagens de **prune**, interrompendo a distribuição naquele ramo da árvore multicast. Esse comportamento torna o PIM-DM adequado para laboratórios introdutórios, pois dispensa, em um primeiro momento, elementos adicionais como **Rendezvous Point (RP)**, exigidos em cenários com **PIM Sparse Mode (PIM-SM)**. Em compensação, o PIM-DM pode gerar envio desnecessário de tráfego em redes grandes, já que o fluxo é inicialmente inundado antes do processo de poda. Por isso, ele é mais apropriado em cenários controlados, pequenos e com elevada probabilidade de interesse pelo fluxo multicast. Outro conceito central para compreender o PIM-DM é o **RPF - Reverse Path Forwarding**. Esse mecanismo verifica se um pacote multicast chegou pela interface que corresponde ao melhor caminho de volta até a origem, segundo a tabela unicast. Se o pacote chega por essa interface esperada, ele pode ser encaminhado; caso contrário, é descartado. Essa regra ajuda a evitar loops e garante consistência na árvore de distribuição multicast. Assim, mesmo sendo um protocolo multicast, o PIM depende diretamente da qualidade da base unicast configurada na rede.
 
-<img width="1672" height="941" alt="ChatGPT Image 3 de jun  de 2026, 16_51_23" src="https://github.com/user-attachments/assets/aba0c8e4-6c12-4fca-94fd-8b969f93e9c1" />
+<img width="1672" height="941" alt="Infográfico sobre PIM-DM e PIM-SM: topologia do laboratório com R1, R2 e R3, inundação e poda no modo denso, árvores compartilhada e de origem no modo esparso e comparação entre os modos" src="https://github.com/user-attachments/assets/aba0c8e4-6c12-4fca-94fd-8b969f93e9c1" />
+
+*Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 
 
@@ -321,7 +323,7 @@ Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da
 
 Ferramentas de IA podem apoiar o estudo do PIM-DM, do IGMP e do modelo *flood and prune*. A configuração, a geração de tráfego *multicast* e as saídas de verificação devem ser produzidas pelo próprio estudante no PNetLab.
 
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
 
 **Condutas vedadas:**
 

@@ -65,7 +65,9 @@ Para contextualizar as vantagens do OSPF, vale registrar como o RIP resolveria o
 
 Essa comparação será retomada na Seção 12, mas a partir daqui todo o laboratório é conduzido apenas com **OSPF**.
 
-<img width="1672" height="941" alt="ChatGPT Image 3 de jun de 2026, 18_52_35" src="https://github.com/user-attachments/assets/248289db-3b15-4815-8141-792b69968450" />
+<img width="1672" height="941" alt="Infográfico comparando RIP e OSPF: topologia com R1 a R4, características de cada protocolo, exemplo de tabela de roteamento e comandos de verificação" src="https://github.com/user-attachments/assets/248289db-3b15-4815-8141-792b69968450" />
+
+*Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 ---
 
@@ -657,7 +659,7 @@ Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da
 
 Ferramentas de IA podem apoiar o estudo do OSPF, a interpretação de campos dos pacotes OSPF e de mensagens de erro. As configurações, as capturas no Wireshark e as saídas de verificação devem ser produzidas pelo próprio estudante no PNetLab.
 
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
 
 **Condutas vedadas:**
 

@@ -49,7 +49,9 @@ Implementar um backbone **MPLS** simplificado na rede do provedor, dando continu
 > - habilitar o **MPLS** nos enlaces do núcleo;
 > - verificar a distribuição de rótulos e o encaminhamento no backbone.
 
-<img width="1672" height="941" alt="ChatGPT Image 3 de jun  de 2026, 19_08_58" src="https://github.com/user-attachments/assets/f78c5d0c-56b9-4a63-9cc3-527917900655" />
+<img width="1672" height="941" alt="Infográfico comparando OSPF, eBGP e iBGP: finalidade, quando usar, pontos de atenção no diagnóstico e quadro comparativo" src="https://github.com/user-attachments/assets/f78c5d0c-56b9-4a63-9cc3-527917900655" />
+
+*Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 
 ---
@@ -62,7 +64,9 @@ No laboratório 08, a empresa do **AS 1000** estabeleceu conectividade com dois 
 
 ## 4. Fundamentação teórica 
 
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/d8de8415-8e0c-44d0-8262-23a9f384a619" />
+<img width="1536" height="1024" alt="Infográfico do pacote MPLS: campos do cabeçalho (Label, EXP/TC, S e TTL), pilha de rótulos e troca de rótulos salto a salto no núcleo do provedor" src="https://github.com/user-attachments/assets/d8de8415-8e0c-44d0-8262-23a9f384a619" />
+
+*Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 
 
@@ -470,7 +474,7 @@ Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da
 
 Ferramentas de IA podem apoiar o estudo do MPLS, do LDP e da comutação por rótulos. As configurações do *backbone*, as saídas de verificação e as observações do teste devem ser produzidas pelo próprio estudante no PNetLab.
 
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
 
 **Condutas vedadas:**
 

@@ -25,7 +25,9 @@ No Linux, isso é feito com `iptables` e rastreamento de conexões do kernel, us
 - `--ctstate RELATED` Indica que o pacote está relacionado a uma conexão existente, mesmo que não pertença exatamente ao fluxo principal.
 
 
-<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/b801b7b0-77e1-44a8-82b2-9f266ca229f4" />
+<img width="1672" height="941" alt="Infográfico do iptables como firewall stateful: firewall Linux entre as redes 192.168.10.0/24 e 192.168.20.0/24, tabela de estados de conexão e regras com conntrack" src="https://github.com/user-attachments/assets/b801b7b0-77e1-44a8-82b2-9f266ca229f4" />
+
+*Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 
 ---
@@ -339,7 +341,7 @@ Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da
 
 Ferramentas de IA podem apoiar o estudo do rastreamento de conexões (*conntrack*) e da diferença entre filtragem de pacotes e filtragem *stateful*. As regras, os testes e as saídas de comandos devem ser produzidos pelo próprio estudante no PNetLab.
 
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
 
 **Condutas vedadas:**
 

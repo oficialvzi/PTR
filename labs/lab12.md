@@ -43,7 +43,9 @@ Na prática, isso permite bloquear comportamentos suspeitos mesmo quando o acess
 Neste laboratório, será utilizado o **ModSecurity**, em conjunto com o **OWASP Core Rule Set (CRS)**, para transformar uma máquina Linux em um **WAF reverso**, posicionada entre um cliente e um servidor web interno. O objetivo desta primeira parte é implantar a estrutura do WAF, publicar a aplicação web por meio do proxy reverso e validar o funcionamento do fluxo legítimo. A exploração de ataques e a análise aprofundada dos bloqueios ficam como continuidade natural para o **Lab 13**.
 
 
-<img width="1672" height="941" alt="image" src="https://github.com/user-attachments/assets/2a8e289e-1353-4443-af0a-1c7c78010d20" />
+<img width="1672" height="941" alt="Infográfico do WAF com Nginx, ModSecurity e OWASP CRS: requisições HTTP legítimas encaminhadas e tentativas de SQL Injection, XSS e path traversal bloqueadas" src="https://github.com/user-attachments/assets/2a8e289e-1353-4443-af0a-1c7c78010d20" />
+
+*Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 
 ## Proxy Reverso
@@ -53,7 +55,9 @@ Um proxy reverso é um servidor intermediário que recebe as requisições dos c
 Na prática, o cliente acha que está falando diretamente com o serviço, mas na verdade está falando primeiro com o proxy reverso. Esse proxy fica “na frente” da aplicação.
 
 
-<img width="1672" height="941" alt="ChatGPT Image 2 de jun  de 2026, 16_26_17" src="https://github.com/user-attachments/assets/704f19da-b314-406e-8b82-31b51a15cc3e" />
+<img width="1672" height="941" alt="Infográfico do proxy reverso: clientes externos, proxy com funções de segurança, balanceamento e cache, e servidores web internos" src="https://github.com/user-attachments/assets/704f19da-b314-406e-8b82-31b51a15cc3e" />
+
+*Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 ## Funções principais de um proxy reverso
 
@@ -568,7 +572,7 @@ Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da
 
 Ferramentas de IA podem apoiar o estudo de WAF, proxy reverso, ModSecurity e OWASP CRS e a interpretação de mensagens de erro do Nginx. As configurações, os testes e os registros de *log* devem ser produzidos pelo próprio estudante no PNetLab.
 
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
 
 **Condutas vedadas:**
 

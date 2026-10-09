@@ -39,7 +39,9 @@ Implementar um **firewall de pacotes** em uma máquina Linux no PNetLab, posicio
 
 Um **firewall de pacotes** é um mecanismo de segurança que analisa os pacotes de rede individualmente e decide se eles podem ou não atravessar um determinado ponto da rede. Essa decisão é tomada com base em informações presentes no cabeçalho do pacote, como **endereço IP de origem**, **endereço IP de destino**, **protocolo** e **porta de comunicação**. Em outras palavras, ele funciona como um filtro que verifica regras previamente definidas e permite ou bloqueia o tráfego conforme essas regras.
 
-<img width="1672" height="941" alt="ChatGPT Image 24 de mai de 2026, 18_02_50" src="https://github.com/user-attachments/assets/81787ce4-4db1-4fe0-ba0d-6fe9ca2808ea" />
+<img width="1672" height="941" alt="Infográfico do iptables como filtro de pacotes: firewall Linux entre as redes 192.168.10.0/24 e 192.168.20.0/24 permitindo TCP 80, TCP 22 e ICMP e descartando TCP 23 e UDP 53" src="https://github.com/user-attachments/assets/81787ce4-4db1-4fe0-ba0d-6fe9ca2808ea" />
+
+*Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 No Linux, uma das ferramentas clássicas para implementar esse tipo de controle é o **iptables**. Com ele, é possível criar regras para autorizar ou negar comunicações específicas entre redes, hosts e serviços. Em um laboratório, isso permite demonstrar de forma prática como uma máquina Linux pode atuar como firewall entre dois segmentos de rede, controlando o fluxo de pacotes de maneira simples e objetiva.
 
@@ -601,7 +603,7 @@ Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da
 
 Ferramentas de IA podem apoiar o estudo do `iptables`, das cadeias e políticas de filtragem e a interpretação de mensagens de erro. As regras, os testes de permissão e bloqueio e as saídas de comandos devem ser produzidos pelo próprio estudante no PNetLab.
 
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue. A IA não pode ser indicada como autora ou coautora.
+**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
 
 **Condutas vedadas:**
 
