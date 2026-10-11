@@ -651,36 +651,7 @@ show ip ospf neighbor
 
 ---
 
-## 17. Uso de Inteligência Artificial
-
-Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da Inteligência Artificial da Faculdade de Tecnologia (FT/UnB), aprovada pelo Conselho da FT em 30/09/2026.
-
-**Regime desta atividade:** uso permitido.
-
-Ferramentas de IA podem apoiar o estudo do OSPF, a interpretação de campos dos pacotes OSPF e de mensagens de erro. As configurações, as capturas no Wireshark e as saídas de verificação devem ser produzidas pelo próprio estudante no PNetLab.
-
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
-
-**Condutas vedadas:**
-
-- fabricar ou alterar saídas de comandos, capturas, dados ou referências;
-- apresentar como própria uma resposta substancialmente elaborada por IA sem contribuição intelectual compatível;
-- omitir o uso relevante de IA;
-- inserir em plataformas externas dados pessoais, senhas, chaves ou capturas de redes reais.
-
-**Declaração:** obrigatória quando a IA tiver influência relevante sobre o conteúdo, a análise, a interpretação ou as conclusões do relatório. Anexar ao relatório:
-
-| Campo | Preenchimento |
-| :--- | :--- |
-| Ferramenta e versão | |
-| Finalidade | |
-| Etapas do trabalho em que foi empregada | |
-| Natureza da contribuição | |
-| Validação humana realizada | |
-
----
-
-## 18. Critérios de avaliação
+## 17. Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -694,7 +665,7 @@ Ferramentas de IA podem apoiar o estudo do OSPF, a interpretação de campos dos
 
 ---
 
-## 19. Entregáveis
+## 18. Entregáveis
 
 - print da topologia no PNetLab;
 - print do `show ip ospf neighbor`;
@@ -709,12 +680,11 @@ Ferramentas de IA podem apoiar o estudo do OSPF, a interpretação de campos dos
   - comandos aplicados;
   - testes realizados;
   - análise dos pacotes OSPF capturados;
-  - comparação conceitual entre OSPF e RIP;
-- declaração de uso de IA generativa, conforme a seção "Uso de Inteligência Artificial" (obrigatória se houve uso relevante de IA).
+  - comparação conceitual entre OSPF e RIP.
 
 ---
 
-## 20. Conclusão esperada
+## 19. Conclusão esperada
 
 Ao final deste laboratório, o estudante deve compreender:
 

@@ -328,36 +328,7 @@ Nos provedores, deve aparecer o prefixo da empresa:
 
 ---
 
-## 10. Uso de Inteligência Artificial
-
-Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da Inteligência Artificial da Faculdade de Tecnologia (FT/UnB), aprovada pelo Conselho da FT em 30/09/2026.
-
-**Regime desta atividade:** uso permitido.
-
-Ferramentas de IA podem apoiar o estudo das sessões eBGP entre provedores e a interpretação de mensagens de erro. As configurações dos ISPs e as saídas de verificação devem ser produzidas pelo próprio estudante no PNetLab.
-
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
-
-**Condutas vedadas:**
-
-- fabricar ou alterar saídas de comandos, capturas, dados ou referências;
-- apresentar como própria uma resposta substancialmente elaborada por IA sem contribuição intelectual compatível;
-- omitir o uso relevante de IA;
-- inserir em plataformas externas dados pessoais, senhas, chaves ou capturas de redes reais.
-
-**Declaração:** obrigatória quando a IA tiver influência relevante sobre o conteúdo, a análise, a interpretação ou as conclusões do relatório. Anexar ao relatório:
-
-| Campo | Preenchimento |
-| :--- | :--- |
-| Ferramenta e versão | |
-| Finalidade | |
-| Etapas do trabalho em que foi empregada | |
-| Natureza da contribuição | |
-| Validação humana realizada | |
-
----
-
-## 11. Critérios de avaliação
+## 10. Critérios de avaliação
 
 | Critério | Pontos |
 |---|---:|
@@ -371,15 +342,14 @@ Ferramentas de IA podem apoiar o estudo das sessões eBGP entre provedores e a i
 
 ---
 
-## 12. Entregáveis
+## 11. Entregáveis
 
 - print da topologia montada no emulador com indicação dos estados BGP;
 - print da saída de `show ip bgp summary` em **ISP1**, **ISP2** e **ISP3**;
 - print da tabela BGP (`show ip bgp`) no **ISP3**, comprovando o aprendizado do bloco `200.18.245.64/27`;
 - evidência de testes de `ping` a partir de R1 para os prefixos de destino na Internet (`181.0.0.1`, etc.);
 - respostas técnicas fundamentadas às questões de análise;
-- relatório síntese contendo: objetivo, configuração aplicada nos provedores, análise do fluxo de anúncios e conclusão;
-- declaração de uso de IA generativa, conforme a seção "Uso de Inteligência Artificial" (obrigatória se houve uso relevante de IA).
+- relatório síntese contendo: objetivo, configuração aplicada nos provedores, análise do fluxo de anúncios e conclusão.
 
 ---
 

@@ -466,36 +466,7 @@ Peça aos alunos que identifiquem:
 
 ---
 
-## 16. Uso de Inteligência Artificial
-
-Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da Inteligência Artificial da Faculdade de Tecnologia (FT/UnB), aprovada pelo Conselho da FT em 30/09/2026.
-
-**Regime desta atividade:** uso permitido.
-
-Ferramentas de IA podem apoiar o estudo do MPLS, do LDP e da comutação por rótulos. As configurações do *backbone*, as saídas de verificação e as observações do teste devem ser produzidas pelo próprio estudante no PNetLab.
-
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
-
-**Condutas vedadas:**
-
-- fabricar ou alterar saídas de comandos, capturas, dados ou referências;
-- apresentar como própria uma resposta substancialmente elaborada por IA sem contribuição intelectual compatível;
-- omitir o uso relevante de IA;
-- inserir em plataformas externas dados pessoais, senhas, chaves ou capturas de redes reais.
-
-**Declaração:** obrigatória quando a IA tiver influência relevante sobre o conteúdo, a análise, a interpretação ou as conclusões do relatório. Anexar ao relatório:
-
-| Campo | Preenchimento |
-| :--- | :--- |
-| Ferramenta e versão | |
-| Finalidade | |
-| Etapas do trabalho em que foi empregada | |
-| Natureza da contribuição | |
-| Validação humana realizada | |
-
----
-
-## 17. Critérios de avaliação
+## 16. Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -508,7 +479,7 @@ Ferramentas de IA podem apoiar o estudo do MPLS, do LDP e da comutação por ró
 
 ---
 
-## 18. Entregáveis
+## 17. Entregáveis
 
 Cada aluno deve entregar:
 
@@ -521,12 +492,11 @@ Cada aluno deve entregar:
   - objetivo do laboratório;
   - papéis CE, PE e P no cenário;
   - conclusão sobre o uso de MPLS no backbone;
-- respostas completas às questões para análise;
-- declaração de uso de IA generativa, conforme a seção "Uso de Inteligência Artificial" (obrigatória se houve uso relevante de IA).
+- respostas completas às questões para análise.
 
 ---
 
-## 19. Conclusão esperada
+## 18. Conclusão esperada
 
 Ao final deste laboratório, o estudante deve perceber que:
 

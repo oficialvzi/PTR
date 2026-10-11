@@ -315,36 +315,7 @@ Ao concluir a atividade, o aluno deve verificar que:
 
 ---
 
-## 15. Uso de Inteligência Artificial
-
-Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da Inteligência Artificial da Faculdade de Tecnologia (FT/UnB), aprovada pelo Conselho da FT em 30/09/2026.
-
-**Regime desta atividade:** uso permitido.
-
-Ferramentas de IA podem apoiar o estudo do PIM-DM, do IGMP e do modelo *flood and prune*. A configuração, a geração de tráfego *multicast* e as saídas de verificação devem ser produzidas pelo próprio estudante no PNetLab.
-
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
-
-**Condutas vedadas:**
-
-- fabricar ou alterar saídas de comandos, capturas, dados ou referências;
-- apresentar como própria uma resposta substancialmente elaborada por IA sem contribuição intelectual compatível;
-- omitir o uso relevante de IA;
-- inserir em plataformas externas dados pessoais, senhas, chaves ou capturas de redes reais.
-
-**Declaração:** obrigatória quando a IA tiver influência relevante sobre o conteúdo, a análise, a interpretação ou as conclusões do relatório. Anexar ao relatório:
-
-| Campo | Preenchimento |
-| :--- | :--- |
-| Ferramenta e versão | |
-| Finalidade | |
-| Etapas do trabalho em que foi empregada | |
-| Natureza da contribuição | |
-| Validação humana realizada | |
-
----
-
-## 16. Critérios de avaliação
+## 15. Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -357,7 +328,7 @@ Ferramentas de IA podem apoiar o estudo do PIM-DM, do IGMP e do modelo *flood an
 
 ---
 
-## 17. Entregáveis
+## 16. Entregáveis
 
 O aluno deverá entregar:
 - captura de tela da topologia montada no PNetLab;
@@ -365,12 +336,11 @@ O aluno deverá entregar:
 - saída dos comandos `show ip pim interface` e `show ip mroute`;
 - evidência do envio e da recepção do tráfego multicast;
 - respostas completas às questões para análise;
-- relatório síntese contendo objetivo, metodologia e conclusão;
-- declaração de uso de IA generativa, conforme a seção "Uso de Inteligência Artificial" (obrigatória se houve uso relevante de IA).
+- relatório síntese contendo objetivo, metodologia e conclusão.
 
 ---
 
-## 18. Observação técnica
+## 17. Observação técnica
 
 Nem toda imagem de roteador Cisco disponível no PNetLab suporta multicast/PIM integralmente. Para esta atividade, recomenda-se utilizar imagens como:
 
@@ -382,7 +352,7 @@ Nem toda imagem de roteador Cisco disponível no PNetLab suporta multicast/PIM i
 
 ---
 
-## 19. Conclusão
+## 18. Conclusão
 
 Esta atividade apresenta o primeiro cenário prático de multicast IP com PIM-DM em ambiente controlado no PNetLab. O laboratório permite que o aluno compreenda como o roteador passa a tratar tráfego multicast, formando a base conceitual e operacional necessária para topologias mais complexas nas próximas práticas.
 

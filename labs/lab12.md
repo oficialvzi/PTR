@@ -564,35 +564,6 @@ O host intermediário atua como **proxy reverso com inspeção HTTP**, o que sig
 
 ---
 
-## Uso de Inteligência Artificial
-
-Esta atividade segue a Política de Integridade Acadêmica e Uso Responsável da Inteligência Artificial da Faculdade de Tecnologia (FT/UnB), aprovada pelo Conselho da FT em 30/09/2026.
-
-**Regime desta atividade:** uso permitido.
-
-Ferramentas de IA podem apoiar o estudo de WAF, proxy reverso, ModSecurity e OWASP CRS e a interpretação de mensagens de erro do Nginx. As configurações, os testes e os registros de *log* devem ser produzidos pelo próprio estudante no PNetLab.
-
-**Responsabilidade:** o estudante responde integralmente pelo conteúdo entregue.
-
-**Condutas vedadas:**
-
-- fabricar ou alterar saídas de comandos, capturas, dados ou referências;
-- apresentar como própria uma resposta substancialmente elaborada por IA sem contribuição intelectual compatível;
-- omitir o uso relevante de IA;
-- inserir em plataformas externas dados pessoais, senhas, chaves ou capturas de redes reais.
-
-**Declaração:** obrigatória quando a IA tiver influência relevante sobre o conteúdo, a análise, a interpretação ou as conclusões do relatório. Anexar ao relatório:
-
-| Campo | Preenchimento |
-| :--- | :--- |
-| Ferramenta e versão | |
-| Finalidade | |
-| Etapas do trabalho em que foi empregada | |
-| Natureza da contribuição | |
-| Validação humana realizada | |
-
----
-
 ## Critérios de avaliação
 
 | Critério | Pontuação |
@@ -620,8 +591,7 @@ Cada aluno deve entregar:
   - objetivo do laboratório;
   - descrição do fluxo Cliente → WAF → Servidor Web;
   - explicação da diferença entre firewall tradicional, stateful e WAF;
-- respostas completas às questões para análise;
-- declaração de uso de IA generativa, conforme a seção "Uso de Inteligência Artificial" (obrigatória se houve uso relevante de IA).
+- respostas completas às questões para análise.
 
 ---
 
