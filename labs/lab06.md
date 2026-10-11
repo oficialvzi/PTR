@@ -72,7 +72,7 @@ O **eBGP** significa **External BGP**.
 
 Ele é usado quando a troca de rotas acontece entre roteadores que pertencem a **AS diferentes**, ou seja, entre **redes diferentes**.
 
-#### Exemplo de eBGP
+#### 3.1.1 Exemplo de eBGP
 
 - uma empresa no **AS 1000**
 - conectada a um provedor no **AS 100**
@@ -87,7 +87,7 @@ O **iBGP** significa **Internal BGP**.
 
 Ele é usado quando a troca de rotas acontece entre roteadores do **mesmo AS**, ou seja, **dentro da mesma rede grande**.
 
-#### Exemplo de iBGP
+#### 3.2.1 Exemplo de iBGP
 
 - dois roteadores dentro do **AS 1000**
 - compartilhando entre si as rotas aprendidas externamente
@@ -145,7 +145,7 @@ Dados do cenário:
 - o **ISP2** pertence ao **AS 200**;
 - a senha das vizinhanças é **`SENHA`**.
 
-### Descrição do cenário
+### 4.1 Descrição do cenário
 
 A **empresa** pertence ao **AS 1000** e possui o bloco público **200.18.245.64/27**, que será anunciado para a Internet usando o protocolo **BGP**. Internamente, a empresa também possui a rede local **192.168.0.0/24**, conectada ao roteador **R1** por meio do **SW1**. No roteador da empresa, também é criada a interface de loopback **11.11.11.11/32**, que será usada como origem da sessão BGP com o **ISP1**.
 
@@ -157,7 +157,7 @@ O **ISP1** conecta-se ao **ISP3**, pertencente ao **AS 300**, pela rede **191.1.
 
 Dessa forma, o laboratório representa uma empresa anunciando seu prefixo público para dois provedores distintos, sendo um deles configurado com vizinhança via loopback e outro com vizinhança direta pela interface física. Esse arranjo permite estudar, de forma prática, o funcionamento do **BGP externo**, o anúncio de prefixos, o uso de `network`, o papel das interfaces de loopback e a formação de sessões entre diferentes sistemas autônomos.
 
-### Diagrama lógico 
+### 4.2 Diagrama lógico 
 
 ```mermaid
 flowchart LR
@@ -372,11 +372,11 @@ O BGP opera sobre uma conexão **TCP confiável na porta 179**. Nesta etapa, o a
 
 O aluno deverá localizar no Wireshark os seguintes tipos de pacotes definidos na RFC 4271:
 
-#### 1. Handshake TCP de Transporte (Porta 179)
+#### 10.2.1 Handshake TCP de Transporte (Porta 179)
 - Identificar os pacotes `SYN`, `SYN-ACK` e `ACK` que inicializam o canal confiável.
 - Observar a presença da opção **TCP Option (19) - TCP MD5 Signature** no cabeçalho TCP, resultante da configuração do comando `neighbor ... password SENHA`.
 
-#### 2. Mensagem BGP OPEN
+#### 10.2.2 Mensagem BGP OPEN
 - Inspecionada imediatamente após a conclusão do *handshake* TCP.
 - **Campos a analisar:**
   - `Version`: versão do BGP (deve ser 4);
@@ -385,11 +385,11 @@ O aluno deverá localizar no Wireshark os seguintes tipos de pacotes definidos n
   - `BGP Identifier`: endereço IP do Router-ID do emissor;
   - `Optional Parameters`: capacidades negociadas (e.g., suporte a MP-BGP e AS de 4 bytes).
 
-#### 3. Mensagem BGP KEEPALIVE
+#### 10.2.3 Mensagem BGP KEEPALIVE
 - Pacote periódico simples (composto apenas pelo cabeçalho padrão de 19 bytes do BGP).
 - Observar que ele é trocado a cada $\frac{1}{3}$ do *Hold Time* (tipicamente a cada 60 segundos) para manter o estado da adjacência como `Established`.
 
-#### 4. Mensagem BGP UPDATE
+#### 10.2.4 Mensagem BGP UPDATE
 - Mensagem responsável por divulgar ou retirar rotas.
 - **Campos a analisar:**
   - `Network Layer Reachability Information (NLRI)`: verificar o prefixo público anunciado pela empresa (**`200.18.245.64/27`**);
@@ -398,7 +398,7 @@ O aluno deverá localizar no Wireshark os seguintes tipos de pacotes definidos n
     - **AS_PATH:** deve conter a sequência de ASs percorridos;
     - **NEXT_HOP:** endereço do próximo salto para o prefixo anunciado.
 
-#### 5. Inspeção do TTL no Cabeçalho IP (eBGP Multihop)
+#### 10.2.5 Inspeção do TTL no Cabeçalho IP (eBGP Multihop)
 - Comparar o campo **Time to Live (TTL)** nos pacotes IP entre os dois enlaces:
   - Na sessão com o **ISP2** (enlace direto): o TTL é enviado com valor **1** (padrão de sessões eBGP);
   - Na sessão com o **ISP1** (via Loopback com `ebgp-multihop 2`): o TTL é enviado com valor **2**, permitindo que o pacote atravesse o roteador intermediário até atingir a interface de loopback `10.10.10.10/32`.

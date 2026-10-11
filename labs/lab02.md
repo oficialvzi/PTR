@@ -40,7 +40,7 @@ A topologia do laboratório é composta por:
 - **2 PCS** 
 - enlaces Ethernet entre os dispositivos
 
-### Diagrama lógico
+### 3.1 Diagrama lógico
 
 ```mermaid
 flowchart LR
@@ -56,10 +56,10 @@ flowchart LR
 
 | Dispositivo | Interface        | Endereço IP   | Máscara           | Gateway Padrão | Observação                    |
 |-------------|------------------|:---------------:|-------------------|:----------------:|-------------------------------|
-| Router      | Fa0/0            | 192.168.0.254 | 255.255.255.0     | —              | Interface LAN do roteador     |
+| Router      | Fa0/0            | 192.168.0.254 | 255.255.255.0     | -              | Interface LAN do roteador     |
 | PC 1        | eth0             | 192.168.0.1   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
 | PC 2        | eth0             | 192.168.0.2   | 255.255.255.0     | 192.168.0.254  | Host conectado ao switch      |
-| Terminal    | Console          | —             | —                 | —              | Acesso local via cabo console |
+| Terminal    | Console          | -             | -                 | -              | Acesso local via cabo console |
 
 ---
 

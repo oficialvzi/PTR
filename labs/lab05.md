@@ -178,7 +178,7 @@ flowchart LR
 
 ## 5. Plano de endereçamento
 
-### Tipos de interfaces
+### 5.1 Tipos de interfaces
 
 - **`f` = FastEthernet**  
   Interface Ethernet de menor velocidade, muito comum em laboratórios e em equipamentos mais antigos.  
@@ -212,7 +212,7 @@ flowchart LR
 
 O cenário segue uma lógica simples com redes da faixa `172.16.0.0/16`, organizadas em sub-redes `/24`.
 
-### 5.1 Redes utilizadas
+### 5.2 Redes utilizadas
 
 | Segmento | Rede | Máscara |
 |---|---|---|
@@ -225,9 +225,9 @@ O cenário segue uma lógica simples com redes da faixa `172.16.0.0/16`, organiz
 | LAN BH-50 | 172.16.50.0 | 255.255.255.0 |
 | LAN BH-60 | 172.16.60.0 | 255.255.255.0 |
 
-### 5.2 Endereçamento das interfaces dos roteadores
+### 5.3 Endereçamento das interfaces dos roteadores
 
-#### Router-RJ
+#### 5.3.1 Router-RJ
 
 | Interface | Endereço IP | Máscara | Função |
 |---|---|---|---|
@@ -235,7 +235,7 @@ O cenário segue uma lógica simples com redes da faixa `172.16.0.0/16`, organiz
 | `f0/0` | 172.16.10.254 | 255.255.255.0 | LAN RJ-10 |
 | `f0/1` | 172.16.20.254 | 255.255.255.0 | LAN RJ-20 |
 
-#### Router-SP
+#### 5.3.2 Router-SP
 
 | Interface | Endereço IP | Máscara | Função |
 |---|---|---|---|
@@ -244,7 +244,7 @@ O cenário segue uma lógica simples com redes da faixa `172.16.0.0/16`, organiz
 | `f0/1` | 172.16.40.254 | 255.255.255.0 | LAN SP-40 |
 | `g0/1` | 172.16.200.1 | 255.255.255.0 | WAN para Belo Horizonte |
 
-#### Router-BH
+#### 5.3.3 Router-BH
 
 | Interface | Endereço IP | Máscara | Função |
 |---|---|---|---|
@@ -252,7 +252,7 @@ O cenário segue uma lógica simples com redes da faixa `172.16.0.0/16`, organiz
 | `f0/0` | 172.16.50.254 | 255.255.255.0 | LAN BH-50 |
 | `f0/1` | 172.16.60.254 | 255.255.255.0 | LAN BH-60 |
 
-### 5.3 Endereçamento dos hosts
+### 5.4 Endereçamento dos hosts
 
 | Host | Endereço IP | Máscara | Gateway |
 |---|---|---|---|
@@ -287,7 +287,7 @@ Montar a topologia com:
 
 > Obs.: antes de configurar as interfaces dos roteadores, é interessante configurar os endereços das máquinas que representam as sub-redes, com seus respectivos gateways. É importante lembrar que o gateway de cada sub-rede será a interface do roteador que foi configurada como membro dessa mesma sub-rede.
 
-### Configuração para PC-BH-60-2 (Exemplo)
+### 7.1 Configuração para PC-BH-60-2 (Exemplo)
 
 ```bash
 O formato básico é ip <ip_address> <subnet_mask> <gateway>
@@ -297,9 +297,9 @@ show ip
 save
 ```
 
-Repita o mesmo comando para todos os outros VPCs considerando a seção **5.3 Endereçamento dos hosts**.
+Repita o mesmo comando para todos os outros VPCs considerando a seção **5.4 Endereçamento dos hosts**.
 
-### 7.1 Router-RJ
+### 7.2 Router-RJ
 
 ```bash
 Router> enable
@@ -317,7 +317,7 @@ Router-RJ(config-if)# no shut
 Router-RJ(config-if)# end
 ```
 
-### 7.2 Router-SP
+### 7.3 Router-SP
 
 ```bash
 Router> enable
@@ -338,7 +338,7 @@ Router-SP(config-if)# no shut
 Router-SP(config-if)# end
 ```
 
-### 7.3 Router-BH
+### 7.4 Router-BH
 
 ```bash
 Router> enable
@@ -366,13 +366,13 @@ Antes de configurar o OSPF, verificar:
 - ausência de rotas remotas;
 - tabela de rotas contendo apenas rotas conectadas.
 
-### Comando de verificação
+### 8.1 Comando de verificação
 
 ```bash
 show ip route
 ```
 
-### Resultado esperado
+### 8.2 Resultado esperado
 
 - presença de rotas `C` e `L`;
 - ausência de rotas aprendidas dinamicamente;
@@ -427,7 +427,7 @@ Router-BH(config-router)# end
 
 ## 10. Verificação do OSPF
 
-### Comandos em todos os roteadores
+### 10.1 Comandos em todos os roteadores
 
 ```bash
 show ip ospf neighbor
@@ -439,7 +439,7 @@ ping 172.16.50.1
 ping 172.16.60.1
 ```
 
-### Resultado esperado
+### 10.2 Resultado esperado
 
 - adjacência OSPF (estado `FULL`) formada entre RJ-SP e SP-BH;
 - rotas aprendidas na tabela de roteamento com marcação `O`;
@@ -554,7 +554,7 @@ Este laboratório foi conduzido inteiramente em OSPF. Ainda assim, é importante
 
 ## 14. Troubleshooting proposto
 
-### Situação 1 – Remover uma rede do anúncio OSPF em São Paulo
+### 14.1 Situação 1 - Remover uma rede do anúncio OSPF em São Paulo
 
 ```bash
 configure terminal
@@ -569,7 +569,7 @@ Verificar:
 - impacto na conectividade;
 - necessidade de restaurar a configuração.
 
-### Situação 2 – Interromper o enlace SP-BH
+### 14.2 Situação 2 - Interromper o enlace SP-BH
 
 ```bash
 configure terminal
@@ -594,7 +594,7 @@ interface g0/1
 end
 ```
 
-### Situação 3 – Alterar a área de uma rede (erro de configuração comum)
+### 14.3 Situação 3 - Alterar a área de uma rede (erro de configuração comum)
 
 ```bash
 configure terminal

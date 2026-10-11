@@ -54,7 +54,7 @@ A atividade foi estruturada para simplificar o primeiro contato com multicast ro
 
 Protocolos de roteamento tradicionais foram concebidos para comunicação **unicast**, em que um emissor envia pacotes para um único destino. Em aplicações como transmissão de vídeo, distribuição de conteúdo em tempo real, aulas ao vivo, monitoramento e replicação simultânea de dados, esse modelo pode ser ineficiente, pois obriga a origem a enviar múltiplas cópias do mesmo fluxo para diferentes receptores. Nesse contexto surge o **multicast IP**, cujo objetivo é permitir que um mesmo fluxo seja entregue a vários receptores interessados, reduzindo consumo de banda e processamento na origem.
 
-### Diagrama explicativo do conceito de multicast com PIM-DM
+### 3.1 Diagrama explicativo do conceito de multicast com PIM-DM
 
 ```mermaid
 flowchart LR

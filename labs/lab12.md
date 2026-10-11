@@ -6,7 +6,7 @@
 
 ---
 
-## Objetivo
+## 1. Objetivo
 
 Implementar um **Web Application Firewall (WAF)** em uma máquina Linux no PNetLab, utilizando **Nginx + ModSecurity + OWASP Core Rule Set (CRS)** em modo de **proxy reverso**, de forma que o tráfego HTTP entre um cliente e um servidor web interno seja inspecionado e controlado na **camada de aplicação**.
 
@@ -24,11 +24,11 @@ Ao final deste laboratório, o estudante deverá ser capaz de:
 
 ---
 
-## Introdução
+## 2. Introdução
 
 Nos laboratórios anteriores, o controle de tráfego foi feito inicialmente com um **firewall de pacotes**, que toma decisões com base em informações como endereço IP, protocolo e porta, e depois com um **firewall stateful**, que também acompanha o estado das conexões. Esses mecanismos são fundamentais para a segurança da rede, mas não conseguem, sozinhos, analisar em profundidade o conteúdo de uma requisição web.
 
-## Web Application Firewall (WAF)
+## 3. Web Application Firewall (WAF)
 
 Um **Web Application Firewall (WAF)** atua em um nível mais alto, inspecionando o tráfego **HTTP/HTTPS** e aplicando regras voltadas à proteção de aplicações web. Em vez de decidir apenas se a porta 80 ou 443 pode ser usada, o WAF analisa elementos como:
 
@@ -48,7 +48,7 @@ Neste laboratório, será utilizado o **ModSecurity**, em conjunto com o **OWASP
 *Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
 
-## Proxy Reverso
+## 4. Proxy Reverso
 
 Um proxy reverso é um servidor intermediário que recebe as requisições dos clientes e as encaminha para um ou mais servidores internos, devolvendo depois a resposta ao cliente.
 
@@ -59,7 +59,7 @@ Na prática, o cliente acha que está falando diretamente com o serviço, mas na
 
 *Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
-## Funções principais de um proxy reverso
+## 5. Funções principais de um proxy reverso
 
 - Ocultar o servidor interno: O cliente acessa o proxy, não o servidor real.
 - Distribuir requisições: Pode enviar tráfego para vários servidores backend, fazendo balanceamento de carga.
@@ -69,7 +69,7 @@ Na prática, o cliente acha que está falando diretamente com o serviço, mas na
 
 ---
 
-## Relação com os Laboratórios 10 e 11
+## 6. Relação com os Laboratórios 10 e 11
 
 Este laboratório deve ser entendido como continuação direta do processo de evolução das defesas em rede:
 
@@ -77,7 +77,7 @@ Este laboratório deve ser entendido como continuação direta do processo de ev
 - **Lab 11**: firewall stateful com `conntrack`
 - **Lab 12**: firewall de aplicação com inspeção de tráfego HTTP
 
-### Síntese comparativa
+### 6.1 Síntese comparativa
 
 | Tecnologia | Camada de atuação | Exemplo de decisão |
 |---|---|---|
@@ -87,7 +87,7 @@ Este laboratório deve ser entendido como continuação direta do processo de ev
 
 ---
 
-## Situação-problema
+## 7. Situação-problema
 
 Uma organização já protege sua rede com um firewall tradicional, permitindo apenas o tráfego necessário entre suas redes. Posteriormente, passou a usar firewall stateful para melhorar o controle das conexões e reduzir regras redundantes. Ainda assim, a equipe percebe que uma aplicação web interna continua exposta a riscos, já que qualquer usuário com acesso à porta HTTP pode enviar requisições maliciosas.
 
@@ -95,7 +95,7 @@ Para aumentar a proteção, a organização decide implantar um **WAF** entre os
 
 ---
 
-## Topologia lógica
+## 8. Topologia lógica
 
 ```mermaid
 flowchart LR
@@ -117,7 +117,7 @@ flowchart LR
 
 ---
 
-## Plano de endereçamento
+## 9. Plano de endereçamento
 
 | Dispositivo | Interface | Endereço IP | Máscara | Gateway |
 |---|---|---|---|---|
@@ -128,7 +128,7 @@ flowchart LR
 
 ---
 
-## Premissas do laboratório
+## 10. Premissas do laboratório
 
 Neste laboratório, o foco será:
 
@@ -144,22 +144,22 @@ Neste laboratório, o foco será:
 
 ---
 
-## Sugestão de imagens no PNetLab
+## 11. Sugestão de imagens no PNetLab
 
-### Linux Cliente
+### 11.1 Linux Cliente
 Pode ser usado:
 
 - TinyCore Linux
 - Ubuntu básico
 
-### Linux WAF
+### 11.2 Linux WAF
 Recomendado:
 
 - **Ubuntu Server 24.04**  
 ou  
 - **Ubuntu Server 22.04**
 
-### Servidor Web Interno
+### 11.3 Servidor Web Interno
 Pode ser usado:
 
 - Ubuntu Server
@@ -167,9 +167,9 @@ Pode ser usado:
 
 ---
 
-## Configuração dos hosts
+## 12. Configuração dos hosts
 
-### Linux Cliente
+### 12.1 Linux Cliente
 
 Configure o endereço IP e a rota padrão:
 
@@ -179,7 +179,7 @@ sudo ip link set eth0 up
 sudo ip route add default via 192.168.10.1
 ```
 
-### Servidor Web Interno
+### 12.2 Servidor Web Interno
 
 Configure o endereço IP e a rota padrão:
 
@@ -189,7 +189,7 @@ sudo ip link set eth0 up
 sudo ip route add default via 192.168.20.1
 ```
 
-### Linux WAF
+### 12.3 Linux WAF
 
 Configure as duas interfaces:
 
@@ -208,7 +208,7 @@ ip addr show
 
 ---
 
-## Ativação do roteamento IP no WAF
+## 13. Ativação do roteamento IP no WAF
 
 Embora o WAF opere principalmente como proxy reverso, é recomendável manter o host preparado para encaminhamento entre interfaces quando necessário.
 
@@ -230,23 +230,23 @@ Valor esperado:
 
 ---
 
-## Teste inicial de conectividade
+## 14. Teste inicial de conectividade
 
 Antes da implantação do WAF, valide a conectividade entre os hosts.
 
-### No Linux Cliente
+### 14.1 No Linux Cliente
 
 ```bash
 ping 192.168.10.1
 ```
 
-### No Servidor Web
+### 14.2 No Servidor Web
 
 ```bash
 ping 192.168.20.1
 ```
 
-### No Linux WAF
+### 14.3 No Linux WAF
 
 ```bash
 ping 192.168.10.10
@@ -255,24 +255,24 @@ ping 192.168.20.10
 
 ---
 
-## Preparação do servidor web interno
+## 15. Preparação do servidor web interno
 
 No servidor web interno, instale um serviço HTTP simples.
 
-### Opção com Nginx
+### 15.1 Opção com Nginx
 
 ```bash
 sudo apt update
 sudo apt install -y nginx
 ```
 
-### Criar uma página simples
+### 15.2 Criar uma página simples
 
 ```bash
 echo "<h1>Servidor Web Interno OK</h1>" | sudo tee /var/www/html/index.html
 ```
 
-### Verificar o serviço
+### 15.3 Verificar o serviço
 
 ```bash
 sudo systemctl enable nginx
@@ -280,7 +280,7 @@ sudo systemctl start nginx
 sudo systemctl status nginx
 ```
 
-### Teste local no próprio servidor
+### 15.4 Teste local no próprio servidor
 
 ```bash
 curl http://127.0.0.1
@@ -290,7 +290,7 @@ Resultado esperado: a página HTML deve ser exibida.
 
 ---
 
-## Instalação do Nginx no host WAF
+## 16. Instalação do Nginx no host WAF
 
 No Linux WAF:
 
@@ -309,7 +309,7 @@ sudo systemctl status nginx
 
 ---
 
-## Instalação do ModSecurity no host WAF
+## 17. Instalação do ModSecurity no host WAF
 
 Instale o módulo do ModSecurity e componentes necessários:
 
@@ -324,7 +324,7 @@ sudo apt install -y libnginx-mod-http-modsecurity modsecurity-crs
 
 ---
 
-## Habilitação do ModSecurity
+## 18. Habilitação do ModSecurity
 
 Verifique o arquivo principal de configuração do ModSecurity. Em muitas instalações, ele está em:
 
@@ -358,7 +358,7 @@ sudo sed -i 's/SecRuleEngine DetectionOnly/SecRuleEngine On/' /etc/modsecurity/m
 
 ---
 
-## Ativação do OWASP CRS
+## 19. Ativação do OWASP CRS
 
 Verifique a localização do CRS. Em instalações comuns no Ubuntu, ele pode estar em:
 
@@ -380,7 +380,7 @@ sudo cp /usr/share/modsecurity-crs/crs-setup.conf.example /etc/modsecurity/crs/c
 
 ---
 
-## Configuração do Nginx como proxy reverso com WAF
+## 20. Configuração do Nginx como proxy reverso com WAF
 
 Crie ou edite a configuração do site padrão do Nginx no WAF.
 
@@ -411,7 +411,7 @@ server {
 
 ---
 
-## Arquivo principal de regras do Nginx + ModSecurity
+## 21. Arquivo principal de regras do Nginx + ModSecurity
 
 Crie o arquivo:
 
@@ -432,7 +432,7 @@ Include /usr/share/modsecurity-crs/rules/*.conf
 
 ---
 
-## Teste e recarga do Nginx
+## 22. Teste e recarga do Nginx
 
 Verifique a sintaxe:
 
@@ -454,7 +454,7 @@ sudo systemctl status nginx
 
 ---
 
-## Teste funcional do proxy reverso
+## 23. Teste funcional do proxy reverso
 
 No **Linux Cliente**, faça o acesso ao IP do WAF:
 
@@ -469,9 +469,9 @@ Resultado esperado:
 
 ---
 
-## Teste comparativo de acesso direto e indireto
+## 24. Teste comparativo de acesso direto e indireto
 
-### Acesso via WAF
+### 24.1 Acesso via WAF
 
 No cliente:
 
@@ -479,7 +479,7 @@ No cliente:
 curl http://192.168.10.1
 ```
 
-### Acesso direto ao backend
+### 24.2 Acesso direto ao backend
 
 Se houver rota direta, teste:
 
@@ -487,7 +487,7 @@ Se houver rota direta, teste:
 curl http://192.168.20.10
 ```
 
-### O que observar
+### 24.3 O que observar
 
 - o acesso correto para publicação deve ser via **WAF**;
 - o backend idealmente deve ficar menos exposto ao cliente;
@@ -495,9 +495,9 @@ curl http://192.168.20.10
 
 ---
 
-## Verificação de logs
+## 25. Verificação de logs
 
-### Logs do Nginx
+### 25.1 Logs do Nginx
 
 ```bash
 sudo tail -f /var/log/nginx/access.log
@@ -507,7 +507,7 @@ sudo tail -f /var/log/nginx/access.log
 sudo tail -f /var/log/nginx/error.log
 ```
 
-### Logs do ModSecurity
+### 25.2 Logs do ModSecurity
 
 Dependendo da configuração, o log pode estar em:
 
@@ -525,7 +525,7 @@ sudo tail -f /var/log/modsec_audit.log
 
 ---
 
-## Observações didáticas importantes
+## 26. Observações didáticas importantes
 
 Ao final desta etapa, o aluno deve perceber que:
 
@@ -536,20 +536,20 @@ Ao final desta etapa, o aluno deve perceber que:
 
 ---
 
-## Diferença em relação aos Labs 10 e 11
+## 27. Diferença em relação aos Labs 10 e 11
 
-### No Lab 10
+### 27.1 No Lab 10
 O host intermediário filtrava pacotes com `iptables`.
 
-### No Lab 11
+### 27.2 No Lab 11
 O host intermediário passou a considerar estados de conexão.
 
-### No Lab 12
+### 27.3 No Lab 12
 O host intermediário atua como **proxy reverso com inspeção HTTP**, o que significa que ele entende melhor o serviço publicado e pode aplicar políticas específicas sobre requisições web.
 
 ---
 
-## Questões para análise
+## 28. Questões para análise
 
 1. O que caracteriza um WAF?
 2. Qual é a principal diferença entre um WAF e um firewall stateful?
@@ -564,7 +564,7 @@ O host intermediário atua como **proxy reverso com inspeção HTTP**, o que sig
 
 ---
 
-## Critérios de avaliação
+## 29. Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -577,7 +577,7 @@ O host intermediário atua como **proxy reverso com inspeção HTTP**, o que sig
 
 ---
 
-## Entregáveis
+## 30. Entregáveis
 
 Cada aluno deve entregar:
 
@@ -595,7 +595,7 @@ Cada aluno deve entregar:
 
 ---
 
-## Conclusão esperada
+## 31. Conclusão esperada
 
 Ao final deste laboratório, o estudante deve perceber que:
 

@@ -13,7 +13,7 @@ Aplicar políticas de roteamento **BGP** e integrar o **BGP** ao **OSPF** em um 
 
 ---
 
-## 2. **Importante:** Este laboratório é uma continuação das atividades anteriores. 
+## 2. Observação preliminar - Continuação das atividades anteriores 
 
 > Considere que as configurações básicas de interfaces, endereçamento IP, conectividade inicial e topologia já foram realizadas anteriormente.  Portanto, **não devem ser refeitas** as configurações iniciais da infraestrutura.  Neste laboratório, o foco será apenas nas configurações **necessárias para continuidade das atividades**, especificamente:
 > 
@@ -155,21 +155,21 @@ Neste laboratório, serão realizadas apenas as configurações referentes a:
 
 ## 7. Dados relevantes do cenário
 
-### Empresa – AS 1000
+### 7.1 Empresa - AS 1000
 
 - Prefixo público: `200.18.245.64/27`
 - LAN interna: `192.168.0.0/24`
 - Loopback do R1: `11.11.11.11/32`
 
-### ISP1 – AS 100
+### 7.2 ISP1 - AS 100
 
 - Loopback do ISP1: `10.10.10.10/32`
 
-### ISP2 – AS 200
+### 7.3 ISP2 - AS 200
 
 - Vizinho direto com R1 pela rede `10.2.0.0/30`
 
-### Prefixos externos no ISP3 – AS 300
+### 7.4 Prefixos externos no ISP3 - AS 300
 
 - `181.0.0.0/8`
 - `182.0.0.0/8`
@@ -179,7 +179,7 @@ Neste laboratório, serão realizadas apenas as configurações referentes a:
 
 ---
 
-## 8. Etapa 1 – Configuração do OSPF interno no R1
+## 8. Etapa 1 - Configuração do OSPF interno no R1
 
 Neste laboratório, o OSPF representa o domínio interno da empresa.
 
@@ -194,7 +194,7 @@ R1(config-router)# end
 
 ---
 
-## 9. Etapa 2 – Configuração do BGP no R1
+## 9. Etapa 2 - Configuração do BGP no R1
 
 Nesta etapa, será configurado o **BGP** apenas no roteador da empresa, considerando que a infraestrutura do cenário já está pronta.
 
@@ -218,7 +218,7 @@ R1(config)# end
 
 ---
 
-## 10. Etapa 3 – Política BGP: ISP1 como principal, ISP2 como backup
+## 10. Etapa 3 - Política BGP: ISP1 como principal, ISP2 como backup
 
 A política abaixo define o **ISP1** como caminho preferencial de saída e o **ISP2** como contingência.
 
@@ -236,7 +236,7 @@ R1(config-router)# neighbor 10.2.0.2 weight 100
 R1(config-router)# end
 ```
 
-### Observação
+### 10.1 Observação
 
 - O atributo **weight** é local ao roteador Cisco
 - Neste caso, ele está sendo usado para demonstrar de forma simples a escolha de caminho preferencial
@@ -245,7 +245,7 @@ R1(config-router)# end
 
 ---
 
-## 11. Etapa 4 – Integração entre BGP e OSPF
+## 11. Etapa 4 - Integração entre BGP e OSPF
 
 A integração proposta neste laboratório não redistribui todos os prefixos externos no OSPF. Será propagada apenas a **rota default**, o que representa uma prática mais limpa para o domínio interno.
 
@@ -277,7 +277,7 @@ R1(config-router)# end
 
 ---
 
-## 12. Etapa 5 – Verificação da conectividade e da política
+## 12. Etapa 5 - Verificação da conectividade e da política
 
 Depois de aplicar as configurações, verifique:
 
@@ -286,7 +286,7 @@ Depois de aplicar as configurações, verifique:
 - se o melhor caminho é o ISP1
 - se a rota default está presente no domínio OSPF
 
-### Comandos sugeridos no R1
+### 12.1 Comandos sugeridos no R1
 
 ```bash
 show ip interface brief
@@ -299,7 +299,7 @@ show ip protocols
 show running-config
 ```
 
-### Comandos sugeridos nos provedores
+### 12.2 Comandos sugeridos nos provedores
 
 ```bash
 show ip interface brief
@@ -311,9 +311,9 @@ show running-config
 
 ---
 
-## 13. Etapa 6 – Teste de falha
+## 13. Etapa 6 - Teste de falha
 
-### Procedimento
+### 13.1 Procedimento
 
 1. Verifique o melhor caminho com todos os enlaces ativos
 2. Desative um dos enlaces físicos com o **ISP1**
@@ -321,7 +321,7 @@ show running-config
 4. Em seguida, desative a conectividade total com o **ISP1**
 5. Verifique se a saída migra para o **ISP2**
 
-### O que observar
+### 13.2 O que observar
 
 - o **ISP1** deve ser o caminho principal
 - o **ISP2** deve assumir em caso de falha

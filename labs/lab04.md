@@ -39,7 +39,7 @@ Protocolos de roteamento dinâmico foram desenvolvidos para permitir que roteado
 
 O RIP pertence à classe dos protocolos de **vetor-distância**. Nesse modelo, cada roteador anuncia periodicamente a seus vizinhos as redes que conhece e a distância até elas, medida em **número de saltos**. Cada roteador, ao receber essas informações, recalcula sua tabela de roteamento e escolhe o melhor caminho com base na menor métrica. No RIP, uma rota com até **15 saltos** é considerada alcançável; uma métrica **16** representa destino inalcançável. Essa característica torna o protocolo simples, mas também limita sua aplicação a redes pequenas.
 
-### Diagrama explicativo do funcionamento do RIP
+### 4.1 Diagrama explicativo do funcionamento do RIP
 
 ```mermaid
 flowchart LR
@@ -121,14 +121,14 @@ Adicionar ao laboratório:
 - **2 hosts VPCs**;
 - enlaces ponto a ponto entre os roteadores.
 
-### Conexões da topologia
+### 7.1 Conexões da topologia
 
 - conectar o **VPC1** à interface **G0/0** do **R1**;
 - conectar a interface **G0/1** do **R1** à interface **G0/0** do **R2**;
 - conectar a interface **G0/1** do **R2** à interface **G0/0** do **R3**;
 - conectar o **VPC2** à interface **G0/1** do **R3**.
 
-### Resultado esperado da montagem
+### 7.2 Resultado esperado da montagem
 
 Ao final da montagem, o cenário deverá permitir:
 
@@ -141,7 +141,7 @@ Ao final da montagem, o cenário deverá permitir:
 
 ## 8. Configuração básica dos hosts 
 
-### VPC1
+### 8.1 VPC1
 
 
 ```bash
@@ -149,7 +149,7 @@ ip 192.168.10.10/24 192.168.10.1
 save
 ```
 
-### VPC2
+### 8.2 VPC2
 
 ```bash
 ip 192.168.30.10/24 192.168.30.1
@@ -160,7 +160,7 @@ save
 
 ## 9. Configuração dos roteadores
 
-### R1
+### 9.1 R1
 
 ```bash
 enable
@@ -187,7 +187,7 @@ end
 copy running-config startup-config
 ```
 
-### R2
+### 9.2 R2
 
 ```bash
 enable
@@ -214,7 +214,7 @@ end
 copy running-config startup-config
 ```
 
-### R3
+### 9.3 R3
 
 ```bash
 enable
@@ -263,7 +263,7 @@ ping 192.168.30.10
 
 ## 11. Experimento de convergência
 
-### Etapa 1 - Estado estável
+### 11.1 Etapa 1 - Estado estável
 
 Com a rede funcionando:
 
@@ -271,7 +271,7 @@ Com a rede funcionando:
 - verificar a rota para `192.168.10.0/24` em **R3**;
 - confirmar a conectividade entre **VPC1** e **VPC2**.
 
-### Etapa 2 - Falha de enlace
+### 11.2 Etapa 2 - Falha de enlace
 
 Desativar a interface entre **R2** e **R3**.
 
@@ -284,7 +284,7 @@ shutdown
 end
 ```
 
-### Etapa 3 - Observação
+### 11.3 Etapa 3 - Observação
 
 Após a falha:
 

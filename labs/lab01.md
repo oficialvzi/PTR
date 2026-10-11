@@ -5,7 +5,7 @@
 
 ---
 
-## Objetivos do laboratório
+## 1. Objetivos do laboratório
 
 - Compreender que redes distintas **não se comunicam automaticamente**
     
@@ -18,9 +18,9 @@
 >DICA: Execute o comando `setxkbmap -model pc105 -layout br -variant abnt2` tente colar com Ctrl+Shift+V
 ---
 
-## Cenário do Laboratório
+## 2. Cenário do laboratório
 
-### Topologia lógica
+### 2.1 Topologia lógica
 
 
 ```mermaid
@@ -32,7 +32,7 @@ flowchart
 
  ---
 
-## Recursos no PNetLab
+## 3. Recursos no PNetLab
 
 - Escolha usar um router ou SW L3
 
@@ -45,9 +45,9 @@ flowchart
 
 ---
 
-## Parte 1 – Montagem da topologia
+## 4. Parte 1 - Montagem da topologia
 
-### Passo 1 – Criar o laboratório
+### 4.1 Passo 1 - Criar o laboratório
 
 1. Acessar o PNetLab
     
@@ -64,7 +64,7 @@ flowchart
 
 ---
 
-### Passo 2 – Conectar os dispositivos
+### 4.2 Passo 2 - Conectar os dispositivos
 
 - Host A → Interface 1 do Router
     
@@ -73,9 +73,9 @@ flowchart
 
 ---
 
-## Parte 2 – Configuração de endereçamento IP
+## 5. Parte 2 - Configuração de endereçamento IP
 
-### Endereçamento proposto
+### 5.1 Endereçamento proposto
 
 |Dispositivo|Interface|IP|Máscara|
 |---|---|---|---|
@@ -86,7 +86,7 @@ flowchart
 
 ---
 
-### Passo 3 – Configurar os hosts
+### 5.2 Passo 3 - Configurar os hosts
 
 **Host A**
 
@@ -104,7 +104,7 @@ ip link set eth0 up
 
 ---
 
-### Passo 4 – Configurar o roteador
+### 5.3 Passo 4 - Configurar o roteador
 
 ```bash
 ip addr add 192.168.10.1/24 dev eth0
@@ -115,9 +115,9 @@ ip link set eth1 up
 
 ---
 
-## Parte 3 – Testes de conectividade sem roteamento
+## 6. Parte 3 - Testes de conectividade sem roteamento
 
-### Passo 5 – Testes iniciais
+### 6.1 Passo 5 - Testes iniciais
 
 1. Do Host A:
     
@@ -135,7 +135,7 @@ ip link set eth1 up
 
 ---
 
-### Discussão orientada
+### 6.2 Discussão orientada
 
 - O enlace físico funciona?
     
@@ -148,9 +148,9 @@ ip link set eth1 up
 
 ---
 
-## Parte 4 – Introdução da decisão de roteamento
+## 7. Parte 4 - Introdução da decisão de roteamento
 
-### Passo 6 – Configurar gateway padrão nos hosts
+### 7.1 Passo 6 - Configurar gateway padrão nos hosts
 
 **Host A**
 
@@ -162,7 +162,7 @@ ip link set eth1 up
 
 ---
 
-### Passo 7 – Novo teste de conectividade
+### 7.2 Passo 7 - Novo teste de conectividade
 
 `ping 192.168.20.10`
 
@@ -170,9 +170,9 @@ ip link set eth1 up
 
 ---
 
-## Parte 5 – Observação da tabela de rotas
+## 8. Parte 5 - Observação da tabela de rotas
 
-### Passo 8 – Examinar tabelas
+### 8.1 Passo 8 - Examinar tabelas
 
 **Host A**
 
@@ -193,9 +193,9 @@ Pontos a observar:
 
 ---
 
-## Parte 6 – Amarração com a teoria
+## 9. Parte 6 - Amarração com a teoria
 
-### Discussão final orientada
+### 9.1 Discussão final orientada
 
 - O roteador conhece o caminho completo?
     
@@ -212,7 +212,7 @@ Relacionar explicitamente com:
 
 ---
 
-## Questões para análise
+## 10. Questões para análise
 
 1. No teste inicial, por que o Host A conseguiu alcançar a interface local do roteador (`192.168.10.1`), mas não conseguiu se comunicar com o Host B (`192.168.20.10`)?
 2. Qual a função exata do comando de gateway padrão (`ip route add default via ...`) configurado nos hosts e o que ocorre na ausência dele?
@@ -221,7 +221,7 @@ Relacionar explicitamente com:
 
 ---
 
-## Critérios de avaliação
+## 11. Critérios de avaliação
 
 | Critério | Pontos |
 |---|---:|
@@ -235,7 +235,7 @@ Relacionar explicitamente com:
 
 ---
 
-## Entregáveis
+## 12. Entregáveis
 
 O aluno deverá enviar relatório técnico contendo:
 - captura de tela da topologia montada e ativa no PNetLab;

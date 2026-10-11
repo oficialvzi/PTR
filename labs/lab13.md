@@ -6,7 +6,7 @@
 
 ---
 
-## Objetivo
+## 1. Objetivo
 
 Dar continuidade ao **Lab 12**, realizando testes controlados de requisições HTTP legítimas e maliciosas contra o ambiente protegido por **Nginx + ModSecurity + OWASP CRS**, de modo que o estudante consiga:
 
@@ -20,7 +20,7 @@ Dar continuidade ao **Lab 12**, realizando testes controlados de requisições H
 
 ---
 
-## Introdução
+## 2. Introdução
 
 No **Lab 12**, o aluno implantou um **proxy reverso com WAF**, posicionando o Linux WAF entre o cliente e o servidor web interno. Nessa etapa, o foco foi a instalação, a publicação do serviço e a validação do acesso legítimo.
 
@@ -34,7 +34,7 @@ Este laboratório é importante porque torna visível a principal diferença ent
 
 ---
 
-## Relação com os Labs 10, 11 e 12
+## 3. Relação com os Labs 10, 11 e 12
 
 | Laboratório | Tecnologia | Foco principal |
 |---|---|---|
@@ -45,7 +45,7 @@ Este laboratório é importante porque torna visível a principal diferença ent
 
 ---
 
-## Situação-problema
+## 4. Situação-problema
 
 Uma aplicação web já está publicada por meio de um proxy reverso com WAF. A equipe de segurança precisa verificar se essa proteção consegue identificar padrões suspeitos em requisições HTTP e registrar adequadamente os eventos para investigação.
 
@@ -56,7 +56,7 @@ Para isso, serão realizados acessos normais e testes controlados com padrões f
 - **path traversal:** Ataque em que o invasor tenta acessar arquivos ou diretórios indevidos no servidor usando caminhos como `../` para sair da pasta permitida.
 - **Parâmetros suspeitos em URL:** São valores passados na própria URL que indicam tentativa de manipular o comportamento da aplicação ou acessar algo indevido.
 
-### Exemplos comuns:
+### 4.1 Exemplos comuns
 
 - tentar inserir comandos em parâmetros, como em `?id=1' OR '1'='1`
 - enviar scripts maliciosos, como em `?q=<script>alert(1)</script>`
@@ -66,7 +66,7 @@ São chamados de suspeitos porque fogem do uso normal esperado pela aplicação 
 
 ---
 
-## Topologia lógica
+## 5. Topologia lógica
 
 ```mermaid
 flowchart LR
@@ -88,7 +88,7 @@ flowchart LR
 
 ---
 
-## Plano de endereçamento
+## 6. Plano de endereçamento
 
 | Dispositivo | Interface | Endereço IP | Máscara | Gateway |
 |---|---|---|---|---|
@@ -99,7 +99,7 @@ flowchart LR
 
 ---
 
-## Pré-requisitos
+## 7. Pré-requisitos
 
 Este laboratório pressupõe que o **Lab 12** já esteja funcional, com os seguintes itens concluídos:
 
@@ -113,17 +113,17 @@ Este laboratório pressupõe que o **Lab 12** já esteja funcional, com os segui
 
 ---
 
-## Validação inicial do ambiente
+## 8. Validação inicial do ambiente
 
 Antes dos testes de ataque, confirme que o ambiente está operacional.
 
-### No servidor web interno
+### 8.1 No servidor web interno
 
 ```bash
 curl http://127.0.0.1
 ```
 
-### No cliente, via WAF
+### 8.2 No cliente, via WAF
 
 ```bash
 curl http://192.168.10.1
@@ -133,7 +133,7 @@ Resultado esperado: a página do servidor interno deve ser entregue normalmente.
 
 ---
 
-## Verificação dos serviços no WAF
+## 9. Verificação dos serviços no WAF
 
 ```bash
 sudo systemctl status nginx
@@ -154,23 +154,23 @@ sudo cat /etc/nginx/modsec/main.conf
 
 ---
 
-## Observação de logs
+## 10. Observação de logs
 
 Durante os testes, mantenha ao menos um terminal aberto no WAF para acompanhar os registros.
 
-### Log de acesso do Nginx
+### 10.1 Log de acesso do Nginx
 
 ```bash
 sudo tail -f /var/log/nginx/access.log
 ```
 
-### Log de erro do Nginx
+### 10.2 Log de erro do Nginx
 
 ```bash
 sudo tail -f /var/log/nginx/error.log
 ```
 
-### Log do ModSecurity
+### 10.3 Log do ModSecurity
 
 Dependendo da configuração:
 
@@ -182,9 +182,9 @@ ou verifique no `modsecurity.conf` o caminho configurado para auditoria.
 
 ---
 
-## Testes de tráfego legítimo
+## 11. Testes de tráfego legítimo
 
-### Acesso normal à página inicial
+### 11.1 Acesso normal à página inicial
 
 No cliente:
 
@@ -192,19 +192,19 @@ No cliente:
 curl http://192.168.10.1
 ```
 
-### Acesso com parâmetro simples
+### 11.2 Acesso com parâmetro simples
 
 ```bash
 curl "http://192.168.10.1/?id=10"
 ```
 
-### Acesso com user-agent comum
+### 11.3 Acesso com user-agent comum
 
 ```bash
 curl -A "Mozilla/5.0" http://192.168.10.1
 ```
 
-### Resultado esperado
+### 11.4 Resultado esperado
 
 - a resposta deve ser permitida;
 - o acesso deve aparecer nos logs;
@@ -212,35 +212,35 @@ curl -A "Mozilla/5.0" http://192.168.10.1
 
 ---
 
-## Testes controlados de requisições suspeitas
+## 12. Testes controlados de requisições suspeitas
 
 > Execute os testes abaixo somente no ambiente de laboratório.
 
-### Teste de padrão semelhante a SQL Injection
+### 12.1 Teste de padrão semelhante a SQL Injection
 
 ```bash
 curl "http://192.168.10.1/?id=1' OR '1'='1"
 ```
 
-### Teste de padrão semelhante a XSS
+### 12.2 Teste de padrão semelhante a XSS
 
 ```bash
 curl "http://192.168.10.1/?q=<script>alert(1)</script>"
 ```
 
-### Teste de path traversal
+### 12.3 Teste de path traversal
 
 ```bash
 curl "http://192.168.10.1/../../../etc/passwd"
 ```
 
-### Teste com URL codificada
+### 12.4 Teste com URL codificada
 
 ```bash
 curl "http://192.168.10.1/?file=%2e%2e%2f%2e%2e%2fetc%2fpasswd"
 ```
 
-### Resultado esperado
+### 12.5 Resultado esperado
 
 Em parte dos casos, o WAF deverá:
 
@@ -253,10 +253,10 @@ Em parte dos casos, o WAF deverá:
 
 ---
 
-## Comparação prática: rede funcionando, aplicação bloqueada
+## 13. Comparação prática: rede funcionando, aplicação bloqueada
 
 
-### Verificar que a conectividade IP continua válida
+### 13.1 Verificar que a conectividade IP continua válida
 
 No cliente:
 
@@ -264,19 +264,19 @@ No cliente:
 ping 192.168.10.1
 ```
 
-### Verificar que a porta HTTP continua publicada
+### 13.2 Verificar que a porta HTTP continua publicada
 
 ```bash
 curl -I http://192.168.10.1
 ```
 
-### Verificar que uma requisição maliciosa pode ser bloqueada mesmo com a porta aberta
+### 13.3 Verificar que uma requisição maliciosa pode ser bloqueada mesmo com a porta aberta
 
 ```bash
 curl "http://192.168.10.1/?q=<script>alert(1)</script>"
 ```
 
-### Interpretação
+### 13.4 Interpretação
 
 O aluno deve perceber que:
 
@@ -287,7 +287,7 @@ O aluno deve perceber que:
 
 ---
 
-## Atividade comparativa entre os modelos de firewall
+## 14. Atividade comparativa entre os modelos de firewall
 
 Preencha a tabela abaixo após executar os testes.
 
@@ -302,7 +302,7 @@ Preencha a tabela abaixo após executar os testes.
 
 ---
 
-## Análise de logs
+## 15. Análise de logs
 
 Após os testes, os alunos devem localizar nos logs:
 
@@ -313,7 +313,7 @@ Após os testes, os alunos devem localizar nos logs:
 - regra acionada, quando disponível;
 - mensagem de auditoria do ModSecurity.
 
-### Exemplo de análise esperada
+### 15.1 Exemplo de análise esperada
 
 O aluno deve conseguir afirmar algo como:
 
@@ -323,7 +323,7 @@ O aluno deve conseguir afirmar algo como:
 
 ---
 
-## Atividade opcional de tuning
+## 16. Atividade opcional de tuning
 
 Caso o ambiente esteja estável, o professor pode pedir uma pequena atividade de ajuste:
 
@@ -336,7 +336,7 @@ Caso o ambiente esteja estável, o professor pode pedir uma pequena atividade de
 > 
 ---
 
-## Questões para análise
+## 17. Questões para análise
 
 1. O que diferencia um WAF de um firewall stateful?
 2. Por que a requisição pode ser bloqueada mesmo com a porta 80 aberta?
@@ -351,7 +351,7 @@ Caso o ambiente esteja estável, o professor pode pedir uma pequena atividade de
 
 ---
 
-## Critérios de avaliação
+## 18. Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -364,7 +364,7 @@ Caso o ambiente esteja estável, o professor pode pedir uma pequena atividade de
 
 ---
 
-## Entregáveis
+## 19. Entregáveis
 
 Cada aluno deve entregar:
 
@@ -382,7 +382,7 @@ Cada aluno deve entregar:
 
 ---
 
-## Conclusão esperada
+## 20. Conclusão esperada
 
 Ao final deste laboratório, o estudante deve concluir que:
 

@@ -6,7 +6,7 @@
 
 ---
 
-## Objetivo
+## 1. Objetivo
 
 Implementar um ambiente de **IDS/IPS** no PNetLab utilizando **Suricata** em uma máquina Linux posicionada entre duas redes, permitindo ao estudante:
 
@@ -18,7 +18,7 @@ Implementar um ambiente de **IDS/IPS** no PNetLab utilizando **Suricata** em uma
 
 ---
 
-## Introdução
+## 2. Introdução
 
 Nos laboratórios anteriores, a proteção foi evoluindo em camadas.
 
@@ -45,7 +45,7 @@ Neste laboratório, a ênfase será a **implantação do Suricata** e a **observ
 
 ---
 
-## Relação com os laboratórios anteriores
+## 3. Relação com os laboratórios anteriores
 
 | Laboratório | Tecnologia | Foco principal |
 |---|---|---|
@@ -57,7 +57,7 @@ Neste laboratório, a ênfase será a **implantação do Suricata** e a **observ
 
 ---
 
-## Situação-problema
+## 4. Situação-problema
 
 Uma organização já possui firewall e WAF para proteger sua infraestrutura. Mesmo assim, a equipe de segurança precisa de uma camada adicional que permita **detectar padrões suspeitos no tráfego da rede**, registrar eventos e apoiar a investigação de incidentes.
 
@@ -65,7 +65,7 @@ Para isso, será implantado um **sensor IDS/IPS** entre duas redes, de forma que
 
 ---
 
-## Topologia lógica
+## 5. Topologia lógica
 
 ```mermaid
 flowchart LR
@@ -86,7 +86,7 @@ flowchart LR
 
 ---
 
-## Plano de endereçamento
+## 6. Plano de endereçamento
 
 | Dispositivo | Interface | Endereço IP | Máscara | Gateway |
 |---|---|---|---|---|
@@ -97,7 +97,7 @@ flowchart LR
 
 ---
 
-## Premissas do laboratório
+## 7. Premissas do laboratório
 
 Neste laboratório, considere que:
 
@@ -110,11 +110,11 @@ Neste laboratório, considere que:
 
 ---
 
-## Validação inicial do ambiente
+## 8. Validação inicial do ambiente
 
 Antes de instalar o Suricata, valide se o cenário já está funcional.
 
-### No cliente
+### 8.1 No cliente
 
 ```bash
 ping 192.168.10.1
@@ -122,7 +122,7 @@ ping 192.168.20.10
 curl http://192.168.20.10
 ```
 
-### No servidor
+### 8.2 No servidor
 
 ```bash
 ping 192.168.20.1
@@ -130,7 +130,7 @@ ping 192.168.10.10
 curl http://127.0.0.1
 ```
 
-### No IDS/IPS
+### 8.3 No IDS/IPS
 
 ```bash
 ping 192.168.10.10
@@ -145,7 +145,7 @@ Resultado esperado:
 
 ---
 
-## Verificação do encaminhamento IP no sensor
+## 9. Verificação do encaminhamento IP no sensor
 
 No Linux IDS/IPS:
 
@@ -168,7 +168,7 @@ sudo sysctl -p
 
 ---
 
-## Verificação do serviço web
+## 10. Verificação do serviço web
 
 Como o **Nginx já está instalado**, apenas confirme se o serviço está ativo no servidor:
 
@@ -179,7 +179,7 @@ curl http://127.0.0.1
 
 ---
 
-## Instalação do Suricata
+## 11. Instalação do Suricata
 
 No Linux IDS/IPS:
 
@@ -202,7 +202,7 @@ sudo systemctl status suricata
 
 ---
 
-## Localização dos arquivos principais
+## 12. Localização dos arquivos principais
 
 Em instalações típicas no Ubuntu:
 
@@ -212,7 +212,7 @@ Em instalações típicas no Ubuntu:
 
 ---
 
-## Atualização das regras
+## 13. Atualização das regras
 
 Atualize as regras do Suricata:
 
@@ -228,7 +228,7 @@ sudo systemctl restart suricata
 
 ---
 
-## Interfaces de captura
+## 14. Interfaces de captura
 
 Antes de iniciar testes, identifique os nomes corretos das interfaces:
 
@@ -243,7 +243,7 @@ Exemplo esperado:
 
 ---
 
-## Execução do Suricata em modo IDS
+## 15. Execução do Suricata em modo IDS
 
 Para testes controlados, você pode parar o serviço e executar manualmente o Suricata em foreground.
 
@@ -261,9 +261,9 @@ sudo suricata -i eth0 -v
 
 ---
 
-## Testes de tráfego legítimo
+## 16. Testes de tráfego legítimo
 
-### Ping
+### 16.1 Ping
 
 No cliente:
 
@@ -271,7 +271,7 @@ No cliente:
 ping 192.168.20.10
 ```
 
-### HTTP
+### 16.2 HTTP
 
 No cliente:
 
@@ -279,13 +279,13 @@ No cliente:
 curl http://192.168.20.10
 ```
 
-### Conexão simples na porta 80
+### 16.3 Conexão simples na porta 80
 
 ```bash
 nc -vz 192.168.20.10 80
 ```
 
-### Resultado esperado
+### 16.4 Resultado esperado
 
 - o tráfego deve continuar funcionando normalmente;
 - o Suricata deve registrar fluxos e possivelmente eventos, dependendo das regras ativas;
@@ -293,23 +293,23 @@ nc -vz 192.168.20.10 80
 
 ---
 
-## Observação dos logs
+## 17. Observação dos logs
 
 Abra outro terminal no Linux IDS/IPS.
 
-### Alertas simples
+### 17.1 Alertas simples
 
 ```bash
 sudo tail -f /var/log/suricata/fast.log
 ```
 
-### Eventos estruturados
+### 17.2 Eventos estruturados
 
 ```bash
 sudo tail -f /var/log/suricata/eve.json
 ```
 
-### Estatísticas
+### 17.3 Estatísticas
 
 ```bash
 sudo tail -f /var/log/suricata/stats.log
@@ -317,11 +317,11 @@ sudo tail -f /var/log/suricata/stats.log
 
 ---
 
-## Testes de tráfego suspeito controlado
+## 18. Testes de tráfego suspeito controlado
 
 > Execute somente em ambiente de laboratório.
 
-### Varredura simples com Nmap
+### 18.1 Varredura simples com Nmap
 
 No cliente, se o `nmap` estiver disponível:
 
@@ -336,19 +336,19 @@ ou
 nmap -sV 192.168.20.10
 ```
 
-### Requisição HTTP suspeita
+### 18.2 Requisição HTTP suspeita
 
 ```bash
 curl "http://192.168.20.10/?q=<script>alert(1)</script>"
 ```
 
-### Tentativa de path traversal
+### 18.3 Tentativa de path traversal
 
 ```bash
 curl "http://192.168.20.10/../../../etc/passwd"
 ```
 
-### Interpretação esperada
+### 18.4 Interpretação esperada
 
 - o Suricata pode gerar alertas dependendo do conjunto de regras ativo;
 - os eventos devem aparecer em `fast.log` e/ou `eve.json`;
@@ -356,15 +356,15 @@ curl "http://192.168.20.10/../../../etc/passwd"
 
 ---
 
-## Diferença entre IDS e IPS
+## 19. Diferença entre IDS e IPS
 
-### IDS
+### 19.1 IDS
 - monitora;
 - detecta;
 - registra;
 - alerta.
 
-### IPS
+### 19.2 IPS
 - monitora;
 - detecta;
 - pode bloquear ou descartar tráfego.
@@ -373,7 +373,7 @@ Neste laboratório, o ambiente está inicialmente configurado como **IDS**.
 
 ---
 
-## Comparação didática com os laboratórios anteriores
+## 20. Comparação didática com os laboratórios anteriores
 
 | Recurso | Firewall de pacotes | Stateful | WAF | IDS/IPS |
 |---|---|---|---|---|
@@ -385,7 +385,7 @@ Neste laboratório, o ambiente está inicialmente configurado como **IDS**.
 
 ---
 
-## Exemplo de leitura de evento
+## 21. Exemplo de leitura de evento
 
 Os alunos devem observar nos logs informações como:
 
@@ -406,7 +406,7 @@ ou usar `jq`, se disponível.
 
 ---
 
-## Atividade opcional: criação de regra local simples
+## 22. Atividade opcional: criação de regra local simples
 
 O professor pode propor uma regra local para detectar um ping.
 
@@ -436,7 +436,7 @@ Resultado esperado: alerta correspondente nos logs.
 
 ---
 
-## Questões para análise
+## 23. Questões para análise
 
 1. O que diferencia IDS de IPS?
 2. Qual o papel do Suricata neste laboratório?
@@ -451,7 +451,7 @@ Resultado esperado: alerta correspondente nos logs.
 
 ---
 
-## Critérios de avaliação
+## 24. Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -464,7 +464,7 @@ Resultado esperado: alerta correspondente nos logs.
 
 ---
 
-## Entregáveis
+## 25. Entregáveis
 
 Cada aluno deve entregar:
 
@@ -483,7 +483,7 @@ Cada aluno deve entregar:
 
 ---
 
-## Conclusão esperada
+## 26. Conclusão esperada
 
 Ao final deste laboratório, o estudante deve perceber que:
 

@@ -5,13 +5,13 @@
 
 ---
 
-## Objetivo
+## 1. Objetivo
 
 Implementar um **firewall stateful** em uma máquina Linux no PNetLab , reutilizando a topologia do **Laboratório  10**, com regras baseadas em **estado de conexão** para permitir automaticamente o tráfego de retorno de sessões já autorizadas.
 
 ---
 
-## Introdução
+## 2. Introdução
 
 No **Laboratório  10**, o controle foi feito com um **firewall de pacotes**. Nesse modelo, cada pacote é tratado de forma isolada e, por isso, normalmente é necessário criar regras explícitas de ida e de volta.
 
@@ -32,13 +32,13 @@ No Linux, isso é feito com `iptables` e rastreamento de conexões do kernel, us
 
 ---
 
-## Situação-problema
+## 3. Situação-problema
 
 Uma organização deseja evoluir seu firewall Linux, saindo de um modelo de filtragem simples de pacotes para um modelo **stateful**, capaz de reconhecer conexões já estabelecidas e permitir automaticamente o tráfego de retorno, reduzindo a quantidade de regras e tornando a política mais fácil de administrar.
 
 ---
 
-## Topologia lógica
+## 4. Topologia lógica
 
 ```mermaid
 flowchart LR
@@ -58,7 +58,7 @@ flowchart LR
 
 ---
 
-## Plano de endereçamento
+## 5. Plano de endereçamento
 
 | Dispositivo | Interface | Endereço IP | Máscara | Gateway |
 |---|---|---|---|---|
@@ -69,7 +69,7 @@ flowchart LR
 
 ---
 
-## Pré-requisitos
+## 6. Pré-requisitos
 
 Considere já concluídos:
 
@@ -87,22 +87,22 @@ cat /proc/sys/net/ipv4/ip_forward
 
 ---
 
-## Conceitos de estado
+## 7. Conceitos de estado
 
-### `NEW`
+### 7.1 `NEW`
 Pacote que inicia uma nova conexão.
 
-### `ESTABLISHED`
+### 7.2 `ESTABLISHED`
 Pacote pertencente a uma conexão já estabelecida.
 
-### `RELATED`
+### 7.3 `RELATED`
 Pacote relacionado a uma conexão existente.
 
 > Neste Laboratório o foco principal será observar a diferença entre **NEW** e **ESTABLISHED**.
 
 ---
 
-## Limpeza inicial
+## 8. Limpeza inicial
 
 ```bash
 sudo iptables -F
@@ -113,7 +113,7 @@ sudo iptables -P FORWARD DROP
 
 ---
 
-## Regra central do firewall stateful
+## 9. Regra central do firewall stateful
 
 A principal diferença deste Laboratório é permitir automaticamente o tráfego de retorno de conexões já estabelecidas.
 
@@ -128,21 +128,21 @@ Essa regra permite:
 
 ---
 
-## Regras de novas conexões iniciadas pelo Cliente 1
+## 10. Regras de novas conexões iniciadas pelo Cliente 1
 
-### Permitir ICMP iniciado pelo Cliente 1
+### 10.1 Permitir ICMP iniciado pelo Cliente 1
 
 ```bash
 sudo iptables -A FORWARD -s 192.168.10.10 -d 192.168.20.10 -p icmp -m conntrack --ctstate NEW -j ACCEPT
 ```
 
-### Permitir HTTP iniciado pelo Cliente 1
+### 10.2 Permitir HTTP iniciado pelo Cliente 1
 
 ```bash
 sudo iptables -A FORWARD -s 192.168.10.10 -d 192.168.20.10 -p tcp --dport 80 -m conntrack --ctstate NEW -j ACCEPT
 ```
 
-### Conjunto final mínimo de regras
+### 10.3 Conjunto final mínimo de regras
 
 ```bash
 sudo iptables -F
@@ -154,7 +154,7 @@ sudo iptables -A FORWARD -s 192.168.10.10 -d 192.168.20.10 -p tcp --dport 80 -m 
 
 ---
 
-## Verificação das regras
+## 11. Verificação das regras
 
 ```bash
 sudo iptables -L -n -v
@@ -163,9 +163,9 @@ sudo iptables -S
 
 ---
 
-## Testes práticos
+## 12. Testes práticos
 
-### Teste de ICMP iniciado pelo Cliente 1
+### 12.1 Teste de ICMP iniciado pelo Cliente 1
 
 No **Linux Cliente 1**:
 
@@ -183,7 +183,7 @@ ping 192.168.10.10
 
 Resultado esperado: **deve falhar**.
 
-### Teste de HTTP iniciado pelo Cliente 1
+### 12.2 Teste de HTTP iniciado pelo Cliente 1
 
 No **Linux Cliente 2**, suba um serviço HTTP simples:
 
@@ -211,7 +211,7 @@ wget -O- http://192.168.20.10
 
 Resultado esperado: **deve funcionar**.
 
-### Teste de nova conexão iniciada pelo Cliente 2
+### 12.3 Teste de nova conexão iniciada pelo Cliente 2
 
 ```bash
 nc -vz 192.168.10.10 80
@@ -219,7 +219,7 @@ nc -vz 192.168.10.10 80
 
 Resultado esperado: **deve falhar**.
 
-### Teste de Telnet não permitido
+### 12.4 Teste de Telnet não permitido
 
 No **Linux Cliente 1**:
 
@@ -237,11 +237,11 @@ Resultado esperado: **deve falhar**.
 
 ---
 
-## Atividade comparativa para visualizar a diferença entre filtro de pacotes e stateful
+## 13. Atividade comparativa para visualizar a diferença entre filtro de pacotes e stateful
 
 Nesta atividade, os alunos devem comparar o comportamento do **Laboratório 10** e do **Laboratório 11** na mesma topologia.
 
-### Etapa A - Executar o Laboratório 10
+### 13.1 Etapa A - Executar o Laboratório 10
 
 Aplicar as regras do **firewall de pacotes** e observar que, para o tráfego funcionar, foi necessário criar:
 
@@ -253,14 +253,14 @@ Exemplo observado no Laboratório 10:
 - Cliente 1 inicia HTTP para Cliente 2;
 - o retorno precisou ser tratado por regra explícita.
 
-### Etapa B - Executar o Laboratório 11
+### 13.2 Etapa B - Executar o Laboratório 11
 
 Substituir as regras anteriores pelas regras **stateful** deste Laboratório e observar que agora basta:
 
 - permitir a conexão nova;
 - permitir `ESTABLISHED,RELATED`.
 
-### Etapa C - Realizar os mesmos testes nos dois Laboratório
+### 13.3 Etapa C - Realizar os mesmos testes nos dois laboratórios
 
 Os alunos devem testar:
 
@@ -270,7 +270,7 @@ Os alunos devem testar:
 - nova conexão TCP iniciada pelo Cliente 2;
 - tentativa de Telnet.
 
-### Etapa D - Comparar a saída das regras
+### 13.4 Etapa D - Comparar a saída das regras
 
 Executar em ambos os cenários:
 
@@ -285,7 +285,7 @@ Se disponível no firewall stateful:
 sudo conntrack -L
 ```
 
-### Tabela para preenchimento pelos alunos
+### 13.5 Tabela para preenchimento pelos alunos
 
 | Teste | Laboratório 10 - Filtro de pacotes | Laboratório 11 - Stateful |
 |---|---|---|
@@ -296,7 +296,7 @@ sudo conntrack -L
 | Quantidade de regras |  |  |
 | Facilidade de administração |  |  |
 
-### Síntese esperada da atividade
+### 13.6 Síntese esperada da atividade
 
 Ao final, o aluno deve perceber que:
 
@@ -306,7 +306,7 @@ Ao final, o aluno deve perceber que:
 
 ---
 
-## Inspeção de conexões rastreadas
+## 14. Inspeção de conexões rastreadas
 
 Se o pacote `conntrack` estiver disponível no firewall:
 
@@ -318,7 +318,7 @@ sudo conntrack -L
 
 ---
 
-## Questões para análise
+## 15. Questões para análise
 
 1. O que diferencia um firewall stateful de um firewall de pacotes simples?
 2. Qual a função de `-m conntrack --ctstate ESTABLISHED,RELATED`?
@@ -333,7 +333,7 @@ sudo conntrack -L
 
 ---
 
-## Critérios de avaliação
+## 16. Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -346,7 +346,7 @@ sudo conntrack -L
 
 ---
 
-## Entregáveis
+## 17. Entregáveis
 
 Cada aluno deve entregar relatório contendo:
 
@@ -364,7 +364,7 @@ Cada aluno deve entregar relatório contendo:
 
 ---
 
-## Conclusão esperada
+## 18. Conclusão esperada
 
 Ao final deste Laboratório, o aluno deve perceber que:
 

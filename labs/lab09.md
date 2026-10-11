@@ -210,11 +210,11 @@ Neste laboratório, serão realizadas apenas as configurações referentes a:
 
 ## 8. Dados relevantes do backbone
 
-### Enlaces do backbone do provedor
+### 8.1 Enlaces do backbone do provedor
 - ISP1 ↔ ISP3: `191.1.0.0/30`
 - ISP2 ↔ ISP3: `191.2.0.0/30`
 
-### Mapeamento de interfaces FastEthernet sugerido
+### 8.2 Mapeamento de interfaces FastEthernet sugerido
 
 | Dispositivo | Interface | Uso |
 |---|---|---|
@@ -223,7 +223,7 @@ Neste laboratório, serão realizadas apenas as configurações referentes a:
 | ISP3 | FastEthernet0/0 | enlace com ISP1 |
 | ISP3 | FastEthernet0/1 | enlace com ISP2 |
 
-### Loopbacks sugeridas para identificação interna
+### 8.3 Loopbacks sugeridas para identificação interna
 Caso ainda não existam loopbacks para o backbone, utilize:
 
 - ISP1: `1.1.1.1/32`
@@ -238,7 +238,7 @@ Essas loopbacks serão úteis para o OSPF e para a identificação lógica dos L
 
 Configure apenas se ainda não tiver criado essas interfaces em atividades anteriores.
 
-### ISP1
+### 9.1 ISP1
 
 ```bash
 ISP1> enable
@@ -252,7 +252,7 @@ ISP1(config-if)# ip address 1.1.1.1 255.255.255.255
 ISP1(config-if)# end
 ```
 
-### ISP2
+### 9.2 ISP2
 
 ```bash
 ISP2> enable
@@ -266,7 +266,7 @@ ISP2(config-if)# ip address 2.2.2.2 255.255.255.255
 ISP2(config-if)# end
 ```
 
-### ISP3
+### 9.3 ISP3
 
 ```bash
 ISP3> enable
@@ -287,7 +287,7 @@ ISP3(config-if)# end
 O OSPF será usado como protocolo interno da operadora.  
 Nesta etapa, configure ou ajuste o OSPF apenas nos roteadores do backbone.
 
-### ISP1
+### 10.1 ISP1
 
 ```bash
 ISP1> enable
@@ -305,7 +305,7 @@ ISP1(config-router)# network 1.1.1.1 0.0.0.0 area 0
 ISP1(config-router)# end
 ```
 
-### ISP2
+### 10.2 ISP2
 
 ```bash
 ISP2> enable
@@ -323,7 +323,7 @@ ISP2(config-router)# network 2.2.2.2 0.0.0.0 area 0
 ISP2(config-router)# end
 ```
 
-### ISP3
+### 10.3 ISP3
 
 ```bash
 ISP3> enable
@@ -349,7 +349,7 @@ ISP3(config-router)# end
 
 Depois que o OSPF estiver funcional no backbone, habilite o MPLS apenas nos enlaces internos da operadora.
 
-### ISP1
+### 11.1 ISP1
 
 ```bash
 ISP1> enable
@@ -363,7 +363,7 @@ ISP1(config-if)# mpls ip
 ISP1(config-if)# end
 ```
 
-### ISP2
+### 11.2 ISP2
 
 ```bash
 ISP2> enable
@@ -377,7 +377,7 @@ ISP2(config-if)# mpls ip
 ISP2(config-if)# end
 ```
 
-### ISP3
+### 11.3 ISP3
 
 ```bash
 ISP3> enable
@@ -401,7 +401,7 @@ ISP3(config-if)# end
 
 Antes de validar o MPLS, verifique se o backbone OSPF da operadora está funcionando corretamente.
 
-### Comandos sugeridos
+### 12.1 Comandos sugeridos
 
 ```bash
 show ip ospf neighbor
@@ -410,7 +410,7 @@ show ip protocols
 show ip interface brief
 ```
 
-### O que observar
+### 12.2 O que observar
 
 - vizinhança OSPF entre **ISP1** e **ISP3**;
 - vizinhança OSPF entre **ISP2** e **ISP3**;
@@ -423,7 +423,7 @@ show ip interface brief
 
 Depois de habilitar o MPLS nos enlaces do backbone, verifique a distribuição de labels.
 
-### Comandos sugeridos
+### 13.1 Comandos sugeridos
 
 ```bash
 show mpls interfaces
@@ -432,7 +432,7 @@ show mpls forwarding-table
 show ip route
 ```
 
-### O que observar
+### 13.2 O que observar
 
 - interfaces com MPLS habilitado;
 - vizinhos LDP estabelecidos;

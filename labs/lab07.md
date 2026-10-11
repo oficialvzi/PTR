@@ -15,7 +15,7 @@ Configurar os roteadores **ISP1**, **ISP2** e **ISP3** para permitir o funcionam
 
 ## 2. Premissas do cenário
 
-### Diagrama lógico 
+### 2.1 Diagrama lógico
 
 ```mermaid
 flowchart LR
@@ -148,7 +148,7 @@ ISP3(config-if)# ip address 185.0.0.1 255.0.0.0
 ISP3(config-if)# end
 ```
 
-### BGP no ISP3
+### 3.1 BGP no ISP3
 
 ```bash
 ISP3> enable
@@ -184,7 +184,7 @@ ISP3(config-router)# end
 
 O **ISP1** possui dois enlaces físicos com o **R1**, além de uma loopback usada como vizinho BGP.
 
-### Interfaces do ISP1
+### 4.1 Interfaces do ISP1
 
 ```bash
 ISP1> enable
@@ -205,7 +205,7 @@ ISP1(config-if)# no shut
 ISP1(config-if)# end
 ```
 
-### BGP no ISP1
+### 4.2 BGP no ISP1
 
 ```bash
 ISP1> enable
@@ -230,7 +230,7 @@ ISP1(config)# end
 
 O **ISP2** possui um enlace direto com o **R1** e um enlace com o **ISP3**.
 
-### Interfaces do ISP2
+### 5.1 Interfaces do ISP2
 
 ```bash
 ISP2> enable
@@ -245,7 +245,7 @@ ISP2(config-if)# no shut
 ISP2(config-if)# end
 ```
 
-### BGP no ISP2
+### 5.2 BGP no ISP2
 
 ```bash
 ISP2> enable
