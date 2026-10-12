@@ -1,7 +1,13 @@
 # Laboratório 11 - Firewall Stateful com `iptables`
 
-**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
+- **Tema:** Filtragem stateful com conntrack e acompanhamento de conexões no iptables
+
+> **Pré-requisito:** Este laboratório reutiliza o ambiente e a topologia do **Laboratório 10**.
 
 ---
 

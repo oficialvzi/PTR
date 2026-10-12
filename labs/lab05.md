@@ -1,31 +1,31 @@
 # Laboratório 05 - Roteamento Dinâmico com OSPF
 
-**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
+- **Tema:** Roteamento por estado de enlace com OSPFv2 (Área Única)
 
 ---
-<h2>Podcast desta Aula</h2>
+
+### Material de Apoio: Podcast Latência Zero
 
 <table>
   <tr>
-    <td width="320" align="center">
+    <td width="140" align="center">
       <a href="https://open.spotify.com/show/59S06LhFsKlyvfLFQCJ8fK">
-        <img src="../images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="280">
+        <img src="../images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="120">
       </a>
     </td>
     <td valign="top">
-      <p>
-        O podcast <strong>Latência Zero</strong> apresenta discussões relacionadas a temas
-        abordados em aula, com ênfase em <strong>redes de computadores</strong>,
-        <strong>latência</strong>, <strong>infraestrutura de comunicação</strong> e
-        aspectos práticos da engenharia de redes.
-      </p>
-      <p>
-        <a href="https://open.spotify.com/episode/6ha3fZPjrfBp8ZQNyIfTps?si=754a105ed6474063">Episódio 4: RIP versus OSPF na prática</a>
-      </p>
+      O podcast <strong>Latência Zero</strong> apresenta discussões técnicas complementares sobre os temas da disciplina.<br><br>
+      🎧 <strong>Episódio 4:</strong> <a href="https://open.spotify.com/episode/6ha3fZPjrfBp8ZQNyIfTps?si=754a105ed6474063">RIP versus OSPF na prática</a>
     </td>
   </tr>
 </table>
+
+---
 
 ## 1. Objetivo
 
@@ -55,7 +55,7 @@ Os protocolos de roteamento dinâmico podem ser divididos em dois grandes grupos
 
 ### 3.1 Por que OSPF?
 
-O OSPF (Open Shortest Path First) é um protocolo do tipo **link-state**. Cada roteador constrói uma visão lógica completa da topologia da rede (o *link-state database*) e calcula o melhor caminho até cada destino usando o algoritmo **SPF/Dijkstra**. Com isso, o OSPF oferece maior escalabilidade, convergência mais rápida diante de falhas e uma organização lógica da rede em áreas, sendo o protocolo mais adequado para ambientes corporativos maiores e mais exigentes — como o cenário multi-unidades deste laboratório.
+O OSPF (Open Shortest Path First) é um protocolo do tipo **link-state**. Cada roteador constrói uma visão lógica completa da topologia da rede (o *link-state database*) e calcula o melhor caminho até cada destino usando o algoritmo **SPF/Dijkstra**. Com isso, o OSPF oferece maior escalabilidade, convergência mais rápida diante de falhas e uma organização lógica da rede em áreas, sendo o protocolo mais adequado para ambientes corporativos maiores e mais exigentes - como o cenário multi-unidades deste laboratório.
 
 O OSPF se parece com o uso de um aplicativo de navegação, um GPS mais inteligente: ele não olha apenas quantos roteadores existem no caminho, mas monta um mapa completo da rede e escolhe a rota de menor custo cumulativo (baseado na largura de banda dos enlaces), antes de decidir o trajeto. Por isso, toma decisões melhores em cenários maiores e mais complexos que os de uma rede pequena.
 
@@ -382,7 +382,7 @@ show ip route
 
 ## 9. Configuração do OSPF
 
-Neste laboratório será utilizada apenas a **área 0** (backbone), com objetivo introdutório. Cada roteador anuncia diretamente as sub-redes `/24` às quais está conectado — diferente do RIP, que neste mesmo cenário poderia anunciar de forma simplificada a rede sumarizada `172.16.0.0`. No OSPF, essa granularidade por sub-rede é o que permite ao protocolo montar um mapa preciso da topologia.
+Neste laboratório será utilizada apenas a **área 0** (backbone), com objetivo introdutório. Cada roteador anuncia diretamente as sub-redes `/24` às quais está conectado - diferente do RIP, que neste mesmo cenário poderia anunciar de forma simplificada a rede sumarizada `172.16.0.0`. No OSPF, essa granularidade por sub-rede é o que permite ao protocolo montar um mapa preciso da topologia.
 
 ### 9.1 Router-RJ
 
@@ -421,7 +421,7 @@ Router-BH(config-router)# network 172.16.200.0 0.0.0.255 area 0
 Router-BH(config-router)# end
 ```
 
-> **Nota:** os números de processo OSPF (64, 65, 66) são identificadores **locais**, válidos apenas dentro de cada roteador — não precisam ser iguais entre roteadores para que a adjacência se forme, ao contrário do que ocorre, por exemplo, com o *Autonomous System* no EIGRP.
+> **Nota:** os números de processo OSPF (64, 65, 66) são identificadores **locais**, válidos apenas dentro de cada roteador - não precisam ser iguais entre roteadores para que a adjacência se forme, ao contrário do que ocorre, por exemplo, com o *Autonomous System* no EIGRP.
 
 ---
 
@@ -444,7 +444,7 @@ ping 172.16.60.1
 - adjacência OSPF (estado `FULL`) formada entre RJ-SP e SP-BH;
 - rotas aprendidas na tabela de roteamento com marcação `O`;
 - conectividade total entre todas as LANs;
-- custo de rota (`cost`) visível em `show ip route`, calculado a partir da largura de banda dos enlaces — diferente do RIP, que exibiria apenas a contagem de saltos.
+- custo de rota (`cost`) visível em `show ip route`, calculado a partir da largura de banda dos enlaces - diferente do RIP, que exibiria apenas a contagem de saltos.
 
 ---
 
@@ -464,7 +464,7 @@ Para capturar o processo completo de formação de adjacência (e não apenas os
 Router-SP# clear ip ospf process
 ```
 
-> O comando `clear ip ospf process` força o roteador a derrubar e reformar a adjacência, reiniciando toda a sequência de estados (`Down → Init → 2-Way → ExStart → Exchange → Loading → Full`) — o que garante que a captura registre todos os tipos de pacote OSPF, não apenas os Hellos periódicos.
+> O comando `clear ip ospf process` força o roteador a derrubar e reformar a adjacência, reiniciando toda a sequência de estados (`Down → Init → 2-Way → ExStart → Exchange → Loading → Full`) - o que garante que a captura registre todos os tipos de pacote OSPF, não apenas os Hellos periódicos.
 
 ### 11.3 Filtro no Wireshark
 

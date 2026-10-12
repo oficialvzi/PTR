@@ -1,9 +1,13 @@
-# Laboratório 08 - Políticas BGP e integração com OSPF
+# Laboratório 08 - Políticas BGP e Integração com OSPF
 
-**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
+- **Tema:** Engenharia de tráfego BGP (weight), redundância e injeção de rota default no OSPF
 
-**Observação:** Este laboratório é continuação do **Laboratório 07**
+> **Pré-requisito:** Este laboratório é continuação do **Laboratório 07**.
 
 ---
 

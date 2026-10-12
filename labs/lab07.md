@@ -1,9 +1,13 @@
 # Laboratório 07 - Configuração dos Provedores (BGP Externo)
 
-**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
+- **Tema:** Infraestrutura de trânsito BGP entre sistemas autônomos múltiplos
 
-**Observação:** Este laboratório é continuação do **Laboratório 06**
+> **Pré-requisito:** Este laboratório é continuação do **Laboratório 06**.
 
 ---
 

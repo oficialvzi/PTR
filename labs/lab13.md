@@ -1,8 +1,13 @@
 # Laboratório 13 - Testes de Ataques Web e Análise de Logs no WAF
 
-**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
-**Tema:** Validação prática de proteção web com WAF  
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
+- **Tema:** Validação prática de proteção web com WAF e análise forense de logs
+
+> **Pré-requisito:** Este laboratório é continuação do **Laboratório 12**.
 
 ---
 

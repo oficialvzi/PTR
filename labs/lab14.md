@@ -1,8 +1,11 @@
 # Laboratório 14 - Implementação de IDS/IPS com Suricata no PNetLab
 
-**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
-**Tema:** Detecção e prevenção de intrusões em tráfego de rede
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
+- **Tema:** Detecção e prevenção de intrusões em tráfego de rede com Suricata
 
 ---
 

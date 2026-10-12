@@ -1,33 +1,31 @@
 # Laboratório 10 - Firewall de Pacotes com `iptables`
 
-**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
+- **Tema:** Filtragem de pacotes stateless com iptables na camada de rede e transporte
 
 ---
 
-<h2>Podcast desta Aula</h2>
+### Material de Apoio: Podcast Latência Zero
 
 <table>
   <tr>
-    <td width="320" align="center">
+    <td width="140" align="center">
       <a href="https://open.spotify.com/show/59S06LhFsKlyvfLFQCJ8fK">
-        <img src="../images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="280">
+        <img src="../images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="120">
       </a>
     </td>
     <td valign="top">
-      <p>
-        O podcast <strong>Latência Zero</strong> apresenta discussões relacionadas a temas
-        abordados em aula, com ênfase em <strong>redes de computadores</strong>,
-        <strong>latência</strong>, <strong>infraestrutura de comunicação</strong> e
-        aspectos práticos da engenharia de redes.
-      </p>
-      <p>
-        <a href="https://open.spotify.com/episode/6mSMblRBIjOvmX0AgsO1ln?si=ccYN8DnmSEuR6XSJgDvBAA">Episódio 7: Firewall com Amnésia (Stateless)</a>
-      </p>
+      O podcast <strong>Latência Zero</strong> apresenta discussões técnicas complementares sobre os temas da disciplina.<br><br>
+      🎧 <strong>Episódio 7:</strong> <a href="https://open.spotify.com/episode/6mSMblRBIjOvmX0AgsO1ln?si=ccYN8DnmSEuR6XSJgDvBAA">Firewall com Amnésia (Stateless)</a>
     </td>
   </tr>
 </table>
 
+---
 
 ## 1. Objetivo
 

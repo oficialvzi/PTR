@@ -1,7 +1,11 @@
-# Laboratório 01 - Configuração inicial no PNetLab
+# Laboratório 01 - Fundamentos de Roteamento IP e Encaminhamento de Pacotes
 
-**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
+- **Tema:** Fundamentos de encaminhamento e decisão de roteamento IP
 
 ---
 

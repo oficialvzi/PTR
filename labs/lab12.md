@@ -1,8 +1,11 @@
 # Laboratório 12 - Implementação de WAF com ModSecurity e OWASP CRS
 
-**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
-**Tema:** Proteção de aplicações web com Web Application Firewall  
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
+- **Tema:** Proteção de aplicações web com Web Application Firewall (ModSecurity e OWASP CRS)
 
 ---
 

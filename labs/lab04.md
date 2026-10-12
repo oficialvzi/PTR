@@ -1,7 +1,11 @@
-# Laboratório 04 - RIP e análise de convergência
+# Laboratório 04 - RIP e Análise de Convergência
 
-**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
+- **Tema:** Roteamento por vetor de distâncias com RIPv2 e análise de convergência
 
 ---
 
