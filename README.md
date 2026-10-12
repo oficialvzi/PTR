@@ -1,31 +1,14 @@
 # ENE0025 - Protocolos de Transporte e Roteamento (PTR)
 
-- **Curso:** Engenharia de Redes de Comunicação  
-- **Instituição:** Universidade de Brasília (UnB)  
-- **Departamento:** Departamento de Engenharia Elétrica (ENE)  
-- **Professor Responsável:** Prof. Dr. Laerte Peotta de Melo  
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
 
 ---
 
-## Equipe de Monitoria
-
-### Monitores Atuais (2026/02)
-
-- Ana Cecília Braga
-- Caio Lucas Pereira Mena Barreto
-- Caio Soares Rodrigues
-- Luidi Rafael da Silva Fernandes
-
-### Monitores Anteriores (2026/01)
-
-- Beatriz Silva Nascimento
-- Gabriel Henrique da Cruz Costa
-- Luan Silva Moura
-- Luidi Rafael da Silva Fernandes
-
----
-
-## Apresentação
+## 1. Apresentação
 
 A disciplina **Protocolos de Transporte e Roteamento** tem como objetivo apresentar os fundamentos, o funcionamento interno e a aplicação prática dos principais protocolos que sustentam a comunicação em redes IP modernas.
 
@@ -35,49 +18,40 @@ Além da fundamentação teórica, a disciplina possui forte **componente práti
 
 ---
 
-<h2>Podcast da disciplina</h2>
+### Material de Apoio: Podcast Latência Zero
 
 <table>
   <tr>
-    <td width="320" align="center">
+    <td width="140" align="center">
       <a href="https://spotifycreators-web.app.link/e/4Wu544oVN1b">
-        <img src="images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="280">
+        <img src="images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="120">
       </a>
     </td>
     <td valign="top">
-      <p>
-        O podcast <strong>Latência Zero</strong> apresenta discussões relacionadas a temas
-        abordados em aula, com ênfase em <strong>redes de computadores</strong>,
-        <strong>latência</strong>, <strong>infraestrutura de comunicação</strong> e
-        aspectos práticos da engenharia de redes.
-      </p>
-      <p>
-        <a href="https://spotifycreators-web.app.link/e/4Wu544oVN1b">Ouvir no Spotify</a>
-      </p>
+      O podcast <strong>Latência Zero</strong> apresenta discussões técnicas complementares sobre os temas abordados em aula, com ênfase em redes de computadores, latência, infraestrutura de comunicação e aspectos práticos da engenharia de redes.<br><br>
+      🎧 <a href="https://spotifycreators-web.app.link/e/4Wu544oVN1b">Ouvir no Spotify</a>
     </td>
   </tr>
 </table>
 
 ---
 
-
-
-## Objetivos da Disciplina
+## 2. Objetivos da Disciplina
 
 Ao final da disciplina, o estudante deverá ser capaz de:
 
-- Compreender o funcionamento dos protocolos TCP e UDP
-- Analisar mecanismos de controle de fluxo e congestionamento
-- Entender o processo de encaminhamento IP e decisão de rotas
-- Configurar e avaliar roteamento estático e dinâmico
-- Implementar e comparar protocolos de roteamento intra-domínio (RIP e OSPF)
-- Projetar e analisar cenários de roteamento interdomínio com BGP
-- Aplicar políticas de roteamento e princípios de engenharia de tráfego
-- Diagnosticar falhas e problemas de desempenho em redes IP
+- Compreender o funcionamento dos protocolos TCP e UDP;
+- Analisar mecanismos de controle de fluxo e congestionamento;
+- Entender o processo de encaminhamento IP e decisão de rotas;
+- Configurar e avaliar roteamento estático e dinâmico;
+- Implementar e comparar protocolos de roteamento intra-domínio (RIP e OSPF);
+- Projetar e analisar cenários de roteamento interdomínio com BGP;
+- Aplicar políticas de roteamento e princípios de engenharia de tráfego;
+- Diagnosticar falhas e problemas de desempenho em redes IP.
 
 ---
 
-## Conteúdos Abordados
+## 3. Conteúdos Abordados
 
 - Arquitetura TCP/IP
 - Encaminhamento IP e tabelas de rotas
@@ -91,7 +65,8 @@ Ao final da disciplina, o estudante deverá ser capaz de:
 - Aspectos de segurança em protocolos de roteamento
 
 ---
-## Metodologia
+
+## 4. Metodologia
 
 As atividades laboratoriais serão desenvolvidas de forma **prática e supervisionada**, envolvendo:
 - Configuração direta de equipamentos;
@@ -101,24 +76,25 @@ As atividades laboratoriais serão desenvolvidas de forma **prática e supervisi
 
 O aluno deve seguir rigorosamente os roteiros e registrar os resultados conforme solicitado.
 
---- 
+---
 
-## Atividades Práticas
+## 5. Atividades Práticas
 
 As atividades práticas são realizadas no **PNetLab** e incluem:
 
-- Montagem de topologias IP
-- Configuração de endereçamento e gateways
-- Análise de tabelas de roteamento
-- Implementação de RIP, OSPF e BGP
-- Simulação de falhas de enlace
-- Avaliação de convergência e políticas de roteamento
-- Projeto final integrador de rede
+- Montagem de topologias IP;
+- Configuração de endereçamento e gateways;
+- Análise de tabelas de roteamento;
+- Implementação de RIP, OSPF e BGP;
+- Simulação de falhas de enlace;
+- Avaliação de convergência e políticas de roteamento;
+- Projeto final integrador de rede.
 
 Cada laboratório está diretamente vinculado ao conteúdo teórico apresentado em aula.
 
 ---
-## Avaliação
+
+## 6. Avaliação
 
 A avaliação da disciplina será baseada em:
 - Execução correta dos laboratórios;
@@ -130,20 +106,23 @@ Os critérios específicos de cada experimento serão informados no respectivo r
 
 ---
 
-## Requisitos
+## 7. Requisitos
 
 - Conhecimentos básicos de redes de computadores;
 - Familiaridade com sistemas operacionais;
 - Noções iniciais de protocolos TCP/IP;
 - Atenção às normas de uso do laboratório.
+
 ---
 
-## Bibliografia Básica
+## 8. Bibliografia e Documentos Normativos
+
+### 8.1 Bibliografia Básica
 
 - **DOYLE, Jeff; CARROLL, Jennifer DeHaven**. Routing TCP/IP: volume 1. Indianapolis: Cisco Press, 1998.
 - **FOROUZAN, Behrouz A.** Protocolo TCP/IP. 3. ed. Porto Alegre: AMGH, 2010.
 
-## Bibliografia Complementar
+### 8.2 Bibliografia Complementar
 
 - **BRITO, Samuel Henrique Bucke**. Laboratórios de tecnologias Cisco em infraestrutura de redes. 2. ed. São Paulo: Novatec, 2014.
 - **COMER, Douglas E.** Interligação de redes com TCP/IP: princípios, protocolos e arquitetura. 5. ed. Rio de Janeiro: Elsevier, 2006.
@@ -153,7 +132,8 @@ Os critérios específicos de cada experimento serão informados no respectivo r
 - **STALLINGS, William.** Comunicações de dados e redes de computadores. 10. ed. São Paulo: Pearson, 2014.
 - **TANENBAUM, Andrew S.; WETHERALL, David J.** Redes de computadores. 5. ed. São Paulo: Pearson, 2011.
 
-## Documentos Normativos e Técnicos
+### 8.3 Documentos Normativos e Técnicos
+
 - **POSTEL, Jon.** Transmission Control Protocol. RFC 793. Marina del Rey: ISI, 1981.
 - **POSTEL, Jon.** User Datagram Protocol. RFC 768. Marina del Rey: ISI, 1980.
 - **MOY, John T.** OSPF version 2. RFC 2328. Marina del Rey: ISI, 1998.
@@ -161,41 +141,42 @@ Os critérios específicos de cada experimento serão informados no respectivo r
 
 ---
 
-## Como usar este repositório
-1. Abra a lista de laboratórios abaixo.
-2. Em cada laboratório, siga as instruções e entregue conforme orientação do professor.
-
-## Laboratórios
+## 9. Laboratórios Práticos
 
 Os laboratórios práticos estão organizados de acordo com a progressão temática do curso:
 
-### Módulo 0: Fundamentos e Ambiente PNetLab
+### 9.1 Módulo 0: Fundamentos e Ambiente PNetLab
+
 | Laboratório | Tema | Roteiro |
 |:------------:|------|:-------:|
 | **00** | Guia de Comandos Básicos (VPCS e Linux) | [Acessar](./labs/comandos.md) |
 | **01** | Configuração Inicial e Fundamentos de Roteamento IP | [Acessar](./labs/lab01.md) |
 | **02** | Configuração Básica de Roteadores no PNetLab | [Acessar](./labs/lab02.md) |
 
-### Módulo 1: Roteamento Intra-Domínio (IGP) e Multicast
+### 9.2 Módulo 1: Roteamento Intra-Domínio (IGP) e Multicast
+
 | Laboratório | Tema | Roteiro |
 |:------------:|------|:-------:|
 | **03** | Roteamento Multicast: PIM-DM em Topologia Controlada | [Acessar](./labs/lab03.md) |
 | **04** | Roteamento com RIPv2 e Análise de Convergência | [Acessar](./labs/lab04.md) |
 | **05** | Roteamento Dinâmico com OSPF | [Acessar](./labs/lab05.md) |
 
-### Módulo 2: Roteamento Inter-Domínio (EGP / BGP)
+### 9.3 Módulo 2: Roteamento Inter-Domínio (EGP / BGP)
+
 | Laboratório | Tema | Roteiro |
 |:------------:|------|:-------:|
 | **06** | Roteamento Externo via BGP (eBGP Básico) | [Acessar](./labs/lab06.md) |
 | **07** | Configuração dos Provedores (BGP Externo e Peering) | [Acessar](./labs/lab07.md) |
 | **08** | Políticas de Roteamento BGP e Integração com OSPF | [Acessar](./labs/lab08.md) |
 
-### Módulo 3: Comutação por Rótulos (MPLS)
+### 9.4 Módulo 3: Comutação por Rótulos (MPLS)
+
 | Laboratório | Tema | Roteiro |
 |:------------:|------|:-------:|
 | **09** | Implementação de MPLS e LDP no Backbone | [Acessar](./labs/lab09.md) |
 
-### Módulo 4: Segurança de Redes e Aplicação
+### 9.5 Módulo 4: Segurança de Redes e Aplicação
+
 | Laboratório | Tema | Roteiro |
 |:------------:|------|:-------:|
 | **10** | Firewall de Pacotes Stateless com `iptables` | [Acessar](./labs/lab10.md) |
@@ -206,7 +187,7 @@ Os laboratórios práticos estão organizados de acordo com a progressão temát
 
 ---
 
-## Guias e Materiais Complementares
+## 10. Guias e Materiais Complementares
 
 | Documento | Descrição | Link |
 |-----------|-----------|:----:|
@@ -214,14 +195,32 @@ Os laboratórios práticos estão organizados de acordo com a progressão temát
 
 ---
 
-## Uso de Inteligência Artificial
+## 11. Equipe de Monitoria
+
+### 11.1 Monitores Atuais (2026/02)
+
+- Ana Cecília Braga
+- Caio Lucas Pereira Mena Barreto
+- Caio Soares Rodrigues
+- Luidi Rafael da Silva Fernandes
+
+### 11.2 Monitores Anteriores (2026/01)
+
+- Beatriz Silva Nascimento
+- Gabriel Henrique da Cruz Costa
+- Luan Silva Moura
+- Luidi Rafael da Silva Fernandes
+
+---
+
+## 12. Uso de Inteligência Artificial
 
 Em conformidade com a Política de Integridade Acadêmica e Uso Responsável da Inteligência Artificial da Faculdade de Tecnologia (FT/UnB), aprovada pelo Conselho da FT em 30/09/2026, estabelecem-se as seguintes diretrizes:
 
-### Declaração Docente
+### 12.1 Declaração Docente
 Declara-se que este material didático foi elaborado com apoio de ferramentas de inteligência artificial generativa (Claude, ChatGPT e Gemini), sob estrita supervisão, revisão técnica e responsabilidade do professor responsável.
 
-### Diretrizes para os Estudantes
+### 12.2 Diretrizes para os Estudantes
 - **Regime Geral da Disciplina:** O uso de ferramentas de IA generativa é **permitido** como instrumento de apoio ao aprendizado em todas as atividades laboratoriais (pesquisa conceitual de RFCs, esclarecimento de sintaxe de comandos, interpretação de saídas e suporte à redação técnica dos relatórios).
 - **Responsabilidade Acadêmica:** O estudante é o único responsável pela exatidão técnica, autoria e originalidade de suas entregas. Todas as configurações práticas, comandos executados e capturas de telas e comandos devem ser obrigatoriamente produzidos pelo estudante.
 - **Condutas Vedadas:**
