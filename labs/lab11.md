@@ -243,13 +243,13 @@ Resultado esperado: **deve falhar**.
 
 ---
 
-## 13. Atividade comparativa para visualizar a diferença entre filtro de pacotes e stateful
+## 13. Atividade comparativa para visualizar a diferença entre firewall de pacotes sem estado (stateless) e stateful
 
 Nesta atividade, os alunos devem comparar o comportamento do **Laboratório 10** e do **Laboratório 11** na mesma topologia.
 
 ### 13.1 Etapa A - Executar o Laboratório 10
 
-Aplicar as regras do **firewall de pacotes** e observar que, para o tráfego funcionar, foi necessário criar:
+Aplicar as regras do **firewall de pacotes sem estado (*stateless*)** e observar que, para o tráfego funcionar, foi necessário criar:
 
 - regra de ida;
 - regra de volta.
@@ -293,7 +293,7 @@ sudo conntrack -L
 
 ### 13.5 Tabela para preenchimento pelos alunos
 
-| Teste | Laboratório 10 - Filtro de pacotes | Laboratório 11 - Stateful |
+| Teste | Laboratório 10 - Firewall de pacotes sem estado (stateless) | Laboratório 11 - Stateful |
 |---|---|---|
 | Ping iniciado pelo Cliente 1 |  |  |
 | Retorno da comunicação |  |  |
@@ -378,7 +378,7 @@ Ao final deste Laboratório, o aluno deve perceber que:
 - o `iptables`, com `conntrack`, permite liberar respostas automaticamente;
 - o modelo stateful reduz a necessidade de regras duplicadas de retorno;
 - a comparação prática com o Laboratório 10 torna mais visível a diferença entre os dois modelos;
-- o firewall stateful representa uma evolução natural em relação ao firewall de pacotes estudado no Laboratório 10.
+- o firewall stateful representa uma evolução natural em relação ao firewall de pacotes sem estado (*stateless*) estudado no Laboratório 10.
 
 ---
 

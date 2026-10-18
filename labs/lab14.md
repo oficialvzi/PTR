@@ -25,7 +25,7 @@ Implementar um ambiente de **IDS/IPS** no PNetLab utilizando **Suricata** em uma
 
 Nos laboratórios anteriores, a proteção foi evoluindo em camadas.
 
-No **Lab 10**, foi implementado um **firewall de pacotes**, capaz de tomar decisões com base em endereço IP, protocolo e porta. No **Lab 11**, esse modelo foi ampliado para um **firewall stateful**, com acompanhamento do estado das conexões. No **Lab 12** e no **Lab 13**, a proteção avançou para a **camada de aplicação**, com uso de **WAF**, capaz de inspecionar requisições HTTP e bloquear padrões suspeitos.
+No **Lab 10**, foi implementado um **firewall de pacotes sem estado (*stateless*)**, capaz de tomar decisões com base em endereço IP, protocolo e porta. No **Lab 11**, esse modelo foi ampliado para um **firewall stateful**, com acompanhamento do estado das conexões. No **Lab 12** e no **Lab 13**, a proteção avançou para a **camada de aplicação**, com uso de **WAF**, capaz de inspecionar requisições HTTP e bloquear padrões suspeitos.
 
 Neste **Lab 14**, o foco será um novo tipo de mecanismo: o **IDS/IPS**.
 
@@ -52,7 +52,7 @@ Neste laboratório, a ênfase será a **implantação do Suricata** e a **observ
 
 | Laboratório | Tecnologia | Foco principal |
 |---|---|---|
-| Lab 10 | Firewall de pacotes | Filtragem por IP, protocolo e porta |
+| Lab 10 | Firewall de pacotes sem estado (stateless) | Filtragem por IP, protocolo e porta |
 | Lab 11 | Firewall stateful | Rastreamento de conexões |
 | Lab 12 | WAF | Publicação protegida via proxy reverso |
 | Lab 13 | WAF | Testes de ataques web e análise de logs |

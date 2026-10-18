@@ -43,7 +43,7 @@ Um **firewall de pacotes sem estado (*stateless*)** é um mecanismo de seguranç
 
 No Linux, uma das ferramentas clássicas para implementar esse tipo de controle é o **iptables**. Com ele, é possível criar regras para autorizar ou negar comunicações específicas entre redes, hosts e serviços. Em um laboratório, isso permite demonstrar de forma prática como uma máquina Linux pode atuar como firewall entre dois segmentos de rede, controlando o fluxo de pacotes de maneira simples e objetiva.
 
-Diferentemente de um firewall stateful, que acompanha o estado das conexões, o firewall de pacotes analisa cada pacote de forma isolada. Por isso, o administrador precisa definir explicitamente o que será permitido e o que será bloqueado em cada direção do tráfego.
+Diferentemente de um firewall stateful, que acompanha o estado das conexões, o firewall de pacotes sem estado (*stateless*) analisa cada pacote de forma isolada. Por isso, o administrador precisa definir explicitamente o que será permitido e o que será bloqueado em cada direção do tráfego.
 
 ## 3. Regras de Políticas `iptables`
 
@@ -149,13 +149,13 @@ net.ipv4.tcp_syncookies = 1
 
 ## 12. Síntese
 
-De forma resumida, o `iptables` permite transformar uma máquina Linux em um **firewall de pacotes**, no qual cada regra determina quais pacotes podem passar e quais devem ser bloqueados. Isso torna o laboratório bastante útil para mostrar, na prática, como o controle de tráfego pode ser feito em redes reais.
+De forma resumida, o `iptables` permite transformar uma máquina Linux em um **firewall de pacotes sem estado (*stateless*)**, no qual cada regra determina quais pacotes podem passar e quais devem ser bloqueados. Isso torna o laboratório bastante útil para mostrar, na prática, como o controle de tráfego pode ser feito em redes reais.
 
 > **Importante:** neste laboratório, a máquina Linux central atuará como **roteador e firewall** entre duas redes, utilizando preferencialmente o **Ubuntu Server 24.04 LTS** (`linux-ubuntu-24.04-server`).
 >
 > As máquinas das extremidades também serão instâncias Linux, preferencialmente **Ubuntu Server 24.04 LTS**.
 >
-> O foco desta prática é o **firewall de pacotes**, portanto as regras serão baseadas em:
+> O foco desta prática é o **firewall de pacotes sem estado (*stateless*)**, portanto as regras serão baseadas em:
 >
 > - endereço IP de origem;
 > - endereço IP de destino;
@@ -416,7 +416,7 @@ sudo iptables -P FORWARD DROP
 
 ---
 
-## 23. Primeiras regras do firewall de pacotes
+## 23. Primeiras regras do firewall de pacotes sem estado (stateless)
 
 Nesta etapa, será permitido apenas:
 
@@ -581,7 +581,7 @@ sudo iptables -S
 
 ## 28. Questões para análise
 
-1. O que caracteriza um **firewall de pacotes**?
+1. O que caracteriza um **firewall de pacotes sem estado (*stateless*)**?
 2. Quais campos do pacote foram usados nas regras deste laboratório?
 3. Por que foi necessário ativar o **IP forwarding** no Linux?
 4. Qual é a função da cadeia `FORWARD` no `iptables`?
@@ -631,12 +631,12 @@ Cada aluno deve entregar relatório contendo:
 
 Ao final deste laboratório, o estudante deve perceber que:
 
-- uma máquina Linux pode atuar como **firewall de pacotes** entre redes distintas;
+- uma máquina Linux pode atuar como **firewall de pacotes sem estado (*stateless*)** entre redes distintas;
 - o `iptables` permite controlar o tráfego com base em **IP, protocolo e porta**;
 - o roteamento entre redes depende da ativação do **IP forwarding**;
 - a política padrão de bloqueio ajuda a tornar o controle mais seguro;
 - o uso de **Ubuntu Server** ou **Alpine Linux** nos hosts amplia as possibilidades de teste em comparação com VPCs simples;
-- o firewall de pacotes analisa cada pacote de forma isolada, o que prepara o caminho para a comparação futura com um **firewall stateful**.
+- o firewall de pacotes sem estado analisa cada pacote de forma isolada, o que prepara o caminho para a comparação futura com um **firewall stateful**.
 
 ---
 

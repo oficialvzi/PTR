@@ -76,7 +76,7 @@ Na prática, o cliente acha que está falando diretamente com o serviço, mas na
 
 Este laboratório deve ser entendido como continuação direta do processo de evolução das defesas em rede:
 
-- **Lab 10**: firewall de pacotes com `iptables`
+- **Lab 10**: firewall de pacotes sem estado (*stateless*) com `iptables`
 - **Lab 11**: firewall stateful com `conntrack`
 - **Lab 12**: firewall de aplicação com inspeção de tráfego HTTP
 

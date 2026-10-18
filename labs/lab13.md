@@ -43,7 +43,7 @@ Este laboratório é importante porque torna visível a principal diferença ent
 
 | Laboratório | Tecnologia | Foco principal |
 |---|---|---|
-| Lab 10 | Firewall de pacotes | Filtragem por IP, protocolo e porta |
+| Lab 10 | Firewall de pacotes sem estado (stateless) | Filtragem por IP, protocolo e porta |
 | Lab 11 | Firewall stateful | Filtragem com rastreamento de conexão |
 | Lab 12 | WAF em proxy reverso | Publicação e inspeção HTTP |
 | Lab 13 | WAF com testes práticos | Bloqueio e análise de requisições maliciosas |
