@@ -120,40 +120,36 @@ Para o prefixo `2.2.2.2/32` (loopback do ISP2), o ISP1 recebe do ISP3 o rótulo 
 
 ```mermaid
 flowchart LR
-    %% ===== AS 1000 =====
     subgraph AS1000["AS 1000"]
         direction TB
-        PFX1["200.18.245.64 /27"]
+        LAN1["LAN<br/>192.168.0.0/24"]
         SW1["SW1"]
-        LAN1["192.168.0.0 /24"]
-        R1["R1<br/>CE"]
+        R1["R1<br/>CE<br/>Gi0/0 192.168.0.1<br/>Lo1 11.11.11.11/32<br/>Lo2 200.18.245.65/27"]
+        PFX1["Prefixo público<br/>200.18.245.64/27"]
 
         LAN1 --- SW1
         SW1 --- R1
-        PFX1 --- R1
+        PFX1 -.- R1
     end
 
-    %% ===== AS 100 =====
     subgraph AS100["AS 100"]
         direction TB
-        ISP1["ISP1<br/>PE"]
+        ISP1["ISP1<br/>PE<br/>Lo0 10.10.10.10/32"]
     end
 
-    %% ===== AS 200 =====
     subgraph AS200["AS 200"]
         direction TB
         ISP2["ISP2<br/>PE"]
     end
 
-    %% ===== AS 300 =====
     subgraph AS300["AS 300"]
         direction TB
         ISP3["ISP3<br/>P"]
-        P181["181.0.0.0 /8"]
-        P182["182.0.0.0 /8"]
-        P183["183.0.0.0 /8"]
-        P184["184.0.0.0 /8"]
-        P185["185.0.0.0 /8"]
+        P181["181.0.0.0/8"]
+        P182["182.0.0.0/8"]
+        P183["183.0.0.0/8"]
+        P184["184.0.0.0/8"]
+        P185["185.0.0.0/8"]
 
         ISP3 --- P181
         ISP3 --- P182
@@ -162,20 +158,26 @@ flowchart LR
         ISP3 --- P185
     end
 
-    %% ===== Links =====
-    R1 ---|10.1.0.0 /30| ISP1
-    R1 ---|10.1.0.4 /30| ISP1
-    R1 ---|10.2.0.0 /30| ISP2
-    ISP1 ---|191.1.0.0 /30| ISP3
-    ISP2 ---|191.2.0.0 /30| ISP3
+    %% Enlaces representados como nós, para evitar sobreposição de rótulos
+    N1(["10.1.0.0/30"])
+    N2(["10.1.0.4/30"])
+    N3(["10.2.0.0/30"])
+    N4(["191.1.0.0/30"])
+    N5(["191.2.0.0/30"])
 
-    %% ===== Classes =====
+    R1 --- N1 --- ISP1
+    R1 --- N2 --- ISP1
+    R1 --- N3 --- ISP2
+    ISP1 --- N4 --- ISP3
+    ISP2 --- N5 --- ISP3
+
     classDef empresa fill:#dbeafe,stroke:#1d4ed8,color:#111827,stroke-width:2px;
     classDef isp1 fill:#dcfce7,stroke:#16a34a,color:#111827,stroke-width:2px;
     classDef isp2 fill:#fef3c7,stroke:#d97706,color:#111827,stroke-width:2px;
     classDef isp3 fill:#fee2e2,stroke:#dc2626,color:#111827,stroke-width:2px;
     classDef prefixo fill:#f3f4f6,stroke:#6b7280,color:#111827,stroke-width:1.5px;
     classDef lan fill:#e0f2fe,stroke:#0284c7,color:#111827,stroke-width:1.5px;
+    classDef enlace fill:#ffffff,stroke:#6b7280,color:#111827,stroke-width:1px;
 
     class R1,SW1 empresa;
     class ISP1 isp1;
@@ -183,6 +185,7 @@ flowchart LR
     class ISP3 isp3;
     class PFX1,P181,P182,P183,P184,P185 prefixo;
     class LAN1 lan;
+    class N1,N2,N3,N4,N5 enlace;
 
     style AS1000 fill:transparent,stroke:#1d4ed8,stroke-width:2px,stroke-dasharray: 8 6
     style AS100 fill:transparent,stroke:#16a34a,stroke-width:2px,stroke-dasharray: 8 6
