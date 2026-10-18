@@ -7,7 +7,7 @@
 - **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
 - **Tema:** Validação prática de proteção web com WAF e análise forense de logs
 
-> **Pré-requisito:** Este laboratório é continuação do **Laboratório 12**.
+> **Pré-requisito:** Este laboratório é continuação direta do **Laboratório 12**, reutilizando o ambiente montado com máquinas Linux baseadas em **Ubuntu 24.04 LTS**.
 
 ---
 
@@ -75,9 +75,9 @@ São chamados de suspeitos porque fogem do uso normal esperado pela aplicação 
 
 ```mermaid
 flowchart LR
-    CLIENT["Linux Cliente<br/>192.168.10.10/24"]
-    WAF["Linux WAF<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24<br/>Nginx + ModSecurity + CRS"]
-    WEB["Servidor Web Interno<br/>192.168.20.10/24"]
+    CLIENT["Linux Cliente<br/>Ubuntu 24.04 LTS<br/>192.168.10.10/24"]
+    WAF["Linux WAF<br/>Ubuntu 24.04 LTS<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24<br/>Nginx + ModSecurity + CRS"]
+    WEB["Servidor Web Interno<br/>Ubuntu 24.04 LTS<br/>192.168.20.10/24"]
 
     CLIENT --- WAF
     WAF --- WEB

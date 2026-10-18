@@ -1,4 +1,4 @@
-# Laboratório 10 - Firewall de Pacotes com `iptables`
+# Laboratório 10 - Firewall de pacotes sem estado (stateless)
 
 - **Instituição:** Universidade de Brasília (UnB)
 - **Departamento:** Departamento de Engenharia Elétrica (ENE)
@@ -29,13 +29,13 @@
 
 ## 1. Objetivo
 
-Implementar um **firewall de pacotes** em uma máquina Linux no PNetLab, posicionada entre **duas máquinas Linux básicas** - preferencialmente **Linux Tinycore-6.4** - aplicando regras com `iptables` para controlar o tráfego entre duas redes distintas com base em endereço IP, protocolo e porta.
+Implementar um **firewall de pacotes sem estado (*stateless*)** em uma máquina Linux no PNetLab, posicionada entre **duas máquinas Linux básicas** - preferencialmente **Ubuntu 24.04 LTS** - aplicando regras com `iptables` para controlar o tráfego entre duas redes distintas com base em endereço IP, protocolo e porta.
 
 ---
 
 ## 2. Introdução
 
-Um **firewall de pacotes** é um mecanismo de segurança que analisa os pacotes de rede individualmente e decide se eles podem ou não atravessar um determinado ponto da rede. Essa decisão é tomada com base em informações presentes no cabeçalho do pacote, como **endereço IP de origem**, **endereço IP de destino**, **protocolo** e **porta de comunicação**. Em outras palavras, ele funciona como um filtro que verifica regras previamente definidas e permite ou bloqueia o tráfego conforme essas regras.
+Um **firewall de pacotes sem estado (*stateless*)** é um mecanismo de segurança que analisa os pacotes de rede individualmente e decide se eles podem ou não atravessar um determinado ponto da rede. Essa decisão é tomada com base em informações presentes no cabeçalho do pacote, como **endereço IP de origem**, **endereço IP de destino**, **protocolo** e **porta de comunicação**. Em outras palavras, ele funciona como um filtro que verifica regras previamente definidas e permite ou bloqueia o tráfego conforme essas regras.
 
 <img width="1672" height="941" alt="Infográfico do iptables como filtro de pacotes: firewall Linux entre as redes 192.168.10.0/24 e 192.168.20.0/24 permitindo TCP 80, TCP 22 e ICMP e descartando TCP 23 e UDP 53" src="https://github.com/user-attachments/assets/81787ce4-4db1-4fe0-ba0d-6fe9ca2808ea" />
 
@@ -151,9 +151,9 @@ net.ipv4.tcp_syncookies = 1
 
 De forma resumida, o `iptables` permite transformar uma máquina Linux em um **firewall de pacotes**, no qual cada regra determina quais pacotes podem passar e quais devem ser bloqueados. Isso torna o laboratório bastante útil para mostrar, na prática, como o controle de tráfego pode ser feito em redes reais.
 
-> **Importante:** neste laboratório, a máquina Linux central atuará como **roteador e firewall** entre duas redes. Para o servidor usar **Ubuntu-24.04-server**
+> **Importante:** neste laboratório, a máquina Linux central atuará como **roteador e firewall** entre duas redes, utilizando preferencialmente o **Ubuntu Server 24.04 LTS** (`linux-ubuntu-24.04-server`).
 >
-> As máquinas das extremidades também serão **Linux básicos**, preferencialmente **Linux-Tiny-6.4**
+> As máquinas das extremidades também serão instâncias Linux, preferencialmente **Ubuntu Server 24.04 LTS**.
 >
 > O foco desta prática é o **firewall de pacotes**, portanto as regras serão baseadas em:
 >
@@ -176,9 +176,9 @@ Uma organização deseja controlar o tráfego entre uma rede interna e uma rede 
 
 ```mermaid
 flowchart LR
-    HOST1["Linux Cliente 1<br/>Tinylinux-6.4<br/>192.168.10.10/24"]
+    HOST1["Linux Cliente 1<br/>Ubuntu 24.04 LTS<br/>192.168.10.10/24"]
     FW["Linux Firewall<br/>Ubuntu-24.04-server<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24"]
-    HOST2["Linux Cliente 2<br/>Tinylinux-6.4<br/>192.168.20.10/24"]
+    HOST2["Linux Cliente 2<br/>Ubuntu 24.04 LTS<br/>192.168.20.10/24"]
 
     HOST1 --- FW
     FW --- HOST2
@@ -219,7 +219,7 @@ Neste laboratório, o foco será:
 ### 17.1 Configuração no PNetLab
 
 ```bash
-Image: linux-tinycore-6.4
+Image: linux-ubuntu-24.04-server
 Ethernet: 1
 MTU: 1500
 CPU: 1
@@ -229,9 +229,11 @@ Qemu Arch: x86_64
 Qemu NIC: virtio-net-pci
 TPM: Disabled
 UEFI: desmarcado
+Qemu options: -machine type=pc,accel=kvm -vga virtio -usbdevice tablet -boot order=cd -cpu host -k pt-br
 ```
 
-> Você pode salvar as configurações abaixo para cada Linux usando o arquivo `sudo vi /opt/bootlocal.sh`. Linux-tinycore não necessita de credenciais de login ou root.
+> **Credenciais padrão (Ubuntu Server):** login: `user` | senha: `Test123` (ou conforme a imagem utilizada).  
+> Caso sejam utilizadas distribuições Linux alternativas leves (como Tiny Core ou Alpine Linux), a sintaxe de comandos de rede com `ip` permanece a mesma.
 
 ### 17.2 Linux Cliente 1
 

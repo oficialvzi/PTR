@@ -72,9 +72,9 @@ Para isso, será implantado um **sensor IDS/IPS** entre duas redes, de forma que
 
 ```mermaid
 flowchart LR
-    CLIENT["Linux Cliente<br/>192.168.10.10/24"]
-    IDS["Linux IDS/IPS<br/>Ubuntu Server<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24<br/>Suricata"]
-    SERVER["Linux Servidor<br/>192.168.20.10/24<br/>Nginx"]
+    CLIENT["Linux Cliente<br/>Ubuntu 24.04 LTS<br/>192.168.10.10/24"]
+    IDS["Linux IDS/IPS<br/>Ubuntu 24.04 LTS<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24<br/>Suricata"]
+    SERVER["Linux Servidor<br/>Ubuntu 24.04 LTS<br/>192.168.20.10/24<br/>Nginx"]
     CLIENT --- IDS
     IDS --- SERVER
 
@@ -104,6 +104,7 @@ flowchart LR
 
 Neste laboratório, considere que:
 
+- todos os nós utilizam preferencialmente o **Ubuntu Server 24.04 LTS** (`linux-ubuntu-24.04-server`) no PNetLab;
 - os equipamentos **já estão com a rede configurada**;
 - o **Nginx já está instalado** no servidor;
 - o tráfego entre cliente, sensor e servidor já pode ser testado;

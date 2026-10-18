@@ -102,9 +102,9 @@ Para aumentar a proteção, a organização decide implantar um **WAF** entre os
 
 ```mermaid
 flowchart LR
-    CLIENT["Linux Cliente<br/>192.168.10.10/24"]
-    WAF["Linux WAF<br/>Ubuntu Server<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24<br/>Nginx + ModSecurity + CRS"]
-    WEB["Servidor Web Interno<br/>192.168.20.10/24"]
+    CLIENT["Linux Cliente<br/>Ubuntu 24.04 LTS<br/>192.168.10.10/24"]
+    WAF["Linux WAF<br/>Ubuntu 24.04 LTS<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24<br/>Nginx + ModSecurity + CRS"]
+    WEB["Servidor Web Interno<br/>Ubuntu 24.04 LTS<br/>192.168.20.10/24"]
 
     CLIENT --- WAF
     WAF --- WEB
@@ -149,24 +149,16 @@ Neste laboratório, o foco será:
 
 ## 11. Sugestão de imagens no PNetLab
 
-### 11.1 Linux Cliente
-Pode ser usado:
+Recomenda-se utilizar preferencialmente a imagem **Ubuntu Server 24.04 LTS** (`linux-ubuntu-24.04-server`) para todos os nós da topologia (Cliente, WAF e Servidor Web Interno), garantindo total compatibilidade com os repositórios oficiais e pacotes do Nginx, ModSecurity e OWASP CRS.
 
-- TinyCore Linux
-- Ubuntu básico
+### 11.1 Linux Cliente
+- **Ubuntu 24.04 LTS** (recomendado: `linux-ubuntu-24.04-server`) ou distribuição Linux equivalente.
 
 ### 11.2 Linux WAF
-Recomendado:
-
-- **Ubuntu Server 24.04**  
-ou  
-- **Ubuntu Server 22.04**
+- **Ubuntu 24.04 LTS** (recomendado: `linux-ubuntu-24.04-server`, 2 vCPUs, 4096 MB RAM).
 
 ### 11.3 Servidor Web Interno
-Pode ser usado:
-
-- Ubuntu Server
-- Debian Server
+- **Ubuntu 24.04 LTS** (recomendado: `linux-ubuntu-24.04-server`, 1 vCPU, 2048 MB RAM) ou Debian Server.
 
 ---
 

@@ -7,19 +7,19 @@
 - **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
 - **Tema:** Filtragem stateful com conntrack e acompanhamento de conexões no iptables
 
-> **Pré-requisito:** Este laboratório reutiliza o ambiente e a topologia do **Laboratório 10**.
+> **Pré-requisito:** Este laboratório reutiliza o ambiente e a topologia do **Laboratório 10**, baseado em nós Linux com **Ubuntu 24.04 LTS**.
 
 ---
 
 ## 1. Objetivo
 
-Implementar um **firewall stateful** em uma máquina Linux no PNetLab , reutilizando a topologia do **Laboratório  10**, com regras baseadas em **estado de conexão** para permitir automaticamente o tráfego de retorno de sessões já autorizadas.
+Implementar um **firewall stateful** em uma máquina Linux no PNetLab, reutilizando a topologia do **Laboratório 10**, com regras baseadas em **estado de conexão** para permitir automaticamente o tráfego de retorno de sessões já autorizadas.
 
 ---
 
 ## 2. Introdução
 
-No **Laboratório  10**, o controle foi feito com um **firewall de pacotes**. Nesse modelo, cada pacote é tratado de forma isolada e, por isso, normalmente é necessário criar regras explícitas de ida e de volta.
+No **Laboratório 10**, o controle foi feito com um **firewall de pacotes sem estado (*stateless*)**. Nesse modelo, cada pacote é tratado de forma isolada e, por isso, normalmente é necessário criar regras explícitas de ida e de volta.
 
 No **Laboratório 11**, o firewall passa a acompanhar o **estado das conexões**. Com isso, é possível permitir o início de uma comunicação e deixar que o tráfego de retorno seja aceito automaticamente quando ele pertencer a uma sessão já estabelecida.
 
@@ -48,9 +48,9 @@ Uma organização deseja evoluir seu firewall Linux, saindo de um modelo de filt
 
 ```mermaid
 flowchart LR
-    HOST1["Linux Cliente 1<br/>Tinylinux-6.4<br/>192.168.10.10/24"]
+    HOST1["Linux Cliente 1<br/>Ubuntu 24.04 LTS<br/>192.168.10.10/24"]
     FW["Linux Firewall<br/>Ubuntu-24.04-server<br/>eth0: 192.168.10.1/24<br/>eth1: 192.168.20.1/24"]
-    HOST2["Linux Cliente 2<br/>Tinylinux-6.4<br/>192.168.20.10/24"]
+    HOST2["Linux Cliente 2<br/>Ubuntu 24.04 LTS<br/>192.168.20.10/24"]
 
     HOST1 --- FW
     FW --- HOST2
@@ -77,12 +77,12 @@ flowchart LR
 
 ## 6. Pré-requisitos
 
-Considere já concluídos:
+Considere já concluídos a partir do **Laboratório 10**:
 
-- configuração IP dos hosts;
-- configuração IP do Linux Firewall;
-- ativação do roteamento IP;
-- testes básicos de conectividade do Laboratório  10.
+- ambiente configurado com máquinas Linux baseadas em **Ubuntu 24.04 LTS** (`linux-ubuntu-24.04-server`);
+- configuração IP dos hosts e do Linux Firewall;
+- ativação do roteamento IP (`net.ipv4.ip_forward = 1`);
+- testes básicos de conectividade do Laboratório 10.
 
 Confirme no firewall:
 
