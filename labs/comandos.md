@@ -1,7 +1,11 @@
 # Guia Rápido de Comandos: VPCS e Linux (Debian/Ubuntu)
 
-**Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento  
-**Professor responsável:** Prof. Dr. Laerte Peotta de Melo  
+- **Instituição:** Universidade de Brasília (UnB)
+- **Departamento:** Departamento de Engenharia Elétrica (ENE)
+- **Curso:** Engenharia de Redes de Comunicação
+- **Disciplina:** ENE0025 - Protocolos de Transporte e Roteamento
+- **Professor responsável:** Prof. Dr. Laerte Peotta de Melo
+- **Tema:** Referência rápida de comandos do VPCS, do Linux e do Netplan utilizados nos laboratórios
 
 ---
 
@@ -18,10 +22,8 @@
 | `ping <ip> -t` | Executa ping contínuo | `ping 192.168.10.1 -t` |
 | `trace <ip>` | Mostra o caminho até o destino, semelhante ao traceroute | `trace 8.8.8.8` |
 | `arp` | Exibe a tabela ARP da VPC | `arp` |
-| `arp -a` | Exibe as entradas ARP conhecidas | `arp -a` |
 | `save` | Salva a configuração atual da VPC | `save` |
 | `load` | Carrega a configuração salva anteriormente | `load` |
-| `clear` | Limpa a tela do terminal | `clear` |
 | `history` | Mostra o histórico de comandos digitados | `history` |
 | `echo <texto>` | Exibe um texto na tela | `echo teste de rede` |
 | `sleep <segundos>` | Aguarda a quantidade de segundos informada | `sleep 5` |
@@ -29,7 +31,6 @@
 | `?` | Mostra ajuda rápida dos comandos | `?` |
 | `version` | Exibe a versão do VPCS | `version` |
 | `quit` | Encerra a sessão atual | `quit` |
-| `exit` | Sai do terminal da VPC | `exit` |
 | `rlogin <ip>` | Abre conexão remota simples com outro equipamento, quando suportado | `rlogin 192.168.10.1` |
 | `set pcname <nome>` | Define o nome da VPC, quando suportado | `set pcname VPC1` |
 | `show ip` | Exibe informações IP da VPC, quando suportado | `show ip` |
@@ -37,8 +38,10 @@
 | `relay` | Exibe ou ajusta parâmetros de relay, em versões que suportam o recurso | `relay` |
 | `debug` | Exibe informações de depuração, em versões que suportam esse comando | `debug` |
 
+> Os comandos marcados como "quando suportado" dependem da versão do VPCS instalada no PNetLab; a lista completa de comandos da versão em uso é exibida por `?`.
 
-# Comandos simples de rede no Linux Debian/Ubuntu
+
+## 2. Comandos simples de rede no Linux Debian/Ubuntu
 
 | Comando | Descrição |
 |---|---|
@@ -59,7 +62,7 @@
 | `ping google.com` | Testa conectividade e resolução de nomes via DNS. |
 | `cat /etc/resolv.conf` | Exibe os servidores DNS configurados. |
 | `sudo systemctl restart NetworkManager` | Reinicia o serviço NetworkManager. |
-| `sudo systemctl restart networking` | Reinicia o serviço tradicional de rede. |
+| `sudo systemctl restart networking` | Reinicia o serviço tradicional de rede (disponível em Debian com `ifupdown`; ausente em instalações padrão do Ubuntu recente, que usa Netplan). |
 | `sudo dhclient eth0` | Solicita um endereço IP via DHCP para a interface. |
 | `ss -tuln` | Mostra portas abertas e serviços escutando. |
 | `ip link show eth0` | Mostra detalhes da interface, incluindo o endereço MAC. |
@@ -71,7 +74,7 @@
 | `sudo apt update` | Atualiza a lista de pacotes disponíveis. |
 | `sudo apt install net-tools` | Instala o pacote `net-tools`, que inclui `route` e `netstat`. |
 
-## Observação
+### 2.1 Observação
 
 | Item | Descrição |
 |---|---|
@@ -80,21 +83,21 @@
 | Recomendação | Em Debian e Ubuntu atuais, recomenda-se priorizar os comandos baseados em `ip`. |
 
 
-# Netplan no Debian/Ubuntu
+## 3. Netplan no Debian/Ubuntu
 
-## O que é o Netplan
+### 3.1 O que é o Netplan
 
 Netplan é uma ferramenta de configuração de rede utilizada em distribuições Linux como Ubuntu para definir interfaces, endereços IP, gateway, DNS e DHCP por meio de arquivos em formato YAML.
 
 Em vez de configurar a rede diretamente com comandos isolados, o Netplan permite descrever a configuração de forma declarativa em arquivos localizados normalmente em:
 
-```bash
+```text
 /etc/netplan/
 ```
 
 ---
 
-## Estrutura básica
+### 3.2 Estrutura básica
 
 Os arquivos do Netplan utilizam sintaxe YAML. Um exemplo mínimo é:
 
@@ -106,7 +109,7 @@ network:
       dhcp4: true
 ```
 
-### Significado dos campos
+#### 3.2.1 Significado dos campos
 
 | Campo | Descrição |
 |---|---|
@@ -118,7 +121,7 @@ network:
 
 ---
 
-## Principais comandos
+### 3.3 Principais comandos
 
 | Comando | Descrição |
 |---|---|
@@ -130,7 +133,7 @@ network:
 
 ---
 
-## Exemplo 1: configuração com DHCP
+### 3.4 Exemplo 1: configuração com DHCP
 
 ```yaml
 network:
@@ -140,14 +143,14 @@ network:
       dhcp4: true
 ```
 
-### Aplicar
+#### 3.4.1 Aplicar
 ```bash
 sudo netplan apply
 ```
 
 ---
 
-## Exemplo 2: configuração IP estático
+### 3.5 Exemplo 2: configuração IP estático
 
 ```yaml
 network:
@@ -166,7 +169,7 @@ network:
           - 1.1.1.1
 ```
 
-### Explicação
+#### 3.5.1 Explicação
 
 | Campo | Descrição |
 |---|---|
@@ -180,7 +183,7 @@ network:
 
 ---
 
-## Exemplo 3: configuração com duas interfaces
+### 3.6 Exemplo 3: configuração com duas interfaces
 
 ```yaml
 network:
@@ -201,7 +204,7 @@ Nesse caso:
 
 ---
 
-## Exemplo 4: DNS manual
+### 3.7 Exemplo 4: DNS manual
 
 ```yaml
 network:
@@ -217,7 +220,7 @@ network:
 
 ---
 
-## Exemplo 5: rota estática adicional
+### 3.8 Exemplo 5: rota estática adicional
 
 ```yaml
 network:
@@ -234,7 +237,7 @@ network:
           via: 192.168.10.254
 ```
 
-### Interpretação
+#### 3.8.1 Interpretação
 
 | Rota | Função |
 |---|---|
@@ -243,34 +246,34 @@ network:
 
 ---
 
-## Passo a passo básico
+### 3.9 Passo a passo básico
 
-### 1. Verificar o nome da interface
+#### 3.9.1 Verificar o nome da interface
 ```bash
 ip a
 ```
 
-### 2. Editar o arquivo do Netplan
+#### 3.9.2 Editar o arquivo do Netplan
 ```bash
 sudo nano /etc/netplan/01-netcfg.yaml
 ```
 
-### 3. Validar a indentação do arquivo
+#### 3.9.3 Validar a indentação do arquivo
 YAML é sensível a espaços. Não use tabulação.
 
-### 4. Testar a configuração
+#### 3.9.4 Testar a configuração
 ```bash
 sudo netplan try
 ```
 
-### 5. Aplicar definitivamente
+#### 3.9.5 Aplicar definitivamente
 ```bash
 sudo netplan apply
 ```
 
 ---
 
-## Cuidados importantes
+### 3.10 Cuidados importantes
 
 | Cuidados | Explicação |
 |---|---|
@@ -279,10 +282,11 @@ sudo netplan apply
 | Evitar tabs | Use apenas espaços |
 | Testar antes de aplicar | `netplan try` ajuda a evitar perda de acesso remoto |
 | Backup do arquivo | Recomendável antes de editar |
+| Permissões do arquivo | Arquivos de configuração legíveis por outros usuários geram aviso do Netplan; usar `sudo chmod 600 /etc/netplan/*.yaml` |
 
 ---
 
-## Verificações após aplicar
+### 3.11 Verificações após aplicar
 
 | Comando | Objetivo |
 |---|---|
@@ -294,7 +298,7 @@ sudo netplan apply
 
 ---
 
-## Exemplo completo comentado
+### 3.12 Exemplo completo comentado
 
 ```yaml
 network:
@@ -313,7 +317,7 @@ network:
           - 1.1.1.1
 ```
 
-### Resumo da configuração
+#### 3.12.1 Resumo da configuração
 
 | Item | Valor |
 |---|---|
@@ -326,7 +330,7 @@ network:
 
 ---
 
-## Erros comuns
+### 3.13 Erros comuns
 
 | Erro | Possível causa |
 |---|---|
@@ -338,7 +342,7 @@ network:
 
 ---
 
-## Comandos úteis em laboratório
+### 3.14 Comandos úteis em laboratório
 
 ```bash
 ip a
@@ -354,11 +358,18 @@ cat /etc/resolv.conf
 
 ---
 
-## Conclusão
+### 3.15 Conclusão
 
 Netplan simplifica a administração de rede em sistemas Debian/Ubuntu ao concentrar a configuração em arquivos YAML claros e organizados. Seu uso é especialmente útil em laboratórios, servidores e ambientes didáticos, pois permite configurar DHCP, IP estático, DNS e rotas de maneira padronizada e reproduzível.
 
 ---
+
+## 4. Referências
+
+- Canonical. *Netplan: documentação oficial*. Disponível em: https://netplan.readthedocs.io/.
+- Páginas de manual `ip(8)`, `ss(8)` e `netplan(5)`.
+- Projeto VPCS. *Virtual PC Simulator*. Disponível em: https://github.com/GNS3/vpcs.
+- [**RFC 1918**](https://datatracker.ietf.org/doc/html/rfc1918) - *Address Allocation for Private Internets* (faixas de endereços privados utilizadas nos exemplos).
 
 [Índice Geral (README)](../README.md) | [Laboratório 01 →](lab01.md)
 

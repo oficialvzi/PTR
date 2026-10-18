@@ -27,13 +27,28 @@
 
 ---
 
-## 1. Tema
+## 1. Objetivos
 
-Implementação inicial de **multicast IP com PIM-DM** em uma topologia pequena e controlada no **PNetLab**, validando a formação básica do encaminhamento multicast entre uma origem e um receptor em duas LANs distintas.
+Ao final desta atividade, o aluno deverá ser capaz de:
+
+- montar uma topologia controlada de multicast no **PNetLab**;
+- configurar interfaces IP em roteador e hosts;
+- habilitar o roteamento multicast com `ip multicast-routing`;
+- ativar o **PIM-DM** nas interfaces do roteador;
+- gerar tráfego multicast de teste;
+- verificar a operação básica do encaminhamento multicast;
+- analisar a relação entre a tabela unicast e a tabela multicast;
+- validar o funcionamento do grupo multicast configurado.
 
 ---
 
-## 2. Justificativa 
+## 2. Introdução e Fundamentação Teórica
+
+### 2.1 Tema
+
+Implementação inicial de **multicast IP com PIM-DM** em uma topologia pequena e controlada no **PNetLab**, validando a formação básica do encaminhamento multicast entre uma origem e um receptor em duas LANs distintas.
+
+### 2.2 Justificativa
 
 Esta prática introduz o aluno ao roteamento multicast em ambiente controlado. Após a configuração básica de interfaces e conectividade IP em laboratório anterior, o estudante passa a observar:
 
@@ -45,13 +60,11 @@ Esta prática introduz o aluno ao roteamento multicast em ambiente controlado. A
 
 A atividade foi estruturada para simplificar o primeiro contato com multicast roteado.
 
----
-
-## 3. Fundamentação teórica
+### 2.3 Fundamentação teórica
 
 Protocolos de roteamento tradicionais foram concebidos para comunicação **unicast**, em que um emissor envia pacotes para um único destino. Em aplicações como transmissão de vídeo, distribuição de conteúdo em tempo real, aulas ao vivo, monitoramento e replicação simultânea de dados, esse modelo pode ser ineficiente, pois obriga a origem a enviar múltiplas cópias do mesmo fluxo para diferentes receptores. Nesse contexto surge o **multicast IP**, cujo objetivo é permitir que um mesmo fluxo seja entregue a vários receptores interessados, reduzindo consumo de banda e processamento na origem.
 
-### 3.1 Diagrama explicativo do conceito de multicast com PIM-DM
+#### 2.3.1 Diagrama explicativo do conceito de multicast com PIM-DM
 
 ```mermaid
 flowchart LR
@@ -92,76 +105,78 @@ Entre os modos de operação do PIM, o **PIM Dense Mode (PIM-DM)** foi projetado
 
 *Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
-
-
 >Na prática, o funcionamento multicast também envolve o comportamento dos hosts. Os receptores precisam manifestar interesse em participar de um grupo, normalmente por meio do **IGMP (Internet Group Management Protocol)** em redes IPv4. Em um laboratório simplificado, muitas vezes o foco recai sobre a ativação do multicast no roteador e a geração de tráfego para um endereço de grupo, mas é importante compreender que, em cenários reais, a adesão dos hosts ao grupo é fundamental para que a rede saiba onde o tráfego deve ser mantido ou podado.
 
+### 2.4 Funcionamento interno do PIM-DM
+
+O *Protocol Independent Multicast - Dense Mode* (PIM-DM) é especificado na [**RFC 3973**](https://datatracker.ietf.org/doc/html/rfc3973). Seu ciclo de operação compreende:
+
+1. **Descoberta de vizinhos:** mensagens *Hello* enviadas ao endereço `224.0.0.13` (*ALL-PIM-ROUTERS*);
+2. **Inundação (*flood*):** o primeiro pacote de uma origem é replicado em todas as interfaces PIM, exceto na de entrada, desde que aprovado pela verificação RPF;
+3. **Poda (*prune*):** roteadores sem receptores nem vizinhos interessados enviam mensagens *Prune* a montante, interrompendo o fluxo no ramo;
+4. **Reinserção (*graft*) e *assert*:** a adesão de um novo receptor em ramo podado gera mensagem *Graft*; a existência de caminhos paralelos é resolvida por mensagens *Assert*.
+
+Os receptores informam o interesse em um grupo ao roteador da LAN por meio do *Internet Group Management Protocol* (IGMP), versão 2 neste cenário ([**RFC 2236**](https://datatracker.ietf.org/doc/html/rfc2236)). O mapeamento do endereço de grupo para o endereço MAC segue a [**RFC 1112**](https://datatracker.ietf.org/doc/html/rfc1112): os 23 bits menos significativos do endereço IP são copiados para o prefixo `01:00:5e`.
+
+### 2.5 Exemplo concreto
+
+Para o grupo `239.1.1.1` (hexadecimal `EF.01.01.01`), os 23 bits menos significativos resultam em `01.01.01`, e o endereço MAC de destino dos quadros Ethernet é `01:00:5e:01:01:01`. O endereço `239.1.1.1` pertence à faixa de escopo administrativo `239.0.0.0/8`, destinada a uso interno de organizações ([**RFC 2365**](https://datatracker.ietf.org/doc/html/rfc2365)).
+
+### 2.6 Protocolos envolvidos
+
+| Protocolo | Camada OSI | Camada TCP/IP | Encapsulamento | Endereço de destino típico |
+|---|---|---|---|---|
+| PIM | 3 (Rede) | Internet | IP protocolo 103 | `224.0.0.13` |
+| IGMP | 3 (Rede) | Internet | IP protocolo 2 | Endereço do grupo ou `224.0.0.1` (consultas) |
+| Tráfego de teste (`iperf`) | 4 (Transporte) | Transporte | UDP 5000 (porta configurada neste roteiro) | `239.1.1.1` |
+
 ---
 
-## 4. Objetivos
+## 3. Topologia e Cenário
 
-Ao final desta atividade, o aluno deverá ser capaz de:
-
-- montar uma topologia controlada de multicast no **PNetLab**;
-- configurar interfaces IP em roteador e hosts;
-- habilitar o roteamento multicast com `ip multicast-routing`;
-- ativar o **PIM-DM** nas interfaces do roteador;
-- gerar tráfego multicast de teste;
-- verificar a operação básica do encaminhamento multicast;
-- analisar a relação entre a tabela unicast e a tabela multicast;
-- validar o funcionamento do grupo multicast configurado.
-
----
-
-
-
-## 5. Topologia proposta
+### 3.1 Topologia proposta
 
 ```mermaid
 flowchart TB
-    R["📡 Router R1<br/>G0/0: 192.168.10.1/24<br/>G0/1: 192.168.20.1/24"] --- S1["🔀 SW1"]
+    R["📡 Router R1<br/>Gi0/0: 192.168.10.1/24<br/>Gi0/1: 192.168.20.1/24"] --- S1["🔀 SW1"]
     R --- S2["🔀 SW2"]
 
     S1 --- SRC["💻 Host Origem<br/>192.168.10.10/24"]
     S2 --- RCV["💻 Host Receptor<br/>192.168.20.10/24"]
 ```
 
----
-
-## 6. Endereçamento IP
+### 3.2 Endereçamento IP
 
 | Dispositivo   | Interface | Endereço IP   | Máscara           |Gateway          |
 |---------------|-----------|---------------|-------------------|:-----------------:|
-| R1            | G0/0      | 192.168.10.1  | 255.255.255.0     | -               |
-| R1            | G0/1      | 192.168.20.1  | 255.255.255.0     | -               |
+| R1            | Gi0/0     | 192.168.10.1  | 255.255.255.0     | -               |
+| R1            | Gi0/1     | 192.168.20.1  | 255.255.255.0     | -               |
 | Host Origem   | eth0      | 192.168.10.10 | 255.255.255.0     | 192.168.10.1    |
 | Host Receptor | eth0      | 192.168.20.10 | 255.255.255.0     | 192.168.20.1    |
 
 **Grupo multicast sugerido:** `239.1.1.1`  
 **Porta UDP de teste:** `5000`
 
----
+### 3.3 Montagem do cenário no PNetLab
 
-## 7. Montagem do cenário no PNetLab
-
-### 7.1 Dispositivos necessários
+#### 3.3.1 Dispositivos necessários
 
 Adicionar ao laboratório os seguintes nós:
 
-- Imagem de **roteador Cisco** compatível: **IOL L3-ADVENTERPRISEK9-M-15.4-2T.bin**
-- 2 nó **Ethernet Switch** compatível: **L2-ADVENTERPRISEK9-M-15.2-IRON-20151103.bin**
-- **2 hosts**,  Linux leves.
+- Imagem de **roteador Cisco IOSv** (*Virtual IOS*), com ao menos duas interfaces
+- 2 nós **Ethernet Switch** compatível: **L2-ADVENTERPRISEK9-M-15.2-IRON-20151103.bin**
+- **2 hosts** Linux leves.
 
-### 7.2 Conexões da topologia
+#### 3.3.2 Conexões da topologia
 
 Realizar as conexões conforme abaixo:
 
 - conectar o **Host Origem** ao **SW1**;
-- conectar o **SW1** à interface **G0/0** do **R1**;
+- conectar o **SW1** à interface **Gi0/0** do **R1**;
 - conectar o **Host Receptor** ao **SW2**;
-- conectar o **SW2** à interface **G0/1** do **R1**.
+- conectar o **SW2** à interface **Gi0/1** do **R1**.
 
-### 7.3 Resultado esperado da montagem
+#### 3.3.3 Resultado esperado da montagem
 
 Ao final da montagem, o cenário deverá permitir:
 
@@ -170,41 +185,52 @@ Ao final da montagem, o cenário deverá permitir:
 - encaminhamento multicast entre as duas redes;
 - visualização da tabela multicast no roteador.
 
+### 3.4 Observação técnica
+
+A imagem de roteador padronizada neste repositório é o **Cisco IOSv**, que suporta `ip multicast-routing` e `ip pim dense-mode`. Caso outra imagem seja utilizada, confirmar o suporte a esses comandos antes de iniciar a prática.
+
 ---
 
-## 8. Configuração do roteador
+## 4. Roteiro Prático Passo a Passo
 
-### 8.1 Configuração básica das interfaces
+### 4.1 Configuração do roteador
 
-```bash
+#### 4.1.1 Configuração básica das interfaces
+
+```cisco
 enable
 configure terminal
+! Nome do equipamento e desativação da resolução DNS de comandos incorretos
 hostname R1
 no ip domain-lookup
 
-interface g0/0
+! Interface voltada para a LAN de origem do fluxo multicast
+interface Gi0/0
  description LAN-ORIGEM
  ip address 192.168.10.1 255.255.255.0
  no shutdown
  exit
 
-interface g0/1
+! Interface voltada para a LAN do receptor
+interface Gi0/1
  description LAN-RECEPTOR
  ip address 192.168.20.1 255.255.255.0
  no shutdown
  exit
 ```
 
-### 8.2 Habilitação do multicast e do PIM-DM
+#### 4.1.2 Habilitação do multicast e do PIM-DM
 
-```bash
+```cisco
+! Habilita o encaminhamento de pacotes multicast no roteador
 ip multicast-routing
 
-interface g0/0
+! Ativa o PIM-DM (e, implicitamente, o IGMP) em cada interface participante
+interface Gi0/0
  ip pim dense-mode
  exit
 
-interface g0/1
+interface Gi0/1
  ip pim dense-mode
  exit
 
@@ -212,11 +238,9 @@ end
 copy running-config startup-config
 ```
 
----
+### 4.2 Configuração dos hosts
 
-## 9. Configuração dos hosts
-
-### 9.1 Host Origem
+#### 4.2.1 Host Origem
 
 No **Host Origem (Linux simples)**:
 
@@ -226,9 +250,9 @@ ip link set eth0 up
 ip route add default via 192.168.10.1
 ```
 
-### 9.2 Host Receptor
+#### 4.2.2 Host Receptor
 
-No **Host Origem (Linux simples)**:
+No **Host Receptor (Linux simples)**:
 
 ```bash
 ip addr add 192.168.20.10/24 dev eth0
@@ -236,47 +260,64 @@ ip link set eth0 up
 ip route add default via 192.168.20.1
 ```
 
----
-
-## 10. Geração de tráfego multicast
+### 4.3 Geração de tráfego multicast
 
 Para testes de multicast, recomenda-se utilizar **hosts Linux leves** no PNetLab com suporte a ferramentas como `iperf`.
 
-### 10.1 No Host Receptor
+#### 4.3.1 No Host Receptor
 
 ```bash
-iperf -s -u -B 239.1.1.1 -i 1
+iperf -s -u -B 239.1.1.1 -p 5000 -i 1
 ```
 
-### 10.2 No Host Origem
+#### 4.3.2 No Host Origem
 
 ```bash
-iperf -c 239.1.1.1 -u -T 32 -t 30 -i 1
+iperf -c 239.1.1.1 -u -p 5000 -T 32 -t 30 -i 1
 ```
+
+Significado das opções (`iperf` versão 2):
+
+- `-s` e `-c`: modos servidor (receptor) e cliente (emissor);
+- `-u`: tráfego UDP;
+- `-B 239.1.1.1`: associa o receptor ao grupo multicast, o que leva o sistema operacional a emitir o relatório IGMP de adesão ao grupo;
+- `-p 5000`: porta UDP de destino, coerente com a porta de teste definida na Seção 3.2;
+- `-T 32`: TTL dos pacotes multicast; o valor padrão do `iperf` para multicast é 1, o que impediria o encaminhamento pelo roteador;
+- `-t 30` e `-i 1`: duração de 30 s e relatório a cada 1 s.
 
 > Caso a imagem utilizada não possua `iperf`, podem ser usados `iperf2`, `socat` ou outra ferramenta compatível com envio e recepção multicast.
 
 ---
 
-## 11. Comandos de verificação no roteador
+## 5. Verificação e Diagnóstico
 
-```bash
+### 5.1 Comandos de verificação no roteador
+
+```cisco
+! Estado das interfaces
 show ip interface brief
+! Interfaces com PIM ativo e modo de operação
 show ip pim interface
+! Vizinhos PIM descobertos
+show ip pim neighbor
+! Grupos com adesão de receptores
+show ip igmp groups
+! Interface RPF para a origem
+show ip rpf 192.168.10.10
+! Tabela de roteamento multicast
 show ip mroute
+! Tabela unicast usada pelo RPF
 show ip route
 ```
 
-### 11.1 O que observar
+#### 5.1.1 O que observar
 
-- interfaces `G0/0` e `G0/1` em estado `up/up`;
+- interfaces `Gi0/0` e `Gi0/1` em estado `up/up`;
 - PIM habilitado nas interfaces;
 - existência de entradas multicast em `show ip mroute`;
 - coerência entre interface de entrada, interface de saída e origem do tráfego.
 
----
-
-## 12. Resultados esperados
+### 5.2 Resultados esperados
 
 Ao concluir a atividade, o aluno deve verificar que:
 
@@ -285,9 +326,7 @@ Ao concluir a atividade, o aluno deve verificar que:
 - o funcionamento do PIM depende da base de encaminhamento unicast já estabelecida;
 - a topologia controlada permite visualizar o comportamento inicial do PIM-DM com baixa complexidade.
 
----
-
-## 13. Checklist de validação
+### 5.3 Checklist de validação
 
 - [ ] Topologia criada corretamente no PNetLab  
 - [ ] Interfaces do roteador configuradas com os IPs corretos  
@@ -300,9 +339,64 @@ Ao concluir a atividade, o aluno deve verificar que:
 - [ ] Saída de `show ip mroute` validada  
 - [ ] Configuração salva com sucesso  
 
+### 5.4 Interpretação de `show ip mroute`
+
+A tabela multicast contém dois tipos de entradas:
+
+| Entrada | Significado |
+|---|---|
+| `(*, 239.1.1.1)` | Entrada genérica do grupo, independente da origem |
+| `(192.168.10.10, 239.1.1.1)` | Entrada específica da origem e do grupo (par S,G) |
+
+Em cada entrada, os campos mais relevantes são: **flags** (por exemplo, `D` para modo denso), **Incoming interface** (interface RPF por onde o fluxo é aceito), **RPF nbr** (vizinho RPF; `0.0.0.0` quando a origem está diretamente conectada) e **Outgoing interface list** (interfaces para as quais o tráfego é replicado, com estado `Forward` ou `Prune`). A ausência da interface do receptor na lista de saída indica que a poda foi aplicada ou que não houve adesão IGMP.
+
+### 5.5 Metodologia de diagnóstico
+
+1. **Enlace e interfaces:** `show ip interface brief` com `up/up` nas duas interfaces;
+2. **Endereçamento e gateway:** `ping` de cada host para o respectivo gateway;
+3. **Roteamento unicast:** `show ip route` e `show ip rpf 192.168.10.10`; sem rota unicast de retorno para a origem, a verificação RPF falha e o tráfego é descartado;
+4. **PIM:** `show ip pim interface` deve listar as duas interfaces em modo denso;
+5. **IGMP:** `show ip igmp groups` deve exibir `239.1.1.1` na interface do receptor enquanto o `iperf` receptor estiver ativo;
+6. **Tabela multicast e políticas:** `show ip mroute` com contadores de pacotes crescentes; verificar filtros de multicast e do sistema operacional dos hosts.
+
 ---
 
-## 14. Questões para análise
+## 6. Segurança
+
+### 6.1 Riscos associados
+
+- **Fonte não autorizada:** qualquer host pode emitir tráfego para qualquer grupo; no PIM-DM, esse tráfego é inundado por toda a topologia antes da poda, o que facilita ataques de negação de serviço por consumo de banda e de estado.
+- **Vizinho PIM falso:** um nó malicioso que envie mensagens *Hello* pode ser aceito como vizinho e influenciar eleições e *asserts*.
+- **Adesão indevida a grupos:** receptores não autorizados podem emitir relatórios IGMP para grupos restritos.
+- **Escopo:** tráfego multicast sem controle de TTL ou de fronteira pode vazar para fora da organização.
+
+### 6.2 Boas práticas (*hardening*)
+
+```cisco
+! Interface voltada para hosts: não aceita vizinhos PIM
+access-list 10 deny any
+interface Gi0/1
+ ip pim neighbor-filter 10
+ ! Restringe os grupos nos quais os hosts podem ingressar
+ ip igmp access-group 20
+ exit
+access-list 20 permit 239.1.1.1
+! Exemplo para a interface de borda externa de uma rede real: impede que o escopo administrativo (239.0.0.0/8) atravesse a borda da organização
+! Não aplicar às interfaces deste laboratório, pois o grupo de teste 239.1.1.1 pertence a essa faixa
+access-list 30 deny 239.0.0.0 0.255.255.255
+access-list 30 permit 224.0.0.0 15.255.255.255
+interface <interface-de-borda-externa>
+ ip multicast boundary 30
+ exit
+```
+
+O PIM-DM é indicado apenas para cenários didáticos ou redes pequenas com receptores densos; em redes de produção, o *PIM Sparse Mode* (PIM-SM, [**RFC 7761**](https://datatracker.ietf.org/doc/html/rfc7761)) é o modo recomendado.
+
+---
+
+## 7. Perguntas para Fixação
+
+### 7.1 Questões para análise
 
 1. Por que o PIM é considerado independente do protocolo de roteamento unicast?
 2. Qual a diferença entre tráfego unicast e multicast neste cenário?
@@ -310,9 +404,15 @@ Ao concluir a atividade, o aluno deve verificar que:
 4. Por que o PIM-DM é uma boa escolha para uma primeira atividade prática?
 5. O que a tabela `show ip mroute` revela sobre o encaminhamento multicast?
 
+### 7.2 Conclusão
+
+Esta atividade apresenta o primeiro cenário prático de multicast IP com PIM-DM em ambiente controlado no PNetLab. O laboratório permite que o aluno compreenda como o roteador passa a tratar tráfego multicast, formando a base conceitual e operacional necessária para topologias mais complexas nas próximas práticas.
+
 ---
 
-## 15. Critérios de avaliação
+## 8. Critérios de Avaliação e Entregáveis
+
+### 8.1 Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -323,9 +423,7 @@ Ao concluir a atividade, o aluno deve verificar que:
 | Respostas técnicas fundamentadas às questões de análise | 1,5 |
 | **Total** | **10,0** |
 
----
-
-## 16. Entregáveis
+### 8.2 Entregáveis
 
 O aluno deverá entregar:
 - captura de tela da topologia montada no PNetLab;
@@ -337,24 +435,17 @@ O aluno deverá entregar:
 
 ---
 
-## 17. Observação técnica
+## 9. Referências
 
-Nem toda imagem de roteador Cisco disponível no PNetLab suporta multicast/PIM integralmente. Para esta atividade, recomenda-se utilizar imagens como:
-
-- **IOSv**
-- **CSR1000v**
-- outra imagem com suporte explícito a:
-  - `ip multicast-routing`
-  - `ip pim dense-mode`
-
----
-
-## 18. Conclusão
-
-Esta atividade apresenta o primeiro cenário prático de multicast IP com PIM-DM em ambiente controlado no PNetLab. O laboratório permite que o aluno compreenda como o roteador passa a tratar tráfego multicast, formando a base conceitual e operacional necessária para topologias mais complexas nas próximas práticas.
+- [**RFC 1112**](https://datatracker.ietf.org/doc/html/rfc1112) - *Host Extensions for IP Multicasting*.
+- [**RFC 2236**](https://datatracker.ietf.org/doc/html/rfc2236) - *Internet Group Management Protocol, Version 2*.
+- [**RFC 2365**](https://datatracker.ietf.org/doc/html/rfc2365) - *Administratively Scoped IP Multicast*.
+- [**RFC 3973**](https://datatracker.ietf.org/doc/html/rfc3973) - *Protocol Independent Multicast - Dense Mode (PIM-DM): Protocol Specification (Revised)*.
+- [**RFC 7761**](https://datatracker.ietf.org/doc/html/rfc7761) - *Protocol Independent Multicast - Sparse Mode (PIM-SM): Protocol Specification (Revised)*.
+- Cisco Systems. *IP Multicast: PIM Configuration Guide* (documentação oficial do fabricante).
+- WILLIAMSON, B. *Developing IP Multicast Networks*. Cisco Press.
+- KUROSE, J. F.; ROSS, K. W. *Redes de Computadores e a Internet: uma abordagem top-down*. Pearson.
 
 ---
 
 [← Anterior: Laboratório 02](lab02.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 04 →](lab04.md)
-
-

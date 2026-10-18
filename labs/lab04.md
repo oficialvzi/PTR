@@ -9,21 +9,7 @@
 
 ---
 
-## 1. Tema
-
-Implementação do **RIPv2** em topologia com múltiplos roteadores, seguida de **análise de convergência após falha de enlace**.
-
----
-
-## 2. Justificativa
-
-Este laboratório eleva o nível de dificuldade em relação às práticas iniciais da disciplina ao introduzir um protocolo de roteamento dinâmico clássico baseado em **vetor-distância**. A atividade permite ao aluno observar não apenas a configuração do **RIPv2**, mas também o comportamento da rede diante de uma mudança de topologia.
-
-Ao analisar a propagação de rotas, o desaparecimento de caminhos e o tempo necessário para a rede atingir um novo estado estável, o estudante compreende limitações importantes do RIP, como **convergência lenta**, dependência de temporizadores e vulnerabilidade a problemas como **count to infinity**. A prática também prepara o terreno para comparações futuras com protocolos de convergência mais rápida, como o **OSPF**.
-
----
-
-## 3. Objetivos
+## 1. Objetivos
 
 Ao final da atividade, o aluno deverá ser capaz de:
 
@@ -37,13 +23,25 @@ Ao final da atividade, o aluno deverá ser capaz de:
 
 ---
 
-## 4. Fundamentação teórica
+## 2. Introdução e Fundamentação Teórica
+
+### 2.1 Tema
+
+Implementação do **RIPv2** em topologia com múltiplos roteadores, seguida de **análise de convergência após falha de enlace**.
+
+### 2.2 Justificativa
+
+Este laboratório eleva o nível de dificuldade em relação às práticas iniciais da disciplina ao introduzir um protocolo de roteamento dinâmico clássico baseado em **vetor-distância**. A atividade permite ao aluno observar não apenas a configuração do **RIPv2**, mas também o comportamento da rede diante de uma mudança de topologia.
+
+Ao analisar a propagação de rotas, o desaparecimento de caminhos e o tempo necessário para a rede atingir um novo estado estável, o estudante compreende limitações importantes do RIP, como **convergência lenta**, dependência de temporizadores e vulnerabilidade a problemas como **count to infinity**. A prática também prepara o terreno para comparações futuras com protocolos de convergência mais rápida, como o **OSPF**.
+
+### 2.3 Fundamentação teórica
 
 Protocolos de roteamento dinâmico foram desenvolvidos para permitir que roteadores descubram, atualizem e removam rotas automaticamente, reduzindo a necessidade de configuração manual em redes com múltiplos caminhos e mudanças frequentes. Entre esses protocolos, o **RIP - Routing Information Protocol** ocupa lugar importante na história das redes IP por sua simplicidade de operação e valor didático. Mesmo sendo considerado limitado para redes modernas de maior porte, ele continua sendo extremamente útil em laboratório por permitir a observação clara de conceitos fundamentais como troca de rotas, atualização periódica, métrica por saltos e convergência.
 
 O RIP pertence à classe dos protocolos de **vetor-distância**. Nesse modelo, cada roteador anuncia periodicamente a seus vizinhos as redes que conhece e a distância até elas, medida em **número de saltos**. Cada roteador, ao receber essas informações, recalcula sua tabela de roteamento e escolhe o melhor caminho com base na menor métrica. No RIP, uma rota com até **15 saltos** é considerada alcançável; uma métrica **16** representa destino inalcançável. Essa característica torna o protocolo simples, mas também limita sua aplicação a redes pequenas.
 
-### 4.1 Diagrama explicativo do funcionamento do RIP
+#### 2.3.1 Diagrama explicativo do funcionamento do RIP
 
 ```mermaid
 flowchart LR
@@ -79,60 +77,79 @@ A lentidão da convergência do RIP está relacionada ao uso de temporizadores e
 
 Outro fenômeno clássico associado ao RIP é o problema de count to infinity. Esse problema ocorre quando roteadores trocam informações incorretas sobre uma rede que deixou de existir, aumentando gradualmente a métrica até que ela atinja o valor 16, considerado infinito no contexto do protocolo. Esse comportamento pode prolongar a convergência e gerar loops temporários. Para reduzir esse tipo de problema, o RIP incorpora mecanismos como split horizon, poison reverse e triggered updates. O split horizon evita que uma rota aprendida por uma interface seja anunciada de volta por essa mesma interface. O poison reverse marca explicitamente uma rota como inalcançável ao reenviá-la. Já os triggered updates permitem acelerar a propagação de mudanças sem depender exclusivamente do próximo ciclo periódico de atualização.
 
-
 <img width="1448" height="1086" alt="Infográfico do laboratório de RIP: topologia R1, R2 e R3 com VPC1 e VPC2, falha no enlace 10.0.23.0/30, configuração do RIPv2, mecanismos de prevenção de laços e etapas do experimento de convergência" src="https://github.com/user-attachments/assets/9e08fb19-31e2-40d9-9bfc-8a3117ad80e8" />
 
 *Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
+> **Importante:** o RIP utiliza **UDP porta 520** para o envio de atualizações; no RIPv2, as mensagens são enviadas ao grupo multicast `224.0.0.9` ([**RFC 2453**](https://datatracker.ietf.org/doc/html/rfc2453)). Isso reforça a ideia de que protocolos de roteamento também operam sobre camadas e mecanismos bem definidos da pilha TCP/IP. O roteamento dinâmico não é apenas uma configuração isolada, mas parte do comportamento sistêmico da rede.
 
+### 2.4 Funcionamento interno do RIPv2
 
-> IMPORTANTE> RIP utiliza **UDP porta 520** para o envio de atualizações. Isso reforça a ideia de que protocolos de roteamento também operam sobre camadas e mecanismos bem definidos da pilha TCP/IP. o roteamento dinâmico não é apenas uma configuração isolada, mas parte do comportamento sistêmico da rede.
+O RIP é especificado pela [**RFC 1058**](https://datatracker.ietf.org/doc/html/rfc1058) (RIPv1) e pela [**RFC 2453**](https://datatracker.ietf.org/doc/html/rfc2453) (RIPv2). Cada roteador mantém uma tabela com destino, métrica e próximo salto e a divulga por mensagens *Response*, com até 25 rotas por mensagem. Ao receber um anúncio, o roteador soma 1 à métrica e instala a rota se ela for nova ou melhor. Um roteador também pode solicitar a tabela do vizinho por uma mensagem *Request*, por exemplo, ao ser inicializado.
+
+### 2.5 Exemplo concreto: temporizadores e falha de enlace
+
+Quando o enlace entre **R2** e **R3** é desativado, **R3** deixa de receber as atualizações de R2. O comportamento é controlado por temporizadores:
+
+| Temporizador | Valor padrão ([**RFC 2453**](https://datatracker.ietf.org/doc/html/rfc2453)) | Valor padrão (Cisco IOS) | Função |
+|---|---|---|---|
+| Atualização periódica | 30 s | 30 s | Intervalo de envio da tabela completa |
+| Expiração (*timeout* / *invalid*) | 180 s | 180 s | Sem atualização por esse tempo, a rota passa a métrica 16 |
+| *Garbage-collection* / *flush* | 120 s após a expiração | 240 s após a última atualização | Remoção definitiva da rota da tabela |
+| *Hold-down* | Não definido | 180 s | Período em que a rota é mantida sem aceitar alternativas; comportamento proprietário da Cisco |
+
+Os valores efetivos podem ser conferidos com `show ip protocols`, e a divergência entre RFC e implementação deve ser considerada ao interpretar os tempos medidos no laboratório.
+
+### 2.6 Protocolos envolvidos
+
+| Protocolo | Camada OSI | Camada TCP/IP | Transporte / porta | Destino |
+|---|---|---|---|---|
+| RIPv2 | 7 (Aplicação), com função de controle da camada 3 | Aplicação | UDP 520 | `224.0.0.9` (multicast) |
+| RIPv1 | 7 (Aplicação) | Aplicação | UDP 520 | `255.255.255.255` (broadcast) |
 
 ---
 
-## 5. Topologia proposta
+## 3. Topologia e Cenário
+
+### 3.1 Topologia proposta
 
 ```mermaid
 flowchart LR
-    PC1["💻 VPC1<br/>192.168.10.10/24"] --- R1["📡 R1<br/>G0/0: 192.168.10.1/24<br/>G0/1: 10.0.12.1/30"]
-    R1 --- R2["📡 R2<br/>G0/0: 10.0.12.2/30<br/>G0/1: 10.0.23.1/30"]
-    R2 --- R3["📡 R3<br/>G0/0: 10.0.23.2/30<br/>G0/1: 192.168.30.1/24"]
-    R3 --- PC3["💻 VPC2<br/>192.168.30.10/24"]
+    PC1["💻 VPC1<br/>192.168.10.10/24"] --- R1["📡 R1<br/>Gi0/0: 192.168.10.1/24<br/>Gi0/1: 10.0.12.1/30"]
+    R1 --- R2["📡 R2<br/>Gi0/0: 10.0.12.2/30<br/>Gi0/1: 10.0.23.1/30"]
+    R2 --- R3["📡 R3<br/>Gi0/0: 10.0.23.2/30<br/>Gi0/1: 192.168.30.1/24"]
+    R3 --- PC2["💻 VPC2<br/>192.168.30.10/24"]
 ```
 
----
-
-## 6. Endereçamento IP
+### 3.2 Endereçamento IP
 
 | Dispositivo | Interface | Endereço IP   | Máscara           | Gateway        |
 |-------------|:-----------:|---------------|-------------------|:----------------:|
-| R1          | G0/0      | 192.168.10.1  | 255.255.255.0     | -              |
-| R1          | G0/1      | 10.0.12.1     | 255.255.255.252   | -              |
-| R2          | G0/0      | 10.0.12.2     | 255.255.255.252   | -              |
-| R2          | G0/1      | 10.0.23.1     | 255.255.255.252   | -              |
-| R3          | G0/0      | 10.0.23.2     | 255.255.255.252   | -              |
-| R3          | G0/1      | 192.168.30.1  | 255.255.255.0     | -              |
+| R1          | Gi0/0      | 192.168.10.1  | 255.255.255.0     | -              |
+| R1          | Gi0/1      | 10.0.12.1     | 255.255.255.252   | -              |
+| R2          | Gi0/0      | 10.0.12.2     | 255.255.255.252   | -              |
+| R2          | Gi0/1      | 10.0.23.1     | 255.255.255.252   | -              |
+| R3          | Gi0/0      | 10.0.23.2     | 255.255.255.252   | -              |
+| R3          | Gi0/1      | 192.168.30.1  | 255.255.255.0     | -              |
 | VPC1        | -      | 192.168.10.10 | 255.255.255.0     | 192.168.10.1   |
 | VPC2        | -      | 192.168.30.10 | 255.255.255.0     | 192.168.30.1   |
 
----
-
-## 7. Montagem do cenário no PNetLab
+### 3.3 Montagem do cenário no PNetLab
 
 Adicionar ao laboratório:
 
-- **3 roteadores Cisco** com suporte a RIP;
+- **3 roteadores Cisco IOSv** (*Virtual IOS*), com ao menos duas interfaces cada;
 - **2 hosts VPCs**;
 - enlaces ponto a ponto entre os roteadores.
 
-### 7.1 Conexões da topologia
+#### 3.3.1 Conexões da topologia
 
-- conectar o **VPC1** à interface **G0/0** do **R1**;
-- conectar a interface **G0/1** do **R1** à interface **G0/0** do **R2**;
-- conectar a interface **G0/1** do **R2** à interface **G0/0** do **R3**;
-- conectar o **VPC2** à interface **G0/1** do **R3**.
+- conectar o **VPC1** à interface **Gi0/0** do **R1**;
+- conectar a interface **Gi0/1** do **R1** à interface **Gi0/0** do **R2**;
+- conectar a interface **Gi0/1** do **R2** à interface **Gi0/0** do **R3**;
+- conectar o **VPC2** à interface **Gi0/1** do **R3**.
 
-### 7.2 Resultado esperado da montagem
+#### 3.3.2 Resultado esperado da montagem
 
 Ao final da montagem, o cenário deverá permitir:
 
@@ -143,115 +160,123 @@ Ao final da montagem, o cenário deverá permitir:
 
 ---
 
-## 8. Configuração básica dos hosts 
+## 4. Roteiro Prático Passo a Passo
 
-### 8.1 VPC1
+### 4.1 Configuração básica dos hosts
 
+#### 4.1.1 VPC1
 
-```bash
+```text
 ip 192.168.10.10/24 192.168.10.1
 save
 ```
 
-### 8.2 VPC2
+#### 4.1.2 VPC2
 
-```bash
+```text
 ip 192.168.30.10/24 192.168.30.1
 save
 ```
 
----
+### 4.2 Configuração dos roteadores
 
-## 9. Configuração dos roteadores
+#### 4.2.1 R1
 
-### 9.1 R1
-
-```bash
+```cisco
 enable
 configure terminal
 hostname R1
 no ip domain-lookup
 
-interface g0/0
+interface Gi0/0
  ip address 192.168.10.1 255.255.255.0
  no shutdown
 exit
 
-interface g0/1
+interface Gi0/1
  ip address 10.0.12.1 255.255.255.252
  no shutdown
 exit
 
+! Ativa o RIP versão 2 (UDP 520, multicast 224.0.0.9)
 router rip
  version 2
+ ! Desativa a sumarização automática por classe (permite VLSM)
  no auto-summary
+ ! Interfaces cobertas pelas redes abaixo enviam e recebem anúncios RIP
  network 192.168.10.0
  network 10.0.12.0
 end
 copy running-config startup-config
 ```
 
-### 9.2 R2
+> O comando `network` do RIP aceita apenas endereços de rede *classful*: `network 10.0.12.0` e `network 10.0.23.0` são convertidos para `network 10.0.0.0` na configuração em execução, e `network 192.168.10.0` e `network 192.168.30.0` permanecem como redes de classe C. Na prática, toda interface com endereço em `10.0.0.0/8` passa a participar do RIP.
 
-```bash
+#### 4.2.2 R2
+
+```cisco
 enable
 configure terminal
 hostname R2
 no ip domain-lookup
 
-interface g0/0
+interface Gi0/0
  ip address 10.0.12.2 255.255.255.252
  no shutdown
 exit
 
-interface g0/1
+interface Gi0/1
  ip address 10.0.23.1 255.255.255.252
  no shutdown
 exit
 
+! Ativa o RIP versão 2 (UDP 520, multicast 224.0.0.9)
 router rip
  version 2
+ ! Desativa a sumarização automática por classe (permite VLSM)
  no auto-summary
+ ! Interfaces cobertas pelas redes abaixo enviam e recebem anúncios RIP
  network 10.0.12.0
  network 10.0.23.0
 end
 copy running-config startup-config
 ```
 
-### 9.3 R3
+#### 4.2.3 R3
 
-```bash
+```cisco
 enable
 configure terminal
 hostname R3
 no ip domain-lookup
 
-interface g0/0
+interface Gi0/0
  ip address 10.0.23.2 255.255.255.252
  no shutdown
 exit
 
-interface g0/1
+interface Gi0/1
  ip address 192.168.30.1 255.255.255.0
  no shutdown
 exit
 
+! Ativa o RIP versão 2 (UDP 520, multicast 224.0.0.9)
 router rip
  version 2
+ ! Desativa a sumarização automática por classe (permite VLSM)
  no auto-summary
+ ! Interfaces cobertas pelas redes abaixo enviam e recebem anúncios RIP
  network 10.0.23.0
  network 192.168.30.0
 end
 copy running-config startup-config
 ```
 
----
-
-## 10. Verificação inicial
+### 4.3 Verificação inicial
 
 Em cada roteador, executar:
 
-```bash
+```cisco
 show ip interface brief
 show ip route
 show ip protocols
@@ -259,15 +284,13 @@ show ip protocols
 
 No **VPC1**, testar a comunicação fim a fim:
 
-```bash
+```text
 ping 192.168.30.10
 ```
 
----
+### 4.4 Experimento de convergência
 
-## 11. Experimento de convergência
-
-### 11.1 Etapa 1 - Estado estável
+#### 4.4.1 Etapa 1 - Estado estável
 
 Com a rede funcionando:
 
@@ -275,20 +298,22 @@ Com a rede funcionando:
 - verificar a rota para `192.168.10.0/24` em **R3**;
 - confirmar a conectividade entre **VPC1** e **VPC2**.
 
-### 11.2 Etapa 2 - Falha de enlace
+#### 4.4.2 Etapa 2 - Falha de enlace
 
 Desativar a interface entre **R2** e **R3**.
 
 No **R2**:
 
-```bash
+```cisco
 configure terminal
-interface g0/1
+interface Gi0/1
 shutdown
 end
 ```
 
-### 11.3 Etapa 3 - Observação
+> Em emuladores, o desligamento administrativo de uma interface em uma extremidade pode não derrubar o estado da interface na extremidade oposta. Nesse caso, **R3** só perceberá a perda do vizinho pela expiração do temporizador de invalidação (180 s por padrão no Cisco IOS), o que torna a convergência mais lenta e mais visível.
+
+#### 4.4.3 Etapa 3 - Observação
 
 Após a falha:
 
@@ -297,49 +322,7 @@ Após a falha:
 - registrar em quanto tempo a rota deixa de ser utilizável;
 - observar quando a rede atinge novo estado estável.
 
----
-
-## 12. Comandos de observação sugeridos
-
-```bash
-show ip route rip
-show ip protocols
-debug ip rip
-```
-
-> O comando `debug ip rip` deve ser usado com cautela, pois gera saída contínua no console do roteador.
-
----
-
-## 13. Checklist de validação
-
-- [ ] Topologia criada corretamente no PNetLab  
-- [ ] Interfaces dos roteadores configuradas com os endereços corretos  
-- [ ] Hosts VPC configurados com IP e gateway corretos  
-- [ ] RIPv2 habilitado nos três roteadores  
-- [ ] Comando `no auto-summary` aplicado  
-- [ ] Rotas RIP visíveis nas tabelas de roteamento  
-- [ ] Comunicação fim a fim funcionando antes da falha  
-- [ ] Falha de enlace simulada corretamente entre R2 e R3  
-- [ ] Alterações na tabela de rotas observadas após a falha  
-- [ ] Tempo de convergência registrado  
-- [ ] Configurações salvas com sucesso  
-
----
-
-## 14. Questões para análise
-
-1. Qual foi o tempo aproximado de convergência após a falha do enlace?
-2. Quais rotas deixaram de aparecer na tabela de roteamento após a interrupção?
-3. O que aconteceu com o tráfego entre as redes `192.168.10.0/24` e `192.168.30.0/24` após a falha?
-4. Como o RIP representa uma rota inalcançável?
-5. Por que o RIP tende a convergir mais lentamente do que protocolos como o OSPF?
-6. Qual a importância dos mecanismos de **split horizon**, **poison reverse** e **triggered updates**?
-7. Em que tipo de cenário real o RIP deixaria de ser uma escolha adequada?
-
----
-
-## 15. Desafio extra
+### 4.5 Desafio extra
 
 Para elevar ainda mais a dificuldade, monte uma versão alternativa com **topologia redundante**:
 
@@ -359,7 +342,107 @@ Depois:
 
 ---
 
-## 16. Critérios de avaliação
+## 5. Verificação e Diagnóstico
+
+### 5.1 Comandos de observação sugeridos
+
+```cisco
+show ip route rip
+show ip protocols
+debug ip rip
+```
+
+> O comando `debug ip rip` deve ser usado com cautela, pois gera saída contínua no console do roteador.
+
+### 5.2 Checklist de validação
+
+- [ ] Topologia criada corretamente no PNetLab  
+- [ ] Interfaces dos roteadores configuradas com os endereços corretos  
+- [ ] Hosts VPC configurados com IP e gateway corretos  
+- [ ] RIPv2 habilitado nos três roteadores  
+- [ ] Comando `no auto-summary` aplicado  
+- [ ] Rotas RIP visíveis nas tabelas de roteamento  
+- [ ] Comunicação fim a fim funcionando antes da falha  
+- [ ] Falha de enlace simulada corretamente entre R2 e R3  
+- [ ] Alterações na tabela de rotas observadas após a falha  
+- [ ] Tempo de convergência registrado  
+- [ ] Configurações salvas com sucesso  
+
+### 5.3 Interpretação das saídas
+
+**`show ip route rip`:** cada rota aprendida aparece com o código `R` e o formato `[120/1] via 10.0.12.2, 00:00:12, Gi0/1`:
+
+| Campo | Significado |
+|---|---|
+| `R` | Rota aprendida por RIP |
+| `[120/1]` | Distância administrativa (120, valor padrão do RIP) e métrica (número de saltos) |
+| `via 10.0.12.2` | Próximo salto (roteador vizinho que anunciou a rota) |
+| `00:00:12` | Tempo decorrido desde a última atualização recebida |
+| `Gi0/1` | Interface de saída |
+
+**`show ip protocols`:** exibe a versão do RIP, os temporizadores (*update*, *invalid*, *holddown*, *flushed*), as redes anunciadas e as fontes de informação de roteamento (vizinhos e tempo desde a última atualização). **`show ip rip database`** lista as rotas mantidas pelo processo RIP.
+
+### 5.4 Metodologia de diagnóstico
+
+1. **Enlace físico:** `show ip interface brief` com `up/up` em todas as interfaces;
+2. **Endereçamento e sub-redes:** conferir que os dois lados de cada enlace `/30` estão na mesma sub-rede;
+3. **Adjacência/vizinhança:** `show ip protocols` deve listar o vizinho como fonte de informação; conferir se a versão (1 ou 2) é a mesma nos dois lados;
+4. **Tabela de rotas:** `show ip route rip`; rotas ausentes indicam `network` incompleto ou interface passiva;
+5. **Políticas:** verificar `passive-interface`, ACLs e filtros de distribuição (`distribute-list`) que possam bloquear anúncios.
+
+---
+
+## 6. Segurança
+
+### 6.1 Riscos associados
+
+- **Ausência de autenticação:** por padrão, o roteador aceita atualizações RIP de qualquer origem nas interfaces habilitadas; um host na LAN pode injetar rotas falsas e desviar tráfego (*blackhole* ou interceptação).
+- **Anúncios em redes de usuários:** as LANs `192.168.10.0/24` e `192.168.30.0/24` fazem parte do `network` do RIP, de modo que as interfaces voltadas aos hosts enviam e processam mensagens RIP.
+- **Convergência lenta e *count to infinity*:** a janela de inconsistência após uma falha pode ser explorada para negação de serviço.
+
+### 6.2 Boas práticas (*hardening*)
+
+```cisco
+! Impede o envio e o processamento de anúncios RIP na LAN de usuários
+router rip
+ passive-interface Gi0/0
+ exit
+! Autenticação criptográfica nos enlaces entre roteadores (exemplo em R1, interface Gi0/1)
+key chain RIP-KEYS
+ key 1
+  key-string SENHA-LAB
+interface Gi0/1
+ ip rip authentication mode md5
+ ip rip authentication key-chain RIP-KEYS
+```
+
+A autenticação criptográfica do RIPv2 é descrita na [**RFC 4822**](https://datatracker.ietf.org/doc/html/rfc4822). O valor `SENHA-LAB` é exclusivamente didático. A mesma configuração de autenticação deve ser aplicada nos dois extremos do enlace, com a mesma chave.
+
+---
+
+## 7. Perguntas para Fixação
+
+### 7.1 Questões para análise
+
+1. Qual foi o tempo aproximado de convergência após a falha do enlace?
+2. Quais rotas deixaram de aparecer na tabela de roteamento após a interrupção?
+3. O que aconteceu com o tráfego entre as redes `192.168.10.0/24` e `192.168.30.0/24` após a falha?
+4. Como o RIP representa uma rota inalcançável?
+5. Por que o RIP tende a convergir mais lentamente do que protocolos como o OSPF?
+6. Qual a importância dos mecanismos de **split horizon**, **poison reverse** e **triggered updates**?
+7. Em que tipo de cenário real o RIP deixaria de ser uma escolha adequada?
+
+### 7.2 Conclusão
+
+Este laboratório amplia a complexidade das práticas anteriores ao introduzir um protocolo de roteamento dinâmico e a análise do comportamento da rede diante de falhas. A configuração do **RIPv2** em uma topologia com múltiplos roteadores permite ao aluno compreender como rotas são propagadas, aprendidas e removidas.
+
+A observação do processo de convergência evidencia limitações clássicas do RIP, especialmente em relação ao tempo de adaptação a mudanças de topologia. Com isso, a atividade estabelece uma base importante para o estudo comparativo com protocolos mais modernos e eficientes, como o **OSPF**, que serão explorados em etapas posteriores da disciplina.
+
+---
+
+## 8. Critérios de Avaliação e Entregáveis
+
+### 8.1 Critérios de avaliação
 
 | Critério | Pontos |
 |---|---:|
@@ -371,9 +454,7 @@ Depois:
 
 **Total: 10,0**
 
----
-
-## 17. Entregáveis
+### 8.2 Entregáveis
 
 O aluno deverá entregar:
 - captura de tela da topologia montada no PNetLab;
@@ -385,15 +466,16 @@ O aluno deverá entregar:
 
 ---
 
-## 18. Conclusão
+## 9. Referências
 
-Este laboratório amplia a complexidade das práticas anteriores ao introduzir um protocolo de roteamento dinâmico e a análise do comportamento da rede diante de falhas. A configuração do **RIPv2** em uma topologia com múltiplos roteadores permite ao aluno compreender como rotas são propagadas, aprendidas e removidas.
-
-A observação do processo de convergência evidencia limitações clássicas do RIP, especialmente em relação ao tempo de adaptação a mudanças de topologia. Com isso, a atividade estabelece uma base importante para o estudo comparativo com protocolos mais modernos e eficientes, como o **OSPF**, que serão explorados em etapas posteriores da disciplina.
+- [**RFC 1058**](https://datatracker.ietf.org/doc/html/rfc1058) - *Routing Information Protocol*.
+- [**RFC 2453**](https://datatracker.ietf.org/doc/html/rfc2453) - *RIP Version 2*.
+- [**RFC 4822**](https://datatracker.ietf.org/doc/html/rfc4822) - *RIPv2 Cryptographic Authentication*.
+- Cisco Systems. *IP Routing: RIP Configuration Guide* (documentação oficial do fabricante).
+- DOYLE, J.; CARROLL, J. D. *Routing TCP/IP, Volume I*. Cisco Press.
+- KUROSE, J. F.; ROSS, K. W. *Redes de Computadores e a Internet: uma abordagem top-down*. Pearson.
+- TANENBAUM, A. S.; WETHERALL, D. *Redes de Computadores*. Pearson.
 
 ---
 
 [← Anterior: Laboratório 03](lab03.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 05 →](lab05.md)
-
-
-

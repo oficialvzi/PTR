@@ -27,13 +27,15 @@
 
 ---
 
-## 1. Objetivo
+## 1. Objetivos
 
 Implementar um **firewall de pacotes sem estado (*stateless*)** em uma máquina Linux no PNetLab, posicionada entre **duas máquinas Linux básicas** - preferencialmente **Ubuntu 24.04 LTS** - aplicando regras com `iptables` para controlar o tráfego entre duas redes distintas com base em endereço IP, protocolo e porta.
 
 ---
 
-## 2. Introdução
+## 2. Introdução e Fundamentação Teórica
+
+### 2.1 Introdução
 
 Um **firewall de pacotes sem estado (*stateless*)** é um mecanismo de segurança que analisa os pacotes de rede individualmente e decide se eles podem ou não atravessar um determinado ponto da rede. Essa decisão é tomada com base em informações presentes no cabeçalho do pacote, como **endereço IP de origem**, **endereço IP de destino**, **protocolo** e **porta de comunicação**. Em outras palavras, ele funciona como um filtro que verifica regras previamente definidas e permite ou bloqueia o tráfego conforme essas regras.
 
@@ -45,14 +47,14 @@ No Linux, uma das ferramentas clássicas para implementar esse tipo de controle 
 
 Diferentemente de um firewall stateful, que acompanha o estado das conexões, o firewall de pacotes sem estado (*stateless*) analisa cada pacote de forma isolada. Por isso, o administrador precisa definir explicitamente o que será permitido e o que será bloqueado em cada direção do tráfego.
 
-## 3. Regras de Políticas `iptables`
+### 2.2 Regras de Políticas `iptables`
 
 | Política | Significado | Comportamento | Exemplo | Uso mais comum |
 |---|---|---|---|---|
 | `ACCEPT` | Aceitar por padrão | Se o pacote não casar com nenhuma regra, ele será permitido | `sudo iptables -P FORWARD ACCEPT` | Ambientes de teste ou cenários em que quase tudo é liberado |
 | `DROP` | Bloquear por padrão | Se o pacote não casar com nenhuma regra, ele será descartado silenciosamente | `sudo iptables -P FORWARD DROP` | Firewalls mais seguros, em que só passa o que foi explicitamente permitido |
 
-## 4. Cadeias onde essas políticas são aplicadas
+### 2.3 Cadeias onde essas políticas são aplicadas
 
 | Cadeia | Função |
 |---|---|
@@ -60,7 +62,7 @@ Diferentemente de um firewall stateful, que acompanha o estado das conexões, o 
 | `OUTPUT` | Tráfego gerado pelo próprio host |
 | `FORWARD` | Tráfego que atravessa o host, como em roteadores e firewalls |
 
-## 5. Exemplo prático
+### 2.4 Exemplo prático
 
 | Comando | Efeito |
 |---|---|
@@ -68,7 +70,7 @@ Diferentemente de um firewall stateful, que acompanha o estado das conexões, o 
 | `sudo iptables -P OUTPUT ACCEPT` | Permite por padrão o tráfego gerado pelo host |
 | `sudo iptables -P FORWARD DROP` | Bloqueia por padrão o tráfego que atravessa o firewall |
 
-## 6. Observação importante
+### 2.5 Observação importante
 
 No uso prático, a política mais recomendada para firewall costuma ser:
 
@@ -77,7 +79,9 @@ No uso prático, a política mais recomendada para firewall costuma ser:
 
 Isso segue a lógica de **negar tudo e liberar somente o necessário**.
 
-## 7. Principais comandos do `iptables`
+> **Observação:** no Ubuntu 24.04 LTS, o comando `iptables` utiliza por padrão o *backend* `nf_tables` (pacote `iptables-nft`). A sintaxe das regras permanece a mesma, mas as regras ficam armazenadas na infraestrutura `nftables` do núcleo.
+
+### 2.6 Principais comandos do `iptables`
 
 | Comando | Função principal | Exemplo | Explicação |
 |---|---|---|---|
@@ -99,7 +103,7 @@ Isso segue a lógica de **negar tudo e liberar somente o necessário**.
 | `-d` | Definir IP de destino | `sudo iptables -A FORWARD -d 192.168.20.10 -j ACCEPT` | Filtra pacotes pelo endereço de destino. |
 | `-p` | Definir protocolo | `sudo iptables -A FORWARD -p icmp -j ACCEPT` | Permite aplicar a regra apenas a um protocolo, como `icmp`, `tcp` ou `udp`. |
 
-## 8. Principais parâmetros de `/proc/sys/net/ipv4`
+### 2.7 Principais parâmetros de `/proc/sys/net/ipv4`
 
 | Parâmetro | O que controla | Valores comuns | Interpretação prática |
 |---|---|---|---|
@@ -119,14 +123,14 @@ Isso segue a lógica de **negar tudo e liberar somente o necessário**.
 | `/proc/sys/net/ipv4/tcp_keepalive_time` | Tempo até envio de keepalive TCP | valor numérico | Útil em sessões persistentes, túneis e monitoramento de conexões ociosas |
 | `/proc/sys/net/ipv4/conf/all/secure_redirects` | Aceitação segura de redirects ICMP | `0`, `1` | Relevante em endurecimento de servidores e hosts administrativos |
 
-## 9. Observações rápidas
+### 2.8 Observações rápidas
 
 - `ip_forward` é um dos parâmetros mais importantes quando o Linux atua como **roteador**, **gateway**, **NAT** ou **firewall entre redes**.
 - `rp_filter`, `accept_redirects`, `send_redirects` e `log_martians` são muito usados em **hardening** e **troubleshooting**.
 - `arp_ignore` e `arp_announce` aparecem bastante em cenários com **múltiplas interfaces**, **clusters**, **VRRP/Keepalived**, **balanceamento** e **alta disponibilidade**.
 - `tcp_syncookies`, `tcp_fin_timeout` e `tcp_keepalive_time` são úteis para quem administra **servidores**, **firewalls Linux** e **appliances de rede**.
 
-## 10. Exemplo de ajuste temporário com `sysctl`
+### 2.9 Exemplo de ajuste temporário com `sysctl`
 
 ```bash
 sudo sysctl -w net.ipv4.ip_forward=1
@@ -135,9 +139,9 @@ sudo sysctl -w net.ipv4.conf.all.send_redirects=0
 sudo sysctl -w net.ipv4.tcp_syncookies=1
 ```
 
-## 11. Exemplo de configuração persistente
+### 2.10 Exemplo de configuração persistente
 
-> edit e descomente `/etc/sysctl.conf`
+> Editar e descomentar as linhas correspondentes em `/etc/sysctl.conf` (ou criar um arquivo em `/etc/sysctl.d/`) e aplicar com `sudo sysctl -p`.
 
 ```conf
 net.ipv4.ip_forward = 1
@@ -147,7 +151,7 @@ net.ipv4.conf.all.log_martians = 1
 net.ipv4.tcp_syncookies = 1
 ```
 
-## 12. Síntese
+### 2.11 Síntese
 
 De forma resumida, o `iptables` permite transformar uma máquina Linux em um **firewall de pacotes sem estado (*stateless*)**, no qual cada regra determina quais pacotes podem passar e quais devem ser bloqueados. Isso torna o laboratório bastante útil para mostrar, na prática, como o controle de tráfego pode ser feito em redes reais.
 
@@ -162,17 +166,45 @@ De forma resumida, o `iptables` permite transformar uma máquina Linux em um **f
 > - protocolo;
 > - porta.
 >
-> Neste primeiro momento, **não será usada inspeção stateful**. A comparação com firewall stateful será feita no Laboratório 10-B.
+> Neste primeiro momento, **não será usada inspeção stateful**. A comparação com firewall stateful será feita no Laboratório 11.
+
+### 2.12 Funcionamento interno: caminho do pacote no Netfilter
+
+O `iptables` configura o *framework* Netfilter do núcleo Linux. Um pacote percorre pontos de interceptação (*hooks*) em que as cadeias são avaliadas. Para tráfego que apenas atravessa o firewall, como neste laboratório, aplica-se a cadeia `FORWARD`:
+
+```mermaid
+flowchart LR
+    IN["Pacote recebido"] --> PRE["PREROUTING"]
+    PRE --> RD{"Destino é o próprio host?"}
+    RD -- "Sim" --> INPUT["INPUT"] --> LOCAL["Processo local"]
+    RD -- "Não" --> FWD["FORWARD"] --> POST["POSTROUTING"] --> OUT["Pacote encaminhado"]
+    LOCAL --> OUTPUT["OUTPUT"] --> POST
+```
+
+As regras de uma cadeia são avaliadas em ordem, e a primeira regra que corresponde ao pacote determina a ação; se nenhuma corresponder, aplica-se a política padrão da cadeia.
+
+### 2.13 Exemplo concreto
+
+A regra `iptables -A FORWARD -s 192.168.10.10 -d 192.168.20.10 -p tcp --dport 80 -j ACCEPT` casa pacotes TCP do Cliente 1 destinados à porta 80 do Cliente 2. Como o filtro não tem estado, a resposta do servidor (TCP com porta de origem 80 e destino em uma porta efêmera do Cliente 1) só é permitida porque existe uma regra explícita no sentido inverso (`--sport 80`).
+
+### 2.14 Protocolos e portas utilizados nos testes
+
+| Protocolo | Camada OSI | Camada TCP/IP | Transporte / porta | Especificação |
+|---|---|---|---|---|
+| ICMP | 3 (Rede) | Internet | IP protocolo 1 | [**RFC 792**](https://datatracker.ietf.org/doc/html/rfc792) |
+| HTTP | 7 (Aplicação) | Aplicação | TCP 80 | [**RFC 9110**](https://datatracker.ietf.org/doc/html/rfc9110) e [**RFC 9112**](https://datatracker.ietf.org/doc/html/rfc9112) |
+| Telnet | 7 (Aplicação) | Aplicação | TCP 23 | [**RFC 854**](https://datatracker.ietf.org/doc/html/rfc854) |
+| TCP | 4 (Transporte) | Transporte | - | [**RFC 9293**](https://datatracker.ietf.org/doc/html/rfc9293) |
 
 ---
 
-## 13. Situação-problema
+## 3. Topologia e Cenário
+
+### 3.1 Situação-problema
 
 Uma organização deseja controlar o tráfego entre uma rede interna e uma rede externa utilizando uma máquina Linux como firewall. O objetivo é permitir apenas alguns tipos de comunicação entre os segmentos, bloqueando acessos indevidos e analisando o comportamento do tráfego quando as regras são aplicadas no roteamento entre as redes.
 
----
-
-## 14. Topologia lógica
+### 3.2 Topologia lógica
 
 ```mermaid
 flowchart LR
@@ -190,9 +222,7 @@ flowchart LR
     class FW fw;
 ```
 
----
-
-## 15. Plano de endereçamento
+### 3.3 Plano de endereçamento
 
 | Dispositivo | Interface | Endereço IP | Máscara | Gateway |
 |---|---|---|---|---|
@@ -201,9 +231,7 @@ flowchart LR
 | Linux Firewall | eth1 | 192.168.20.1 | 255.255.255.0 | - |
 | Linux Cliente 2 | eth0 | 192.168.20.10 | 255.255.255.0 | 192.168.20.1 |
 
----
-
-## 16. Premissas do laboratório
+### 3.4 Premissas do laboratório
 
 Neste laboratório, o foco será:
 
@@ -214,11 +242,13 @@ Neste laboratório, o foco será:
 
 ---
 
-## 17. Configuração dos hosts Linux
+## 4. Roteiro Prático Passo a Passo
 
-### 17.1 Configuração no PNetLab
+### 4.1 Configuração dos hosts Linux
 
-```bash
+#### 4.1.1 Configuração no PNetLab
+
+```text
 Image: linux-ubuntu-24.04-server
 Ethernet: 1
 MTU: 1500
@@ -234,8 +264,10 @@ Qemu options: -machine type=pc,accel=kvm -vga virtio -usbdevice tablet -boot ord
 
 > **Credenciais padrão (Ubuntu Server):** login: `user` | senha: `Test123` (ou conforme a imagem utilizada).  
 > Caso sejam utilizadas distribuições Linux alternativas leves (como Tiny Core ou Alpine Linux), a sintaxe de comandos de rede com `ip` permanece a mesma.
+>
+> Os nomes de interface (`eth0`, `eth1`) são usados em todo o roteiro. No Ubuntu 24.04, os nomes podem diferir (por exemplo, `ens3`), conforme a imagem; confirmar com `ip -br link` e adaptar os comandos.
 
-### 17.2 Linux Cliente 1
+#### 4.1.2 Linux Cliente 1
 
 Configure o endereço IP e a rota padrão:
 
@@ -245,7 +277,7 @@ sudo ip link set eth0 up
 sudo ip route add default via 192.168.10.1
 ```
 
-### 17.3 Linux Cliente 2
+#### 4.1.3 Linux Cliente 2
 
 Configure o endereço IP e a rota padrão:
 
@@ -261,17 +293,13 @@ sudo ip route add default via 192.168.20.1
 > sudo ip addr flush dev eth0
 > ```
 
----
+### 4.2 Configuração básica da máquina Linux Firewall
 
-## 18. Configuração básica da máquina Linux Firewall
-
-
-
-### 18.1 Configuração no PNetLab
+#### 4.2.1 Configuração no PNetLab
 
 > Para configurar corretamente o teclado ABNT2 use o qemu options: `-machine type=pc,accel=kvm -vga virtio -usbdevice tablet -boot order=cd -cpu host -k pt-br`
 
-```bash
+```text
 Image: linux-ubuntu-24.04-server
 Ethernet: 2
 MTU: 1500
@@ -285,7 +313,7 @@ UEFI: desmarcado
 Qemu options: -machine type=pc,accel=kvm -vga virtio -usbdevice tablet -boot order=cd -cpu host -k pt-br
 ```
 
-### 18.2 Configuração dos endereços IP das interfaces da máquina Linux central
+#### 4.2.2 Configuração dos endereços IP das interfaces da máquina Linux central
 
 > **ATENÇÃO** credenciais utilizadas  
 > Ubuntu login: **user**  
@@ -304,9 +332,7 @@ Verifique a configuração:
 ip addr show
 ```
 
----
-
-## 19. Ativação do roteamento IP
+### 4.3 Ativação do roteamento IP
 
 Para que a máquina Linux firewall encaminhe pacotes entre as duas redes, é necessário ativar o roteamento IPv4.
 
@@ -322,22 +348,25 @@ cat /proc/sys/net/ipv4/ip_forward
 
 O valor esperado é:
 
-```bash
+```text
 1
 ```
 
-### 19.1 Configuração persistente
+#### 4.3.1 Configuração persistente
+
+Editar o arquivo e descomentar (ou acrescentar) a linha `net.ipv4.ip_forward = 1`:
 
 ```bash
-vi /etc/sysctl.conf
-descomente net.ipv4.ip_forward=1
-:wq 
-```   
+sudo vi /etc/sysctl.conf
+```
 
+Aplicar a configuração sem reiniciar:
 
----
+```bash
+sudo sysctl -p
+```
 
-## 20. Bloqueio de ping com `sysctl`
+### 4.4 Bloqueio de ping com `sysctl`
 
 Além do uso do `iptables`, o Linux permite alterar o comportamento da pilha de rede com `sysctl`. Nesta etapa, será feito um teste simples para impedir que o firewall responda a requisições de ping.
 
@@ -348,7 +377,7 @@ cat /proc/sys/net/ipv4/icmp_echo_ignore_all
 
 Valor esperado:
 
-```bash
+```text
 1
 ```
 
@@ -360,7 +389,6 @@ ping 192.168.20.1
 ```
 
 No servidor Firewall executar o comando `tcpdump -i any -n icmp`  e observar o resultado.
-
 
 Resultado esperado: **o firewall não deve responder ao ping**.
 
@@ -374,21 +402,19 @@ sudo sysctl -w net.ipv4.icmp_echo_ignore_all=0
 
 No servidor Firewall executar o comando `tcpdump -i any -n icmp`  e observar o resultado.
 
-> qual foi o comportamamento? O que aconteceu de diferente?
+> Qual foi o comportamento? O que aconteceu de diferente?
 
----
-
-## 21. Teste inicial sem firewall
+### 4.5 Teste inicial sem firewall
 
 Antes de aplicar regras, teste a conectividade básica entre os dois hosts Linux.
 
-### 21.1 A partir do Linux Cliente 1
+#### 4.5.1 A partir do Linux Cliente 1
 
 ```bash
 ping 192.168.20.10
 ```
 
-### 21.2 A partir do Linux Cliente 2
+#### 4.5.2 A partir do Linux Cliente 2
 
 ```bash
 ping 192.168.10.10
@@ -396,9 +422,7 @@ ping 192.168.10.10
 
 Se o roteamento estiver correto, os pings devem funcionar.
 
----
-
-## 22. Limpeza das regras antigas
+### 4.6 Limpeza das regras antigas
 
 Antes de iniciar a configuração do firewall, limpe regras anteriores do `iptables`.
 
@@ -414,9 +438,7 @@ Defina a política padrão da cadeia `FORWARD` como bloqueio:
 sudo iptables -P FORWARD DROP
 ```
 
----
-
-## 23. Primeiras regras do firewall de pacotes sem estado (stateless)
+### 4.7 Primeiras regras do firewall de pacotes sem estado (stateless)
 
 Nesta etapa, será permitido apenas:
 
@@ -424,29 +446,53 @@ Nesta etapa, será permitido apenas:
 - **HTTP** do Linux Cliente 1 para o Linux Cliente 2;
 - tráfego de retorno correspondente a essas permissões, de forma explícita.
 
-### 23.1 Permitir ICMP entre os dois hosts
+#### 4.7.1 Permitir ICMP entre os dois hosts
 
 ```bash
 sudo iptables -A FORWARD -s 192.168.10.10 -d 192.168.20.10 -p icmp -j ACCEPT
 sudo iptables -A FORWARD -s 192.168.20.10 -d 192.168.10.10 -p icmp -j ACCEPT
 ```
 
-### 23.2 Permitir HTTP do Cliente 1 para o Cliente 2
+#### 4.7.2 Permitir HTTP do Cliente 1 para o Cliente 2
 
 ```bash
 sudo iptables -A FORWARD -s 192.168.10.10 -d 192.168.20.10 -p tcp --dport 80 -j ACCEPT
 sudo iptables -A FORWARD -s 192.168.20.10 -d 192.168.10.10 -p tcp --sport 80 -j ACCEPT
 ```
 
-### 23.3 Bloquear implicitamente o restante
+#### 4.7.3 Bloquear implicitamente o restante
 
 Como a política padrão da cadeia `FORWARD` é `DROP`, qualquer outro tráfego não explicitamente permitido será bloqueado.
 
+### 4.8 Regra adicional de bloqueio explícito
+
+Para reforçar a visualização didática, adicione uma regra explícita de bloqueio para Telnet:
+
+```bash
+sudo iptables -A FORWARD -s 192.168.10.10 -d 192.168.20.10 -p tcp --dport 23 -j DROP
+```
+
+> **Observação:** como a política padrão já é `DROP`, essa regra não é obrigatória para o funcionamento, mas ajuda a ilustrar claramente o bloqueio de um serviço específico.
+
+### 4.9 Salvando ou documentando as regras
+
+Dependendo da distribuição Linux, as regras podem ser perdidas após reinicialização.  
+Para fins de laboratório, o mais importante é registrar as regras configuradas.
+
+Uma forma simples de documentação é:
+
+```bash
+sudo iptables -L -n -v
+sudo iptables -S
+```
+
 ---
 
-## 24. Testes práticos
+## 5. Verificação e Diagnóstico
 
-### 24.1 Teste de ICMP
+### 5.1 Testes práticos
+
+#### 5.1.1 Teste de ICMP
 
 No **Linux Cliente 1**:
 
@@ -464,20 +510,20 @@ ping 192.168.10.10
 
 Resultado esperado: **deve funcionar**, porque o ICMP foi liberado nos dois sentidos.
 
-### 24.2 Teste de HTTP
+#### 5.1.2 Teste de HTTP
 
 No **Linux Cliente 2**, suba um serviço simples na porta 80.
 
-#### 24.2.1 Opção usando Python
+##### 5.1.2.1 Opção usando Python
 
 ```bash
-python3 -m http.server 80
+sudo python3 -m http.server 80
 ```
 
-#### 24.2.2 Opção usando BusyBox HTTPD
+##### 5.1.2.2 Opção usando BusyBox HTTPD
 
 ```bash
-busybox httpd -f -p 80
+sudo busybox httpd -f -p 80
 ```
 
 No **Linux Cliente 1**, teste o acesso:
@@ -494,7 +540,7 @@ wget -O- http://192.168.20.10
 
 Resultado esperado: **deve funcionar**.
 
-### 24.3 Teste de Telnet não permitido
+#### 5.1.3 Teste de Telnet não permitido
 
 No **Linux Cliente 1**:
 
@@ -510,7 +556,7 @@ nc -vz 192.168.20.10 23
 
 Resultado esperado: **deve falhar**.
 
-### 24.4 Teste de acesso iniciado pelo Cliente 2
+#### 5.1.4 Teste de acesso iniciado pelo Cliente 2
 
 No **Linux Cliente 2**, tente iniciar conexão TCP para o Cliente 1 em uma porta qualquer.
 
@@ -522,64 +568,89 @@ nc -vz 192.168.10.10 80
 
 Resultado esperado: **deve falhar**, pois não há regra permitindo esse tráfego.
 
----
+### 5.2 Verificação das regras
 
-## 25. Verificação das regras
-
-### 25.1 Listar regras com contadores
+#### 5.2.1 Listar regras com contadores
 
 ```bash
 sudo iptables -L -n -v
 ```
 
-### 25.2 Listar regras da cadeia FORWARD
+#### 5.2.2 Listar regras da cadeia FORWARD
 
 ```bash
 sudo iptables -L FORWARD -n -v
 ```
 
-### 25.3 Mostrar regras em formato detalhado
+#### 5.2.3 Mostrar regras em formato detalhado
 
 ```bash
 sudo iptables -S
 ```
 
-### 25.4 O que observar
+#### 5.2.4 O que observar
 
 - ordem das regras;
 - política padrão da cadeia `FORWARD`;
 - quantidade de pacotes que corresponderam a cada regra;
 - tráfego permitido e bloqueado.
 
+### 5.3 Interpretação da saída de `iptables -L FORWARD -n -v --line-numbers`
+
+| Campo | Significado |
+|---|---|
+| `Chain FORWARD (policy DROP ...)` | Cadeia e política padrão, com contadores de pacotes e bytes descartados pela política |
+| `num` | Posição da regra, usada em `-D` e `-I` |
+| `pkts` / `bytes` | Pacotes e bytes que casaram com a regra; contador zerado indica que a regra nunca foi atingida |
+| `target` | Ação (`ACCEPT`, `DROP`, `LOG`) |
+| `prot`, `in`, `out` | Protocolo e interfaces de entrada e saída |
+| `source`, `destination` | Endereços de origem e destino; portas aparecem ao final (`dpt:80`, `spt:80`) |
+
+### 5.4 Metodologia de diagnóstico
+
+1. **Enlace e interfaces:** `ip -br link` e `ip -br addr` nos três nós;
+2. **Endereçamento e gateways:** `ping` dos clientes para a interface do firewall em suas respectivas redes;
+3. **Encaminhamento:** `cat /proc/sys/net/ipv4/ip_forward` igual a `1` no firewall;
+4. **Regras e ordem:** `sudo iptables -L FORWARD -n -v --line-numbers`; observar contadores antes e depois de cada teste para identificar a regra atingida (ou a política padrão);
+5. **Captura:** `sudo tcpdump -i any -n host 192.168.20.10` no firewall mostra se o pacote chegou e se uma resposta foi emitida;
+6. **Serviço de destino:** confirmar que o servidor está em escuta (`ss -tln`), de modo a distinguir bloqueio do firewall de ausência de serviço.
+
 ---
 
-## 26. Regra adicional de bloqueio explícito
+## 6. Segurança
 
-Para reforçar a visualização didática, adicione uma regra explícita de bloqueio para Telnet:
+### 6.1 Riscos associados
+
+- **Regras de retorno amplas:** a regra `--sport 80` aceita qualquer pacote TCP do Cliente 2 com porta de origem 80 destinado ao Cliente 1, ainda que não faça parte de uma conexão iniciada por este. Um atacante pode forjar a porta de origem para atravessar o filtro e realizar varreduras (*ACK scan*). Essa limitação é a motivação do firewall com estado (Laboratório 11).
+- **Falsificação de endereço de origem:** o filtro avalia apenas os campos do cabeçalho; nada impede pacotes com endereço de origem forjado ([**RFC 2827**](https://datatracker.ietf.org/doc/html/rfc2827)).
+- **Perda de acesso de gerência:** definir `INPUT DROP` sem regras que preservem o acesso administrativo pode isolar o próprio firewall.
+- **Persistência:** as regras são perdidas na reinicialização; um firewall que reinicia com política `ACCEPT` fica exposto.
+- **Credenciais padrão:** a imagem utilizada possui usuário e senha padrão (`user` / `Test123`), adequados somente para o laboratório isolado.
+- **Política em documentos oficiais:** o comportamento esperado de firewalls de Internet é descrito na [**RFC 2979**](https://datatracker.ietf.org/doc/html/rfc2979).
+
+### 6.2 Boas práticas (*hardening*)
 
 ```bash
-sudo iptables -A FORWARD -s 192.168.10.10 -d 192.168.20.10 -p tcp --dport 23 -j DROP
+# Antes de definir a política INPUT como DROP: preservar tráfego local e acesso de gerência
+sudo iptables -A INPUT -i lo -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 22 -s 192.168.10.10 -j ACCEPT
+# Antispoofing: descarta pacotes cuja origem é incompatível com a interface de entrada (inseridas no início da cadeia)
+sudo iptables -I FORWARD 1 -i eth0 ! -s 192.168.10.0/24 -j DROP
+sudo iptables -I FORWARD 1 -i eth1 ! -s 192.168.20.0/24 -j DROP
+# Registro de pacotes descartados, com limite de taxa para evitar inundação de logs
+sudo iptables -A FORWARD -m limit --limit 5/min -j LOG --log-prefix "FW-DROP: "
+# Persistência das regras entre reinicializações
+sudo apt install -y iptables-persistent
+sudo netfilter-persistent save
 ```
 
-> **Observação:** como a política padrão já é `DROP`, essa regra não é obrigatória para o funcionamento, mas ajuda a ilustrar claramente o bloqueio de um serviço específico.
+Recomenda-se, ainda, habilitar `rp_filter` e desabilitar `accept_redirects` e `send_redirects`, conforme a tabela da Seção 2, e alterar as credenciais padrão antes de qualquer uso fora do laboratório.
 
 ---
 
-## 27. Salvando ou documentando as regras
+## 7. Perguntas para Fixação
 
-Dependendo da distribuição Linux, as regras podem ser perdidas após reinicialização.  
-Para fins de laboratório, o mais importante é registrar as regras configuradas.
-
-Uma forma simples de documentação é:
-
-```bash
-sudo iptables -L -n -v
-sudo iptables -S
-```
-
----
-
-## 28. Questões para análise
+### 7.1 Questões para análise
 
 1. O que caracteriza um **firewall de pacotes sem estado (*stateless*)**?
 2. Quais campos do pacote foram usados nas regras deste laboratório?
@@ -593,9 +664,22 @@ sudo iptables -S
 10. Quais vantagens práticas surgem ao usar hosts Linux básicos no lugar de VPCs neste laboratório?
 11. Qual a diferença entre bloquear o ping com `sysctl` e bloquear ICMP com `iptables`?
 
+### 7.2 Conclusão esperada
+
+Ao final deste laboratório, o estudante deve perceber que:
+
+- uma máquina Linux pode atuar como **firewall de pacotes sem estado (*stateless*)** entre redes distintas;
+- o `iptables` permite controlar o tráfego com base em **IP, protocolo e porta**;
+- o roteamento entre redes depende da ativação do **IP forwarding**;
+- a política padrão de bloqueio ajuda a tornar o controle mais seguro;
+- o uso de **Ubuntu Server** ou **Alpine Linux** nos hosts amplia as possibilidades de teste em comparação com VPCs simples;
+- o firewall de pacotes sem estado analisa cada pacote de forma isolada, o que prepara o caminho para a comparação futura com um **firewall stateful**.
+
 ---
 
-## 29. Critérios de avaliação
+## 8. Critérios de Avaliação e Entregáveis
+
+### 8.1 Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -606,9 +690,7 @@ sudo iptables -S
 | Respostas técnicas às questões para análise | 2,0 |
 | **Total** | **10,0** |
 
----
-
-## 30. Entregáveis
+### 8.2 Entregáveis
 
 Cada aluno deve entregar relatório contendo:
 
@@ -627,18 +709,20 @@ Cada aluno deve entregar relatório contendo:
 
 ---
 
-## 31. Conclusão esperada
+## 9. Referências
 
-Ao final deste laboratório, o estudante deve perceber que:
-
-- uma máquina Linux pode atuar como **firewall de pacotes sem estado (*stateless*)** entre redes distintas;
-- o `iptables` permite controlar o tráfego com base em **IP, protocolo e porta**;
-- o roteamento entre redes depende da ativação do **IP forwarding**;
-- a política padrão de bloqueio ajuda a tornar o controle mais seguro;
-- o uso de **Ubuntu Server** ou **Alpine Linux** nos hosts amplia as possibilidades de teste em comparação com VPCs simples;
-- o firewall de pacotes sem estado analisa cada pacote de forma isolada, o que prepara o caminho para a comparação futura com um **firewall stateful**.
+- [**RFC 792**](https://datatracker.ietf.org/doc/html/rfc792) - *Internet Control Message Protocol*.
+- [**RFC 854**](https://datatracker.ietf.org/doc/html/rfc854) - *Telnet Protocol Specification*.
+- [**RFC 2827**](https://datatracker.ietf.org/doc/html/rfc2827) - *Network Ingress Filtering* (BCP 38).
+- [**RFC 2979**](https://datatracker.ietf.org/doc/html/rfc2979) - *Behavior of and Requirements for Internet Firewalls*.
+- [**RFC 9110**](https://datatracker.ietf.org/doc/html/rfc9110) - *HTTP Semantics*.
+- [**RFC 9112**](https://datatracker.ietf.org/doc/html/rfc9112) - *HTTP/1.1*.
+- [**RFC 9293**](https://datatracker.ietf.org/doc/html/rfc9293) - *Transmission Control Protocol (TCP)*.
+- Projeto Netfilter. *Documentação do iptables e do Netfilter*. Disponível em: https://www.netfilter.org/documentation/.
+- Páginas de manual `iptables(8)`, `iptables-extensions(8)` e `sysctl(8)`.
+- ZWICKY, E. D.; COOPER, S.; CHAPMAN, D. B. *Building Internet Firewalls*. O'Reilly.
+- KUROSE, J. F.; ROSS, K. W. *Redes de Computadores e a Internet: uma abordagem top-down*. Pearson.
 
 ---
 
 [← Anterior: Laboratório 09](lab09.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 11 →](lab11.md)
-

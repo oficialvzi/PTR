@@ -9,7 +9,7 @@
 
 ---
 
-## 1. Objetivo
+## 1. Objetivos
 
 Implementar um **Web Application Firewall (WAF)** em uma máquina Linux no PNetLab, utilizando **Nginx + ModSecurity + OWASP Core Rule Set (CRS)** em modo de **proxy reverso**, de forma que o tráfego HTTP entre um cliente e um servidor web interno seja inspecionado e controlado na **camada de aplicação**.
 
@@ -27,11 +27,13 @@ Ao final deste laboratório, o estudante deverá ser capaz de:
 
 ---
 
-## 2. Introdução
+## 2. Introdução e Fundamentação Teórica
+
+### 2.1 Introdução
 
 Nos laboratórios anteriores, o controle de tráfego foi feito inicialmente com um **firewall de pacotes**, que toma decisões com base em informações como endereço IP, protocolo e porta, e depois com um **firewall stateful**, que também acompanha o estado das conexões. Esses mecanismos são fundamentais para a segurança da rede, mas não conseguem, sozinhos, analisar em profundidade o conteúdo de uma requisição web.
 
-## 3. Web Application Firewall (WAF)
+### 2.2 Web Application Firewall (WAF)
 
 Um **Web Application Firewall (WAF)** atua em um nível mais alto, inspecionando o tráfego **HTTP/HTTPS** e aplicando regras voltadas à proteção de aplicações web. Em vez de decidir apenas se a porta 80 ou 443 pode ser usada, o WAF analisa elementos como:
 
@@ -45,24 +47,21 @@ Na prática, isso permite bloquear comportamentos suspeitos mesmo quando o acess
 
 Neste laboratório, será utilizado o **ModSecurity**, em conjunto com o **OWASP Core Rule Set (CRS)**, para transformar uma máquina Linux em um **WAF reverso**, posicionada entre um cliente e um servidor web interno. O objetivo desta primeira parte é implantar a estrutura do WAF, publicar a aplicação web por meio do proxy reverso e validar o funcionamento do fluxo legítimo. A exploração de ataques e a análise aprofundada dos bloqueios ficam como continuidade natural para o **Lab 13**.
 
-
 <img width="1672" height="941" alt="Infográfico do WAF com Nginx, ModSecurity e OWASP CRS: requisições HTTP legítimas encaminhadas e tentativas de SQL Injection, XSS e path traversal bloqueadas" src="https://github.com/user-attachments/assets/2a8e289e-1353-4443-af0a-1c7c78010d20" />
 
 *Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
-
-## 4. Proxy Reverso
+### 2.3 Proxy Reverso
 
 Um proxy reverso é um servidor intermediário que recebe as requisições dos clientes e as encaminha para um ou mais servidores internos, devolvendo depois a resposta ao cliente.
 
 Na prática, o cliente acha que está falando diretamente com o serviço, mas na verdade está falando primeiro com o proxy reverso. Esse proxy fica “na frente” da aplicação.
 
-
 <img width="1672" height="941" alt="Infográfico do proxy reverso: clientes externos, proxy com funções de segurança, balanceamento e cache, e servidores web internos" src="https://github.com/user-attachments/assets/704f19da-b314-406e-8b82-31b51a15cc3e" />
 
 *Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
-## 5. Funções principais de um proxy reverso
+### 2.4 Funções principais de um proxy reverso
 
 - Ocultar o servidor interno: O cliente acessa o proxy, não o servidor real.
 - Distribuir requisições: Pode enviar tráfego para vários servidores backend, fazendo balanceamento de carga.
@@ -70,9 +69,7 @@ Na prática, o cliente acha que está falando diretamente com o serviço, mas na
 - Melhorar desempenho: Pode fazer cache, compressão e otimização de conexões.
 - Centralizar publicação de serviços: Vários sites ou aplicações podem ser publicados por um único ponto de entrada.
 
----
-
-## 6. Relação com os Laboratórios 10 e 11
+### 2.5 Relação com os Laboratórios 10 e 11
 
 Este laboratório deve ser entendido como continuação direta do processo de evolução das defesas em rede:
 
@@ -80,7 +77,7 @@ Este laboratório deve ser entendido como continuação direta do processo de ev
 - **Lab 11**: firewall stateful com `conntrack`
 - **Lab 12**: firewall de aplicação com inspeção de tráfego HTTP
 
-### 6.1 Síntese comparativa
+#### 2.5.1 Síntese comparativa
 
 | Tecnologia | Camada de atuação | Exemplo de decisão |
 |---|---|---|
@@ -88,17 +85,48 @@ Este laboratório deve ser entendido como continuação direta do processo de ev
 | Firewall stateful | Rede / Transporte com estado | Permitir retorno de conexão já estabelecida |
 | WAF | Aplicação | Permitir acesso à página, mas bloquear requisição maliciosa |
 
----
-
-## 7. Situação-problema
+### 2.6 Situação-problema
 
 Uma organização já protege sua rede com um firewall tradicional, permitindo apenas o tráfego necessário entre suas redes. Posteriormente, passou a usar firewall stateful para melhorar o controle das conexões e reduzir regras redundantes. Ainda assim, a equipe percebe que uma aplicação web interna continua exposta a riscos, já que qualquer usuário com acesso à porta HTTP pode enviar requisições maliciosas.
 
 Para aumentar a proteção, a organização decide implantar um **WAF** entre os clientes e o servidor web interno, de forma que o serviço continue acessível, mas com inspeção de conteúdo na camada de aplicação.
 
+### 2.7 Funcionamento interno do WAF com ModSecurity e CRS
+
+O ModSecurity processa cada transação HTTP em fases: **fase 1** (cabeçalhos da requisição), **fase 2** (corpo da requisição), **fase 3** (cabeçalhos da resposta), **fase 4** (corpo da resposta) e **fase 5** (registro). O OWASP CRS utiliza **pontuação de anomalia**: cada regra acionada soma pontos à transação, e a decisão de bloquear ocorre quando a soma ultrapassa o limiar configurado (valor padrão de 5 para requisições, no nível de paranoia 1, nas versões 3.x do CRS). O pacote `libnginx-mod-http-modsecurity` fornece o conector do Nginx para o ModSecurity versão 3, cujas diretivas (`modsecurity on;` e `modsecurity_rules_file`) são usadas neste roteiro.
+
+```mermaid
+sequenceDiagram
+    participant C as Cliente
+    participant W as WAF (Nginx + ModSecurity + CRS)
+    participant S as Servidor Web Interno
+    C->>W: HTTP GET /?id=10 (TCP 80)
+    W->>W: Fases 1 e 2 - inspeção de cabeçalhos e corpo
+    alt Pontuação abaixo do limiar
+        W->>S: Requisição encaminhada (proxy_pass)
+        S-->>W: Resposta HTTP 200
+        W-->>C: Resposta (fases 3 e 4 - inspeção da resposta)
+    else Pontuação acima do limiar
+        W-->>C: HTTP 403 Forbidden
+    end
+```
+
+### 2.8 Exemplo concreto
+
+Uma requisição `GET /` simples é encaminhada ao backend (`192.168.20.10`) e a página `Servidor Web Interno OK` é devolvida ao cliente. Uma requisição com padrão de ataque, como `GET /?q=<script>alert(1)</script>`, soma pontos das regras de XSS e é rejeitada com `403`, sem que o servidor interno a receba. Os testes dessa natureza são desenvolvidos no Laboratório 13.
+
+### 2.9 Protocolos envolvidos
+
+| Protocolo | Camada OSI | Camada TCP/IP | Transporte / porta | Especificação |
+|---|---|---|---|---|
+| HTTP/1.1 | 7 (Aplicação) | Aplicação | TCP 80 (cliente-WAF e WAF-backend) | [**RFC 9110**](https://datatracker.ietf.org/doc/html/rfc9110) e [**RFC 9112**](https://datatracker.ietf.org/doc/html/rfc9112) |
+| HTTPS (não utilizado neste roteiro) | 7 (Aplicação) | Aplicação | TCP 443 | TLS 1.3 na [**RFC 8446**](https://datatracker.ietf.org/doc/html/rfc8446) |
+
 ---
 
-## 8. Topologia lógica
+## 3. Topologia e Cenário
+
+### 3.1 Topologia lógica
 
 ```mermaid
 flowchart LR
@@ -118,9 +146,7 @@ flowchart LR
     class WEB web;
 ```
 
----
-
-## 9. Plano de endereçamento
+### 3.2 Plano de endereçamento
 
 | Dispositivo | Interface | Endereço IP | Máscara | Gateway |
 |---|---|---|---|---|
@@ -129,9 +155,7 @@ flowchart LR
 | Linux WAF | eth1 | 192.168.20.1 | 255.255.255.0 | - |
 | Servidor Web Interno | eth0 | 192.168.20.10 | 255.255.255.0 | 192.168.20.1 |
 
----
-
-## 10. Premissas do laboratório
+### 3.3 Premissas do laboratório
 
 Neste laboratório, o foco será:
 
@@ -145,26 +169,26 @@ Neste laboratório, o foco será:
 
 > Neste primeiro laboratório, a ênfase está na **implantação do WAF** e na **publicação da aplicação web**. Testes de ataques, tuning de regras e análise de bloqueios podem ser aprofundados no **Lab 13**.
 
----
-
-## 11. Sugestão de imagens no PNetLab
+### 3.4 Sugestão de imagens no PNetLab
 
 Recomenda-se utilizar preferencialmente a imagem **Ubuntu Server 24.04 LTS** (`linux-ubuntu-24.04-server`) para todos os nós da topologia (Cliente, WAF e Servidor Web Interno), garantindo total compatibilidade com os repositórios oficiais e pacotes do Nginx, ModSecurity e OWASP CRS.
 
-### 11.1 Linux Cliente
+#### 3.4.1 Linux Cliente
 - **Ubuntu 24.04 LTS** (recomendado: `linux-ubuntu-24.04-server`) ou distribuição Linux equivalente.
 
-### 11.2 Linux WAF
+#### 3.4.2 Linux WAF
 - **Ubuntu 24.04 LTS** (recomendado: `linux-ubuntu-24.04-server`, 2 vCPUs, 4096 MB RAM).
 
-### 11.3 Servidor Web Interno
+#### 3.4.3 Servidor Web Interno
 - **Ubuntu 24.04 LTS** (recomendado: `linux-ubuntu-24.04-server`, 1 vCPU, 2048 MB RAM) ou Debian Server.
 
 ---
 
-## 12. Configuração dos hosts
+## 4. Roteiro Prático Passo a Passo
 
-### 12.1 Linux Cliente
+### 4.1 Configuração dos hosts
+
+#### 4.1.1 Linux Cliente
 
 Configure o endereço IP e a rota padrão:
 
@@ -174,7 +198,7 @@ sudo ip link set eth0 up
 sudo ip route add default via 192.168.10.1
 ```
 
-### 12.2 Servidor Web Interno
+#### 4.1.2 Servidor Web Interno
 
 Configure o endereço IP e a rota padrão:
 
@@ -184,7 +208,7 @@ sudo ip link set eth0 up
 sudo ip route add default via 192.168.20.1
 ```
 
-### 12.3 Linux WAF
+#### 4.1.3 Linux WAF
 
 Configure as duas interfaces:
 
@@ -201,11 +225,9 @@ Verifique:
 ip addr show
 ```
 
----
+### 4.2 Ativação do roteamento IP no WAF
 
-## 13. Ativação do roteamento IP no WAF
-
-Embora o WAF opere principalmente como proxy reverso, é recomendável manter o host preparado para encaminhamento entre interfaces quando necessário.
+Como proxy reverso, o WAF encerra a conexão do cliente no Nginx e abre uma nova conexão com o backend; por isso, não depende do encaminhamento IP. O roteiro mantém o encaminhamento habilitado para viabilizar os testes de conectividade e o comparativo de acesso direto da Seção 5.2. Em produção, o encaminhamento deve ser desabilitado (`net.ipv4.ip_forward=0`), conforme a Seção 6.
 
 ```bash
 sudo sysctl -w net.ipv4.ip_forward=1
@@ -219,55 +241,51 @@ cat /proc/sys/net/ipv4/ip_forward
 
 Valor esperado:
 
-```bash
+```text
 1
 ```
 
----
-
-## 14. Teste inicial de conectividade
+### 4.3 Teste inicial de conectividade
 
 Antes da implantação do WAF, valide a conectividade entre os hosts.
 
-### 14.1 No Linux Cliente
+#### 4.3.1 No Linux Cliente
 
 ```bash
 ping 192.168.10.1
 ```
 
-### 14.2 No Servidor Web
+#### 4.3.2 No Servidor Web
 
 ```bash
 ping 192.168.20.1
 ```
 
-### 14.3 No Linux WAF
+#### 4.3.3 No Linux WAF
 
 ```bash
 ping 192.168.10.10
 ping 192.168.20.10
 ```
 
----
-
-## 15. Preparação do servidor web interno
+### 4.4 Preparação do servidor web interno
 
 No servidor web interno, instale um serviço HTTP simples.
 
-### 15.1 Opção com Nginx
+#### 4.4.1 Opção com Nginx
 
 ```bash
 sudo apt update
 sudo apt install -y nginx
 ```
 
-### 15.2 Criar uma página simples
+#### 4.4.2 Criar uma página simples
 
 ```bash
 echo "<h1>Servidor Web Interno OK</h1>" | sudo tee /var/www/html/index.html
 ```
 
-### 15.3 Verificar o serviço
+#### 4.4.3 Verificar o serviço
 
 ```bash
 sudo systemctl enable nginx
@@ -275,7 +293,7 @@ sudo systemctl start nginx
 sudo systemctl status nginx
 ```
 
-### 15.4 Teste local no próprio servidor
+#### 4.4.4 Teste local no próprio servidor
 
 ```bash
 curl http://127.0.0.1
@@ -283,9 +301,7 @@ curl http://127.0.0.1
 
 Resultado esperado: a página HTML deve ser exibida.
 
----
-
-## 16. Instalação do Nginx no host WAF
+### 4.5 Instalação do Nginx no host WAF
 
 No Linux WAF:
 
@@ -302,9 +318,7 @@ sudo systemctl start nginx
 sudo systemctl status nginx
 ```
 
----
-
-## 17. Instalação do ModSecurity no host WAF
+### 4.6 Instalação do ModSecurity no host WAF
 
 Instale o módulo do ModSecurity e componentes necessários:
 
@@ -317,9 +331,7 @@ sudo apt install -y libnginx-mod-http-modsecurity modsecurity-crs
 > - módulo ModSecurity para Nginx;
 > - conjunto de regras OWASP CRS.
 
----
-
-## 18. Habilitação do ModSecurity
+### 4.7 Habilitação do ModSecurity
 
 Verifique o arquivo principal de configuração do ModSecurity. Em muitas instalações, ele está em:
 
@@ -351,9 +363,7 @@ Exemplo com `sed`:
 sudo sed -i 's/SecRuleEngine DetectionOnly/SecRuleEngine On/' /etc/modsecurity/modsecurity.conf
 ```
 
----
-
-## 19. Ativação do OWASP CRS
+### 4.8 Ativação do OWASP CRS
 
 Verifique a localização do CRS. Em instalações comuns no Ubuntu, ele pode estar em:
 
@@ -373,9 +383,7 @@ Se necessário, copie o arquivo de exemplo:
 sudo cp /usr/share/modsecurity-crs/crs-setup.conf.example /etc/modsecurity/crs/crs-setup.conf
 ```
 
----
-
-## 20. Configuração do Nginx como proxy reverso com WAF
+### 4.9 Configuração do Nginx como proxy reverso com WAF
 
 Crie ou edite a configuração do site padrão do Nginx no WAF.
 
@@ -404,9 +412,7 @@ server {
 }
 ```
 
----
-
-## 21. Arquivo principal de regras do Nginx + ModSecurity
+### 4.10 Arquivo principal de regras do Nginx + ModSecurity
 
 Crie o arquivo:
 
@@ -419,15 +425,13 @@ Conteúdo sugerido:
 
 ```conf
 Include /etc/modsecurity/modsecurity.conf
-Include /usr/share/modsecurity-crs/crs-setup.conf
+Include /etc/modsecurity/crs/crs-setup.conf
 Include /usr/share/modsecurity-crs/rules/*.conf
 ```
 
 > Em algumas distribuições, o caminho do CRS pode mudar. Ajuste conforme a instalação real.
 
----
-
-## 22. Teste e recarga do Nginx
+### 4.11 Teste e recarga do Nginx
 
 Verifique a sintaxe:
 
@@ -449,7 +453,9 @@ sudo systemctl status nginx
 
 ---
 
-## 23. Teste funcional do proxy reverso
+## 5. Verificação e Diagnóstico
+
+### 5.1 Teste funcional do proxy reverso
 
 No **Linux Cliente**, faça o acesso ao IP do WAF:
 
@@ -462,11 +468,9 @@ Resultado esperado:
 - o cliente deve receber a página hospedada no servidor web interno;
 - o acesso deve ocorrer **via WAF**, e não diretamente ao backend.
 
----
+### 5.2 Teste comparativo de acesso direto e indireto
 
-## 24. Teste comparativo de acesso direto e indireto
-
-### 24.1 Acesso via WAF
+#### 5.2.1 Acesso via WAF
 
 No cliente:
 
@@ -474,7 +478,7 @@ No cliente:
 curl http://192.168.10.1
 ```
 
-### 24.2 Acesso direto ao backend
+#### 5.2.2 Acesso direto ao backend
 
 Se houver rota direta, teste:
 
@@ -482,17 +486,16 @@ Se houver rota direta, teste:
 curl http://192.168.20.10
 ```
 
-### 24.3 O que observar
+#### 5.2.3 O que observar
 
 - o acesso correto para publicação deve ser via **WAF**;
 - o backend idealmente deve ficar menos exposto ao cliente;
-- o WAF passa a ser o ponto principal de entrada para o serviço web.
+- o WAF passa a ser o ponto principal de entrada para o serviço web;
+- com o encaminhamento IP habilitado no WAF (Seção 4.2), o acesso direto ao backend na porta 80 funciona e **contorna a inspeção**; as medidas para impedir esse desvio estão na Seção 6.
 
----
+### 5.3 Verificação de logs
 
-## 25. Verificação de logs
-
-### 25.1 Logs do Nginx
+#### 5.3.1 Logs do Nginx
 
 ```bash
 sudo tail -f /var/log/nginx/access.log
@@ -502,7 +505,7 @@ sudo tail -f /var/log/nginx/access.log
 sudo tail -f /var/log/nginx/error.log
 ```
 
-### 25.2 Logs do ModSecurity
+#### 5.3.2 Logs do ModSecurity
 
 Dependendo da configuração, o log pode estar em:
 
@@ -518,9 +521,7 @@ Exemplo:
 sudo tail -f /var/log/modsec_audit.log
 ```
 
----
-
-## 26. Observações didáticas importantes
+### 5.4 Observações didáticas importantes
 
 Ao final desta etapa, o aluno deve perceber que:
 
@@ -529,22 +530,59 @@ Ao final desta etapa, o aluno deve perceber que:
 - o WAF analisa o conteúdo HTTP antes de encaminhar ao backend;
 - a proteção agora ocorre na **camada de aplicação**, e não apenas em IP, porta ou estado da conexão.
 
----
+### 5.5 Diferença em relação aos Labs 10 e 11
 
-## 27. Diferença em relação aos Labs 10 e 11
-
-### 27.1 No Lab 10
+#### 5.5.1 No Lab 10
 O host intermediário filtrava pacotes com `iptables`.
 
-### 27.2 No Lab 11
+#### 5.5.2 No Lab 11
 O host intermediário passou a considerar estados de conexão.
 
-### 27.3 No Lab 12
+#### 5.5.3 No Lab 12
 O host intermediário atua como **proxy reverso com inspeção HTTP**, o que significa que ele entende melhor o serviço publicado e pode aplicar políticas específicas sobre requisições web.
+
+### 5.6 Metodologia de diagnóstico
+
+1. **Enlace e endereçamento:** `ip -br addr` nos três nós e `ping` entre vizinhos diretos;
+2. **Serviço de destino:** no backend, `curl http://127.0.0.1` e `ss -tln` (porta 80 em escuta);
+3. **Conectividade WAF-backend:** no WAF, `curl http://192.168.20.10`;
+4. **Configuração do Nginx:** `sudo nginx -t` indica erros de sintaxe e caminhos de arquivos de regras inexistentes (por exemplo, o arquivo do CRS);
+5. **ModSecurity:** `sudo grep -R "modsecurity" /etc/nginx/` e leitura do `error.log` do Nginx, onde falhas de carga do módulo ou das regras são registradas;
+6. **Publicação:** `curl -i http://192.168.10.1` a partir do cliente; códigos `502` (*Bad Gateway*) indicam falha na conexão com o backend e `403` indicam bloqueio por regra.
 
 ---
 
-## 28. Questões para análise
+## 6. Segurança
+
+### 6.1 Riscos associados
+
+- **Desvio do WAF (*bypass*):** com o encaminhamento IP habilitado, o cliente alcança o backend diretamente (`http://192.168.20.10`) sem passar pela inspeção. A proteção só é efetiva se o backend aceitar conexões exclusivamente do WAF.
+- **Transporte sem cifra:** o laboratório usa HTTP; credenciais e dados trafegam em texto claro. Em produção, o tráfego deve ser protegido por TLS ([**RFC 8446**](https://datatracker.ietf.org/doc/html/rfc8446)), com terminação no WAF ou ponta a ponta.
+- **Modo `DetectionOnly`:** registra eventos, mas não bloqueia; é adequado à fase de ajuste, não à proteção.
+- **Falsos positivos e falsos negativos:** regras muito sensíveis bloqueiam usuários legítimos; regras brandas deixam passar ataques. O WAF não substitui a correção das vulnerabilidades da aplicação.
+- **Dados sensíveis em logs:** o log de auditoria do ModSecurity pode registrar cabeçalhos e corpos de requisições, incluindo dados pessoais sujeitos à Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
+- **Superfície de ataque do próprio WAF:** o WAF é um componente exposto; deve ser mantido atualizado.
+- **Cabeçalho `X-Forwarded-For`:** valores informados pelo cliente podem ser forjados; o backend só deve confiar no valor acrescentado pelo WAF.
+
+### 6.2 Boas práticas (*hardening*)
+
+```bash
+# No WAF: desabilitar o encaminhamento IP (o proxy reverso não depende dele)
+sudo sysctl -w net.ipv4.ip_forward=0
+# No servidor web interno: aceitar HTTP somente do WAF (192.168.20.1)
+sudo iptables -A INPUT -p tcp --dport 80 -s 192.168.20.1 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 80 -j DROP
+# Restringir o acesso ao log de auditoria
+sudo chmod 640 /var/log/modsec_audit.log
+```
+
+Os comandos do WAF devem ser aplicados após a conclusão dos testes comparativos da Seção 5.2, pois eliminam o acesso direto ao backend. As regras de `iptables` do servidor interno não são persistentes por padrão (ver Laboratório 10).
+
+---
+
+## 7. Perguntas para Fixação
+
+### 7.1 Questões para análise
 
 1. O que caracteriza um WAF?
 2. Qual é a principal diferença entre um WAF e um firewall stateful?
@@ -557,9 +595,21 @@ O host intermediário atua como **proxy reverso com inspeção HTTP**, o que sig
 9. O WAF substitui a necessidade de firewall de rede? Explique.
 10. Qual a principal evolução conceitual entre os Labs 10, 11 e 12?
 
+### 7.2 Conclusão esperada
+
+Ao final deste laboratório, o estudante deve perceber que:
+
+- um **WAF** protege aplicações web em um nível superior ao firewall tradicional;
+- o uso de **proxy reverso** permite centralizar a proteção do serviço publicado;
+- o **ModSecurity** com **OWASP CRS** fornece uma base prática para inspeção de tráfego HTTP;
+- a porta 80 pode continuar aberta, mas o conteúdo da requisição passa a ser analisado;
+- o WAF representa uma nova camada de defesa, complementar aos mecanismos estudados anteriormente.
+
 ---
 
-## 29. Critérios de avaliação
+## 8. Critérios de Avaliação e Entregáveis
+
+### 8.1 Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -570,9 +620,7 @@ O host intermediário atua como **proxy reverso com inspeção HTTP**, o que sig
 | Verificação de logs e respostas técnicas às questões para análise | 2,0 |
 | **Total** | **10,0** |
 
----
-
-## 30. Entregáveis
+### 8.2 Entregáveis
 
 Cada aluno deve entregar:
 
@@ -590,17 +638,17 @@ Cada aluno deve entregar:
 
 ---
 
-## 31. Conclusão esperada
+## 9. Referências
 
-Ao final deste laboratório, o estudante deve perceber que:
-
-- um **WAF** protege aplicações web em um nível superior ao firewall tradicional;
-- o uso de **proxy reverso** permite centralizar a proteção do serviço publicado;
-- o **ModSecurity** com **OWASP CRS** fornece uma base prática para inspeção de tráfego HTTP;
-- a porta 80 pode continuar aberta, mas o conteúdo da requisição passa a ser analisado;
-- o WAF representa uma nova camada de defesa, complementar aos mecanismos estudados anteriormente.
+- [**RFC 9110**](https://datatracker.ietf.org/doc/html/rfc9110) - *HTTP Semantics*.
+- [**RFC 9112**](https://datatracker.ietf.org/doc/html/rfc9112) - *HTTP/1.1*.
+- [**RFC 8446**](https://datatracker.ietf.org/doc/html/rfc8446) - *The Transport Layer Security (TLS) Protocol Version 1.3*.
+- OWASP. *OWASP Core Rule Set*. Disponível em: https://coreruleset.org/docs/.
+- OWASP. *OWASP Top 10*. Disponível em: https://owasp.org/www-project-top-ten/.
+- *ModSecurity*. Disponível em: https://modsecurity.org/.
+- Nginx. *Documentação oficial*. Disponível em: https://nginx.org/en/docs/.
+- BRASIL. Lei nº 13.709, de 14 de agosto de 2018 (Lei Geral de Proteção de Dados Pessoais - LGPD).
 
 ---
 
 [← Anterior: Laboratório 11](lab11.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 13 →](lab13.md)
-

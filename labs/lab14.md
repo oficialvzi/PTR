@@ -9,7 +9,7 @@
 
 ---
 
-## 1. Objetivo
+## 1. Objetivos
 
 Implementar um ambiente de **IDS/IPS** no PNetLab utilizando **Suricata** em uma máquina Linux posicionada entre duas redes, permitindo ao estudante:
 
@@ -21,7 +21,9 @@ Implementar um ambiente de **IDS/IPS** no PNetLab utilizando **Suricata** em uma
 
 ---
 
-## 2. Introdução
+## 2. Introdução e Fundamentação Teórica
+
+### 2.1 Introdução
 
 Nos laboratórios anteriores, a proteção foi evoluindo em camadas.
 
@@ -36,7 +38,6 @@ Neste **Lab 14**, o foco será um novo tipo de mecanismo: o **IDS/IPS**.
 
 *Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
-
 O **Suricata** é uma ferramenta amplamente usada nesse contexto, pois permite:
 
 - inspeção de tráfego em tempo real;
@@ -46,9 +47,7 @@ O **Suricata** é uma ferramenta amplamente usada nesse contexto, pois permite:
 
 Neste laboratório, a ênfase será a **implantação do Suricata** e a **observação de alertas em modo IDS**.
 
----
-
-## 3. Relação com os laboratórios anteriores
+### 2.2 Relação com os laboratórios anteriores
 
 | Laboratório | Tecnologia | Foco principal |
 |---|---|---|
@@ -58,17 +57,79 @@ Neste laboratório, a ênfase será a **implantação do Suricata** e a **observ
 | Lab 13 | WAF | Testes de ataques web e análise de logs |
 | Lab 14 | IDS/IPS com Suricata | Detecção e análise de tráfego suspeito |
 
----
-
-## 4. Situação-problema
+### 2.3 Situação-problema
 
 Uma organização já possui firewall e WAF para proteger sua infraestrutura. Mesmo assim, a equipe de segurança precisa de uma camada adicional que permita **detectar padrões suspeitos no tráfego da rede**, registrar eventos e apoiar a investigação de incidentes.
 
 Para isso, será implantado um **sensor IDS/IPS** entre duas redes, de forma que o tráfego passe por inspeção e gere alertas quando forem identificadas assinaturas suspeitas.
 
+### 2.4 Diferença entre IDS e IPS
+
+#### 2.4.1 IDS
+- monitora;
+- detecta;
+- registra;
+- alerta.
+
+#### 2.4.2 IPS
+- monitora;
+- detecta;
+- pode bloquear ou descartar tráfego.
+
+Neste laboratório, o ambiente está inicialmente configurado como **IDS**.
+
+### 2.5 Comparação didática com os laboratórios anteriores
+
+| Recurso | Firewall de pacotes | Stateful | WAF | IDS/IPS |
+|---|---|---|---|---|
+| Filtrar por IP e porta | Sim | Sim | Não é o foco | Pode observar |
+| Acompanhar estado de conexão | Não | Sim | Parcialmente | Pode analisar |
+| Inspecionar conteúdo HTTP | Não | Não | Sim | Sim, dependendo das regras |
+| Gerar alerta de comportamento suspeito | Limitado | Limitado | Sim | Sim |
+| Bloquear automaticamente | Sim | Sim | Sim | Somente em modo IPS |
+
+### 2.6 Funcionamento interno do Suricata
+
+O Suricata processa o tráfego em um *pipeline*: captura dos pacotes (por exemplo, `AF_PACKET`), decodificação das camadas de rede e transporte, reconstrução de fluxos e análise de protocolos de aplicação (HTTP, DNS, TLS, entre outros), comparação com as regras de detecção e geração de saídas (`fast.log`, `eve.json`, `stats.log`).
+
+```mermaid
+flowchart LR
+    CAP["Captura de pacotes"] --> DEC["Decodificação"]
+    DEC --> FLW["Fluxos e protocolos de aplicação"]
+    FLW --> DET["Detecção por regras"]
+    DET --> OUT["Saídas: fast.log, eve.json, stats.log"]
+```
+
+Uma regra do Suricata é composta por cabeçalho (ação, protocolo, origem, direção, destino) e opções entre parênteses. Na regra do Laboratório (`alert icmp any any -> any any (msg:"..."; sid:1000001; rev:1;)`), `alert` é a ação, `icmp` o protocolo, `any any` representam endereço e porta de origem, `->` indica a direção, e `msg`, `sid` e `rev` são, respectivamente, a mensagem, o identificador único da assinatura e a revisão.
+
+### 2.7 Modos IDS e IPS
+
+| Característica | IDS | IPS |
+|---|---|---|
+| Posição | Observa uma cópia do tráfego ou a passagem pela interface | Em linha com o tráfego (*inline*) |
+| Ação sobre o pacote | Gera alerta (`alert`) | Pode descartar (`drop`) ou rejeitar (`reject`) |
+| Impacto de falha do sensor | Perda de visibilidade | Pode interromper a rede (falha fechada) ou deixar passar tráfego sem inspeção (falha aberta) |
+| Exemplo de integração no Linux | `suricata -i eth0` | Fila `NFQUEUE` do Netfilter (`suricata -q 0`) |
+
+Para fins informativos, o modo IPS com `NFQUEUE` utiliza uma regra do tipo `sudo iptables -I FORWARD -j NFQUEUE --queue-num 0 --queue-bypass` e a execução do Suricata com `-q 0`; a opção `--queue-bypass` evita a interrupção do tráfego se o Suricata não estiver em execução. Esse modo não faz parte do roteiro deste laboratório.
+
+### 2.8 Exemplo concreto
+
+Uma varredura `nmap -sS 192.168.20.10` envia pacotes `SYN` para várias portas do servidor; as regras de detecção de varredura, quando presentes no conjunto de regras ativo, geram alertas associados ao endereço de origem. Já uma requisição HTTP com `<script>` na URL pode acionar assinaturas de XSS.
+
+### 2.9 Protocolos envolvidos
+
+| Protocolo | Camada OSI | Camada TCP/IP | Observação |
+|---|---|---|---|
+| IP, ICMP | 3 (Rede) | Internet | Inspecionados pelas assinaturas de rede |
+| TCP, UDP | 4 (Transporte) | Transporte | Reconstrução de fluxos |
+| HTTP | 7 (Aplicação) | Aplicação | TCP 80 neste laboratório |
+
 ---
 
-## 5. Topologia lógica
+## 3. Topologia e Cenário
+
+### 3.1 Topologia lógica
 
 ```mermaid
 flowchart LR
@@ -87,9 +148,7 @@ flowchart LR
     class SERVER srv;
 ```
 
----
-
-## 6. Plano de endereçamento
+### 3.2 Plano de endereçamento
 
 | Dispositivo | Interface | Endereço IP | Máscara | Gateway |
 |---|---|---|---|---|
@@ -98,9 +157,7 @@ flowchart LR
 | Linux IDS/IPS | eth1 | 192.168.20.1 | 255.255.255.0 | - |
 | Linux Servidor | eth0 | 192.168.20.10 | 255.255.255.0 | 192.168.20.1 |
 
----
-
-## 7. Premissas do laboratório
+### 3.3 Premissas do laboratório
 
 Neste laboratório, considere que:
 
@@ -114,11 +171,13 @@ Neste laboratório, considere que:
 
 ---
 
-## 8. Validação inicial do ambiente
+## 4. Roteiro Prático Passo a Passo
+
+### 4.1 Validação inicial do ambiente
 
 Antes de instalar o Suricata, valide se o cenário já está funcional.
 
-### 8.1 No cliente
+#### 4.1.1 No cliente
 
 ```bash
 ping 192.168.10.1
@@ -126,7 +185,7 @@ ping 192.168.20.10
 curl http://192.168.20.10
 ```
 
-### 8.2 No servidor
+#### 4.1.2 No servidor
 
 ```bash
 ping 192.168.20.1
@@ -134,7 +193,7 @@ ping 192.168.10.10
 curl http://127.0.0.1
 ```
 
-### 8.3 No IDS/IPS
+#### 4.1.3 No IDS/IPS
 
 ```bash
 ping 192.168.10.10
@@ -147,9 +206,7 @@ Resultado esperado:
 - resposta HTTP do servidor;
 - ambiente pronto para monitoramento.
 
----
-
-## 9. Verificação do encaminhamento IP no sensor
+### 4.2 Verificação do encaminhamento IP no sensor
 
 No Linux IDS/IPS:
 
@@ -170,9 +227,7 @@ echo "net.ipv4.ip_forward = 1" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 ```
 
----
-
-## 10. Verificação do serviço web
+### 4.3 Verificação do serviço web
 
 Como o **Nginx já está instalado**, apenas confirme se o serviço está ativo no servidor:
 
@@ -181,9 +236,7 @@ sudo systemctl status nginx
 curl http://127.0.0.1
 ```
 
----
-
-## 11. Instalação do Suricata
+### 4.4 Instalação do Suricata
 
 No Linux IDS/IPS:
 
@@ -204,9 +257,7 @@ Verificar serviço:
 sudo systemctl status suricata
 ```
 
----
-
-## 12. Localização dos arquivos principais
+### 4.5 Localização dos arquivos principais
 
 Em instalações típicas no Ubuntu:
 
@@ -214,9 +265,7 @@ Em instalações típicas no Ubuntu:
 - regras: `/var/lib/suricata/rules/`
 - logs: `/var/log/suricata/`
 
----
-
-## 13. Atualização das regras
+### 4.6 Atualização das regras
 
 Atualize as regras do Suricata:
 
@@ -230,9 +279,7 @@ Após a atualização, reinicie o serviço:
 sudo systemctl restart suricata
 ```
 
----
-
-## 14. Interfaces de captura
+### 4.7 Interfaces de captura
 
 Antes de iniciar testes, identifique os nomes corretos das interfaces:
 
@@ -245,9 +292,7 @@ Exemplo esperado:
 - `eth0` voltada para a rede 192.168.10.0/24
 - `eth1` voltada para a rede 192.168.20.0/24
 
----
-
-## 15. Execução do Suricata em modo IDS
+### 4.8 Execução do Suricata em modo IDS
 
 Para testes controlados, você pode parar o serviço e executar manualmente o Suricata em foreground.
 
@@ -265,9 +310,11 @@ sudo suricata -i eth0 -v
 
 ---
 
-## 16. Testes de tráfego legítimo
+## 5. Verificação e Diagnóstico
 
-### 16.1 Ping
+### 5.1 Testes de tráfego legítimo
+
+#### 5.1.1 Ping
 
 No cliente:
 
@@ -275,7 +322,7 @@ No cliente:
 ping 192.168.20.10
 ```
 
-### 16.2 HTTP
+#### 5.1.2 HTTP
 
 No cliente:
 
@@ -283,49 +330,45 @@ No cliente:
 curl http://192.168.20.10
 ```
 
-### 16.3 Conexão simples na porta 80
+#### 5.1.3 Conexão simples na porta 80
 
 ```bash
 nc -vz 192.168.20.10 80
 ```
 
-### 16.4 Resultado esperado
+#### 5.1.4 Resultado esperado
 
 - o tráfego deve continuar funcionando normalmente;
 - o Suricata deve registrar fluxos e possivelmente eventos, dependendo das regras ativas;
 - os alunos devem perceber que o IDS monitora sem necessariamente bloquear.
 
----
-
-## 17. Observação dos logs
+### 5.2 Observação dos logs
 
 Abra outro terminal no Linux IDS/IPS.
 
-### 17.1 Alertas simples
+#### 5.2.1 Alertas simples
 
 ```bash
 sudo tail -f /var/log/suricata/fast.log
 ```
 
-### 17.2 Eventos estruturados
+#### 5.2.2 Eventos estruturados
 
 ```bash
 sudo tail -f /var/log/suricata/eve.json
 ```
 
-### 17.3 Estatísticas
+#### 5.2.3 Estatísticas
 
 ```bash
 sudo tail -f /var/log/suricata/stats.log
 ```
 
----
-
-## 18. Testes de tráfego suspeito controlado
+### 5.3 Testes de tráfego suspeito controlado
 
 > Execute somente em ambiente de laboratório.
 
-### 18.1 Varredura simples com Nmap
+#### 5.3.1 Varredura simples com Nmap
 
 No cliente, se o `nmap` estiver disponível:
 
@@ -340,56 +383,27 @@ ou
 nmap -sV 192.168.20.10
 ```
 
-### 18.2 Requisição HTTP suspeita
+#### 5.3.2 Requisição HTTP suspeita
 
 ```bash
 curl "http://192.168.20.10/?q=<script>alert(1)</script>"
 ```
 
-### 18.3 Tentativa de path traversal
+#### 5.3.3 Tentativa de path traversal
+
+A opção `--path-as-is` impede que o `curl` normalize os segmentos `../` antes do envio.
 
 ```bash
-curl "http://192.168.20.10/../../../etc/passwd"
+curl --path-as-is "http://192.168.20.10/../../../etc/passwd"
 ```
 
-### 18.4 Interpretação esperada
+#### 5.3.4 Interpretação esperada
 
 - o Suricata pode gerar alertas dependendo do conjunto de regras ativo;
 - os eventos devem aparecer em `fast.log` e/ou `eve.json`;
 - nem todo tráfego suspeito necessariamente acionará uma regra, e isso também faz parte da análise.
 
----
-
-## 19. Diferença entre IDS e IPS
-
-### 19.1 IDS
-- monitora;
-- detecta;
-- registra;
-- alerta.
-
-### 19.2 IPS
-- monitora;
-- detecta;
-- pode bloquear ou descartar tráfego.
-
-Neste laboratório, o ambiente está inicialmente configurado como **IDS**.
-
----
-
-## 20. Comparação didática com os laboratórios anteriores
-
-| Recurso | Firewall de pacotes | Stateful | WAF | IDS/IPS |
-|---|---|---|---|---|
-| Filtrar por IP e porta | Sim | Sim | Não é o foco | Pode observar |
-| Acompanhar estado de conexão | Não | Sim | Parcialmente | Pode analisar |
-| Inspecionar conteúdo HTTP | Não | Não | Sim | Sim, dependendo das regras |
-| Gerar alerta de comportamento suspeito | Limitado | Limitado | Sim | Sim |
-| Bloquear automaticamente | Sim | Sim | Sim | Somente em modo IPS |
-
----
-
-## 21. Exemplo de leitura de evento
+### 5.4 Exemplo de leitura de evento
 
 Os alunos devem observar nos logs informações como:
 
@@ -408,11 +422,9 @@ sudo grep '"alert"' /var/log/suricata/eve.json
 
 ou usar `jq`, se disponível.
 
----
+### 5.5 Atividade opcional: criação de regra local simples
 
-## 22. Atividade opcional: criação de regra local simples
-
-O professor pode propor uma regra local para detectar um ping.
+Como atividade opcional, propõe-se uma regra local para detectar um ping.
 
 Exemplo de regra local em:
 
@@ -426,7 +438,20 @@ Conteúdo:
 alert icmp any any -> any any (msg:"ICMP detectado no laboratorio"; sid:1000001; rev:1;)
 ```
 
-Depois, garantir que o arquivo esteja incluído no `suricata.yaml` e reiniciar o Suricata.
+Depois, incluir o arquivo na lista `rule-files` do `suricata.yaml` (caminhos relativos são resolvidos a partir de `default-rule-path`; caminhos absolutos são aceitos):
+
+```yaml
+rule-files:
+  - suricata.rules
+  - /etc/suricata/rules/local.rules
+```
+
+Validar a configuração e reiniciar o Suricata:
+
+```bash
+sudo suricata -T -c /etc/suricata/suricata.yaml
+sudo systemctl restart suricata
+```
 
 Gerar tráfego ICMP:
 
@@ -438,9 +463,65 @@ Resultado esperado: alerta correspondente nos logs.
 
 > Esta etapa é opcional, mostra como assinaturas podem ser personalizadas.
 
+### 5.6 Interpretação do `fast.log`
+
+Cada linha do `fast.log` segue a estrutura:
+
+```text
+<data-hora>  [**] [<gid>:<sid>:<rev>] <mensagem> [**] [Classification: <classe>] [Priority: <n>] {<protocolo>} <origem>:<porta> -> <destino>:<porta>
+```
+
+| Campo | Significado |
+|---|---|
+| `gid:sid:rev` | Grupo, identificador único e revisão da assinatura |
+| `mensagem` | Descrição da assinatura (opção `msg`) |
+| `Classification` e `Priority` | Categoria e prioridade da assinatura |
+| `{protocolo}` | Protocolo do pacote que acionou a regra |
+| `origem -> destino` | Endereços e portas envolvidos |
+
+No `eve.json`, cada evento é um objeto JSON; o campo `event_type` distingue alertas (`alert`), fluxos (`flow`), HTTP (`http`), DNS (`dns`) e estatísticas (`stats`).
+
+### 5.7 Metodologia de diagnóstico
+
+1. **Ambiente e encaminhamento:** `ping` entre os nós e `ip_forward` igual a `1` no sensor;
+2. **Interface de captura:** confirmar com `ip -br addr` o nome da interface por onde o tráfego passa e se o Suricata foi iniciado nela;
+3. **Regras carregadas:** `sudo suricata -T -c /etc/suricata/suricata.yaml` e a mensagem de total de regras carregadas na inicialização;
+4. **Geração de tráfego:** o tráfego precisa atravessar a interface monitorada; a captura em `eth0` observa os pacotes enviados e recebidos nessa interface, ou seja, todo o tráfego entre o Cliente e a rede `192.168.20.0/24`, mas não o tráfego local entre o sensor e o servidor;
+5. **Logs:** `fast.log` e `eve.json`; a ausência de alertas não significa que o tráfego seja legítimo, e sim que nenhuma assinatura ativa foi acionada;
+6. **Desempenho:** `stats.log` para pacotes descartados pelo mecanismo de captura (indicador de sobrecarga do sensor).
+
 ---
 
-## 23. Questões para análise
+## 6. Segurança
+
+### 6.1 Riscos associados
+
+- **Autorização e legalidade:** varreduras e testes de ataque só podem ser realizados em redes e sistemas próprios ou expressamente autorizados (art. 154-A do Código Penal, incluído pela Lei nº 12.737/2012). Neste laboratório, devem ocorrer apenas no ambiente isolado.
+- **Cegueira em tráfego cifrado:** o conteúdo de sessões TLS não é inspecionado sem terminação ou decifração prévia; o IDS observa apenas metadados.
+- **Falsos negativos e falsos positivos:** o desempenho depende do conjunto de regras e do ajuste ao ambiente.
+- **Atualização de regras:** `suricata-update` obtém regras de fontes externas por HTTPS; em redes isoladas, as regras devem ser transferidas por mídia confiável, com verificação de integridade.
+- **Sensor em linha:** em modo IPS, a falha ou a sobrecarga do sensor pode interromper o tráfego ou deixá-lo sem inspeção.
+- **Dados pessoais em logs:** os eventos podem registrar endereços e conteúdo de requisições (LGPD, Lei nº 13.709/2018); o acesso aos logs deve ser restrito.
+
+### 6.2 Boas práticas (*hardening*)
+
+```bash
+# Restringir o acesso aos logs do sensor
+sudo chmod 750 /var/log/suricata
+# Validar a configuração e as regras antes de reiniciar o serviço
+sudo suricata -T -c /etc/suricata/suricata.yaml
+# Manter o sistema e as regras atualizados
+sudo apt update && sudo apt upgrade -y
+sudo suricata-update
+```
+
+Recomenda-se ainda executar o Suricata com usuário sem privilégios após a inicialização (opção `run-as` no `suricata.yaml`), configurar a rotação dos logs e integrar os alertas a uma plataforma centralizada de análise. O IDS/IPS complementa, e não substitui, o firewall de rede e o WAF.
+
+---
+
+## 7. Perguntas para Fixação
+
+### 7.1 Questões para análise
 
 1. O que diferencia IDS de IPS?
 2. Qual o papel do Suricata neste laboratório?
@@ -453,9 +534,21 @@ Resultado esperado: alerta correspondente nos logs.
 9. O IDS substitui firewall ou WAF? Explique.
 10. Qual foi a principal evidência prática da utilidade de um IDS no laboratório?
 
+### 7.2 Conclusão esperada
+
+Ao final deste laboratório, o estudante deve perceber que:
+
+- o **IDS/IPS** acrescenta visibilidade e capacidade de detecção à segurança da rede;
+- o **Suricata** pode monitorar tráfego real e gerar eventos detalhados;
+- a análise de logs é parte essencial da operação de segurança;
+- firewall, WAF e IDS/IPS não competem entre si, mas se complementam;
+- a segurança em redes modernas exige múltiplas camadas de proteção e observabilidade.
+
 ---
 
-## 24. Critérios de avaliação
+## 8. Critérios de Avaliação e Entregáveis
+
+### 8.1 Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -466,9 +559,7 @@ Resultado esperado: alerta correspondente nos logs.
 | Análise forense de logs (`fast.log`, `eve.json`) e respostas às questões para análise | 2,0 |
 | **Total** | **10,0** |
 
----
-
-## 25. Entregáveis
+### 8.2 Entregáveis
 
 Cada aluno deve entregar:
 
@@ -487,17 +578,17 @@ Cada aluno deve entregar:
 
 ---
 
-## 26. Conclusão esperada
+## 9. Referências
 
-Ao final deste laboratório, o estudante deve perceber que:
-
-- o **IDS/IPS** acrescenta visibilidade e capacidade de detecção à segurança da rede;
-- o **Suricata** pode monitorar tráfego real e gerar eventos detalhados;
-- a análise de logs é parte essencial da operação de segurança;
-- firewall, WAF e IDS/IPS não competem entre si, mas se complementam;
-- a segurança em redes modernas exige múltiplas camadas de proteção e observabilidade.
+- Suricata. *Suricata User Guide*. Disponível em: https://docs.suricata.io/.
+- Proofpoint. *Emerging Threats Open Rules*. Disponível em: https://rules.emergingthreats.net/.
+- NIST. *SP 800-94: Guide to Intrusion Detection and Prevention Systems (IDPS)*.
+- [**RFC 2979**](https://datatracker.ietf.org/doc/html/rfc2979) - *Behavior of and Requirements for Internet Firewalls*.
+- Projeto Netfilter. *Documentação do Netfilter (NFQUEUE)*. Disponível em: https://www.netfilter.org/documentation/.
+- LYON, G. *Nmap Network Scanning*. Nmap Project.
+- BRASIL. Lei nº 12.737, de 30 de novembro de 2012 (tipificação criminal de delitos informáticos).
+- BRASIL. Lei nº 13.709, de 14 de agosto de 2018 (Lei Geral de Proteção de Dados Pessoais - LGPD).
 
 ---
 
 [← Anterior: Laboratório 13](lab13.md) | [Índice Geral (README)](../README.md)
-

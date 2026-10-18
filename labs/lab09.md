@@ -29,13 +29,15 @@
 
 ---
 
-## 1. Objetivo
+## 1. Objetivos
 
 Implementar um backbone **MPLS** simplificado na rede do provedor, dando continuidade ao **Lab 08**, de modo a compreender o papel dos roteadores **CE**, **PE** e **P**, habilitar o transporte por rótulos no núcleo da operadora e verificar o funcionamento do backbone MPLS sobre uma infraestrutura previamente estabelecida com **OSPF** e **BGP**.
 
 ---
 
-## 2. Observação inicial
+## 2. Introdução e Fundamentação Teórica
+
+### 2.1 Observação inicial
 
 > **Importante:** este laboratório é uma continuação do **Lab 08**.  Considere que a topologia, o endereçamento IP básico, a conectividade entre enlaces e as sessões BGP já foram previamente configuradas.  Portanto, neste laboratório **não devem ser refeitas** as configurações básicas já concluídas.  O foco agora será apenas nas configurações necessárias para:
 >
@@ -48,22 +50,15 @@ Implementar um backbone **MPLS** simplificado na rede do provedor, dando continu
 
 *Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
 
-
----
-
-## 3. Situação-problema
+### 2.2 Situação-problema
 
 No laboratório 08, a empresa do **AS 1000** estabeleceu conectividade com dois provedores e aplicou políticas BGP para definir caminho preferencial de saída. Agora, a operadora deseja evoluir sua infraestrutura e implantar um **backbone MPLS** entre seus roteadores, de modo que o transporte no núcleo passe a utilizar **comutação por rótulos**, preparando a rede para maior escalabilidade e para futuras ofertas de serviços avançados.
 
----
-
-## 4. Fundamentação teórica 
+### 2.3 Fundamentação teórica
 
 <img width="1536" height="1024" alt="Infográfico do pacote MPLS: campos do cabeçalho (Label, EXP/TC, S e TTL), pilha de rótulos e troca de rótulos salto a salto no núcleo do provedor" src="https://github.com/user-attachments/assets/d8de8415-8e0c-44d0-8262-23a9f384a619" />
 
 *Imagem gerada com uso de inteligência artificial (OpenAI, ChatGPT).*
-
-
 
 O **MPLS (Multiprotocol Label Switching)** é uma tecnologia que adiciona rótulos aos pacotes, permitindo que o encaminhamento no backbone ocorra com base nesses rótulos, e não apenas pela análise completa do cabeçalho IP a cada salto.
 
@@ -90,15 +85,38 @@ Neste laboratório:
 - **R1** será tratado como **CE**;
 - **ISP1** e **ISP2** serão tratados como **PEs**;
 - **ISP3** será tratado como elemento central do backbone, assumindo o papel de **P**.
+
+Divisão de responsabilidades:
+
 - **OSPF → descobre o caminho**
 - **LDP → distribui os rótulos**
 - **MPLS → encaminha com base nesses rótulos**  
 
-O **OSPF** será usado como protocolo interno do backbone da operadora, enquanto o **MPLS** será habilitado nos enlaces da rede do provedor. 
+O **OSPF** será usado como protocolo interno do backbone da operadora, enquanto o **MPLS** será habilitado nos enlaces da rede do provedor. Nos laboratórios anteriores, os três roteadores pertencem a sistemas autônomos distintos (AS 100, AS 200 e AS 300); reuni-los em um único domínio OSPF/MPLS é uma **simplificação didática**, pois, em uma operadora real, o backbone pertence a um único AS. 
+
+### 2.4 Funcionamento interno do MPLS
+
+No MPLS ([**RFC 3031**](https://datatracker.ietf.org/doc/html/rfc3031)), o primeiro roteador do domínio (LER, *Label Edge Router*) insere um cabeçalho de 32 bits entre os cabeçalhos de enlace e de rede ([**RFC 3032**](https://datatracker.ietf.org/doc/html/rfc3032)), composto por: rótulo (*Label*, 20 bits), *Traffic Class* (3 bits), bit de fundo de pilha (*S*, 1 bit) e *Time to Live* (8 bits). Os roteadores intermediários (LSR, *Label Switching Router*) consultam apenas o rótulo, substituem-no pelo rótulo de saída e encaminham o quadro. No penúltimo salto, o rótulo é normalmente removido (*Penultimate Hop Popping*, PHP), de modo que o último roteador receba o pacote IP puro.
+
+O *Label Distribution Protocol* (LDP, [**RFC 5036**](https://datatracker.ietf.org/doc/html/rfc5036)) associa rótulos aos prefixos presentes na tabela do IGP. Por isso, o OSPF precisa estar estável e anunciar as loopbacks dos LSRs antes da ativação do MPLS.
+
+### 2.5 Exemplo concreto
+
+Para o prefixo `2.2.2.2/32` (loopback do ISP2), o ISP1 recebe do ISP3 o rótulo associado a esse prefixo. Um pacote do ISP1 destinado a `2.2.2.2` recebe esse rótulo; o ISP3, que é o penúltimo salto, remove o rótulo (rótulo de saída `Pop Label` na `show mpls forwarding-table`) e entrega o pacote IP ao ISP2.
+
+### 2.6 Protocolos envolvidos
+
+| Protocolo | Camada OSI | Camada TCP/IP | Transporte / porta | Observação |
+|---|---|---|---|---|
+| MPLS | 2,5 (entre enlace e rede) | - | Encapsulamento sobre Ethernet (EtherType `0x8847` para unicast) | Rótulo de 20 bits |
+| LDP | 7 (Aplicação), com função de controle | Aplicação | UDP 646 (descoberta, multicast `224.0.0.2`) e TCP 646 (sessão) | O endereço de transporte deve ser alcançável |
+| OSPFv2 | 3 (Rede) | Internet | IP protocolo 89 | IGP do backbone |
 
 ---
 
-## 5. Topologia lógica
+## 3. Topologia e Cenário
+
+### 3.1 Topologia lógica
 
 ```mermaid
 flowchart LR
@@ -172,9 +190,7 @@ flowchart LR
     style AS300 fill:transparent,stroke:#dc2626,stroke-width:2px,stroke-dasharray: 8 6
 ```
 
----
-
-## 6. Premissas adotadas
+### 3.2 Premissas adotadas
 
 Considere que os seguintes elementos **já estão configurados**:
 
@@ -190,9 +206,7 @@ Neste laboratório, serão realizadas apenas as configurações referentes a:
 - habilitação do MPLS no núcleo;
 - verificação de labels e encaminhamento.
 
----
-
-## 7. Papéis dos roteadores no cenário
+### 3.3 Papéis dos roteadores no cenário
 
 | Roteador | Papel no Lab 09 | Descrição |
 |---|---|---|
@@ -201,24 +215,24 @@ Neste laboratório, serão realizadas apenas as configurações referentes a:
 | ISP2 | PE | Borda da operadora conectada ao cliente |
 | ISP3 | P | Núcleo do backbone da operadora |
 
----
+### 3.4 Dados relevantes do backbone
 
-## 8. Dados relevantes do backbone
-
-### 8.1 Enlaces do backbone do provedor
+#### 3.4.1 Enlaces do backbone do provedor
 - ISP1 ↔ ISP3: `191.1.0.0/30`
 - ISP2 ↔ ISP3: `191.2.0.0/30`
 
-### 8.2 Mapeamento de interfaces FastEthernet sugerido
+#### 3.4.2 Mapeamento de interfaces do backbone
 
 | Dispositivo | Interface | Uso |
 |---|---|---|
-| ISP1 | FastEthernet0/0 | enlace com ISP3 |
-| ISP2 | FastEthernet0/0 | enlace com ISP3 |
-| ISP3 | FastEthernet0/0 | enlace com ISP1 |
-| ISP3 | FastEthernet0/1 | enlace com ISP2 |
+| ISP1 | Gi0/2 | enlace com ISP3 |
+| ISP2 | Gi0/1 | enlace com ISP3 |
+| ISP3 | Gi0/0 | enlace com ISP1 |
+| ISP3 | Gi0/1 | enlace com ISP2 |
 
-### 8.3 Loopbacks sugeridas para identificação interna
+Os nomes de interface seguem a configuração dos enlaces ISP1-ISP3 e ISP2-ISP3 realizada no Laboratório 07.
+
+#### 3.4.3 Loopbacks sugeridas para identificação interna
 Caso ainda não existam loopbacks para o backbone, utilize:
 
 - ISP1: `1.1.1.1/32`
@@ -229,13 +243,15 @@ Essas loopbacks serão úteis para o OSPF e para a identificação lógica dos L
 
 ---
 
-## 9. Configuração das loopbacks do backbone
+## 4. Roteiro Prático Passo a Passo
+
+### 4.1 Configuração das loopbacks do backbone
 
 Configure apenas se ainda não tiver criado essas interfaces em atividades anteriores.
 
-### 9.1 ISP1
+#### 4.1.1 ISP1
 
-```bash
+```cisco
 ISP1> enable
 
 ISP1# configure terminal
@@ -247,9 +263,9 @@ ISP1(config-if)# ip address 1.1.1.1 255.255.255.255
 ISP1(config-if)# end
 ```
 
-### 9.2 ISP2
+#### 4.1.2 ISP2
 
-```bash
+```cisco
 ISP2> enable
 
 ISP2# configure terminal
@@ -261,9 +277,9 @@ ISP2(config-if)# ip address 2.2.2.2 255.255.255.255
 ISP2(config-if)# end
 ```
 
-### 9.3 ISP3
+#### 4.1.3 ISP3
 
-```bash
+```cisco
 ISP3> enable
 
 ISP3# configure terminal
@@ -275,16 +291,14 @@ ISP3(config-if)# ip address 3.3.3.3 255.255.255.255
 ISP3(config-if)# end
 ```
 
----
-
-## 10. OSPF no backbone do provedor
+### 4.2 OSPF no backbone do provedor
 
 O OSPF será usado como protocolo interno da operadora.  
 Nesta etapa, configure ou ajuste o OSPF apenas nos roteadores do backbone.
 
-### 10.1 ISP1
+#### 4.2.1 ISP1
 
-```bash
+```cisco
 ISP1> enable
 
 ISP1# configure terminal
@@ -300,9 +314,9 @@ ISP1(config-router)# network 1.1.1.1 0.0.0.0 area 0
 ISP1(config-router)# end
 ```
 
-### 10.2 ISP2
+#### 4.2.2 ISP2
 
-```bash
+```cisco
 ISP2> enable
 
 ISP2# configure terminal
@@ -318,9 +332,9 @@ ISP2(config-router)# network 2.2.2.2 0.0.0.0 area 0
 ISP2(config-router)# end
 ```
 
-### 10.3 ISP3
+#### 4.2.3 ISP3
 
-```bash
+```cisco
 ISP3> enable
 
 ISP3# configure terminal
@@ -338,107 +352,125 @@ ISP3(config-router)# network 3.3.3.3 0.0.0.0 area 0
 ISP3(config-router)# end
 ```
 
----
-
-## 11. Habilitação do MPLS no backbone
+### 4.3 Habilitação do MPLS no backbone
 
 Depois que o OSPF estiver funcional no backbone, habilite o MPLS apenas nos enlaces internos da operadora.
 
-### 11.1 ISP1
+#### 4.3.1 ISP1
 
-```bash
+```cisco
 ISP1> enable
 
 ISP1# configure terminal
 
-ISP1(config)# interface fastethernet 0/0
+ISP1(config)# interface Gi0/2
 
 ISP1(config-if)# mpls ip
 
 ISP1(config-if)# end
 ```
 
-### 11.2 ISP2
+#### 4.3.2 ISP2
 
-```bash
+```cisco
 ISP2> enable
 
 ISP2# configure terminal
 
-ISP2(config)# interface fastethernet 0/0
+ISP2(config)# interface Gi0/1
 
 ISP2(config-if)# mpls ip
 
 ISP2(config-if)# end
 ```
 
-### 11.3 ISP3
+#### 4.3.3 ISP3
 
-```bash
+```cisco
 ISP3> enable
 
 ISP3# configure terminal
 
-ISP3(config)# interface fastethernet 0/0
+ISP3(config)# interface Gi0/0
 
 ISP3(config-if)# mpls ip
 
-ISP3(config-if)# interface fastethernet 0/1
+ISP3(config-if)# interface Gi0/1
 
 ISP3(config-if)# mpls ip
 
 ISP3(config-if)# end
 ```
 
+### 4.4 Fixação do LDP Router ID
+
+O *LDP Router ID* é, por padrão, o maior endereço IP entre as interfaces de loopback; os vizinhos estabelecem a sessão TCP do LDP com esse endereço, que precisa ser alcançável pelo IGP. Neste cenário, os roteadores possuem outras loopbacks de laboratórios anteriores (por exemplo, `10.10.10.10` no ISP1 e `185.0.0.1` no ISP3) que não são anunciadas pelo OSPF do backbone e, por serem numericamente maiores, seriam escolhidas como identificador. Para evitar esse problema, fixar o identificador na loopback anunciada no OSPF:
+
+```cisco
+! ISP1
+mpls ldp router-id Loopback1 force
+! ISP2
+mpls ldp router-id Loopback1 force
+! ISP3
+mpls ldp router-id Loopback10 force
+```
+
+A opção `force` aplica a alteração imediatamente, reiniciando as sessões LDP existentes. Após a mudança, `show mpls ldp neighbor` deve exibir o LDP ID de cada vizinho com o endereço da loopback correspondente (`1.1.1.1`, `2.2.2.2` e `3.3.3.3`).
+
 ---
 
-## 12. Verificação do backbone OSPF
+## 5. Verificação e Diagnóstico
+
+### 5.1 Verificação do backbone OSPF
 
 Antes de validar o MPLS, verifique se o backbone OSPF da operadora está funcionando corretamente.
 
-### 12.1 Comandos sugeridos
+#### 5.1.1 Comandos sugeridos
 
-```bash
+```cisco
 show ip ospf neighbor
 show ip route
 show ip protocols
 show ip interface brief
 ```
 
-### 12.2 O que observar
+#### 5.1.2 O que observar
 
 - vizinhança OSPF entre **ISP1** e **ISP3**;
 - vizinhança OSPF entre **ISP2** e **ISP3**;
 - presença das loopbacks na tabela de rotas;
 - alcançabilidade do backbone por roteamento interno.
 
----
-
-## 13. Verificação do MPLS
+### 5.2 Verificação do MPLS
 
 Depois de habilitar o MPLS nos enlaces do backbone, verifique a distribuição de labels.
 
-### 13.1 Comandos sugeridos
+#### 5.2.1 Comandos sugeridos
 
-```bash
+```cisco
+! Interfaces com MPLS habilitado
 show mpls interfaces
+! Vizinhos LDP e estado das sessões
 show mpls ldp neighbor
+! Rótulos associados a cada prefixo (local e de saída)
+show mpls ldp bindings
+! Tabela de encaminhamento por rótulos
 show mpls forwarding-table
 show ip route
+! A partir do ISP1: o primeiro salto (ISP3) deve exibir o rótulo MPLS usado
+traceroute 2.2.2.2 source 1.1.1.1
 ```
 
-### 13.2 O que observar
+#### 5.2.2 O que observar
 
 - interfaces com MPLS habilitado;
 - vizinhos LDP estabelecidos;
 - presença de labels na forwarding table;
 - associação entre prefixos e rótulos.
 
----
+### 5.3 Teste de observação
 
-## 14. Teste de observação
-
-Peça aos alunos que identifiquem:
+Identificar:
 
 1. onde termina o papel do cliente;
 2. onde começa a nuvem do provedor;
@@ -446,9 +478,59 @@ Peça aos alunos que identifiquem:
 4. em quais enlaces o MPLS foi ativado;
 5. quais prefixos do backbone receberam rótulos.
 
+### 5.4 Interpretação das saídas
+
+| Comando | Campos relevantes |
+|---|---|
+| `show mpls interfaces` | Interfaces com `mpls ip` ativo, protocolo de rótulo (`LDP`) e estado operacional |
+| `show mpls ldp neighbor` | `Peer LDP Ident` (LDP ID do vizinho), estado da sessão (`Oper`), interface e endereço de transporte |
+| `show mpls ldp bindings` | Para cada prefixo: rótulo local e rótulos recebidos de cada vizinho |
+| `show mpls forwarding-table` | `Local Label`, `Outgoing Label` (`Pop Label` indica remoção no penúltimo salto), `Prefix`, bytes comutados, interface e próximo salto |
+
+### 5.5 Metodologia de diagnóstico
+
+1. **Enlaces e IGP:** `show ip interface brief`, `show ip ospf neighbor` com estado `FULL`;
+2. **Alcançabilidade das loopbacks:** `show ip route 3.3.3.3` e `ping 3.3.3.3 source Loopback1` (conforme a loopback de cada roteador);
+3. **LDP Router ID:** o endereço de transporte do vizinho precisa ser alcançável; verificar com `show mpls ldp discovery` e `show mpls ldp neighbor`;
+4. **Sessões LDP:** descoberta (UDP 646) e sessão (TCP 646) não podem ser bloqueadas por ACLs; verificar `mpls ip` nos dois lados do enlace;
+5. **Rótulos e encaminhamento:** `show mpls ldp bindings` e `show mpls forwarding-table`; ausência de rótulos para um prefixo indica que o prefixo não está no IGP;
+6. **Políticas:** filtros de rótulos (`mpls ldp advertise-labels`) e ACLs de infraestrutura.
+
 ---
 
-## 15. Questões para análise
+## 6. Segurança
+
+### 6.1 Riscos associados
+
+- **Sessões LDP sem autenticação:** um dispositivo que alcance a porta 646 de um LSR pode tentar estabelecer sessão e injetar associações de rótulo falsas, desviando ou descartando tráfego. A [**RFC 5036**](https://datatracker.ietf.org/doc/html/rfc5036) prevê a proteção da sessão por assinatura MD5 do TCP.
+- **Pacotes rotulados vindos de clientes:** interfaces voltadas ao cliente não devem aceitar pacotes MPLS; por isso, neste roteiro, o `mpls ip` é habilitado somente nos enlaces internos do backbone ([**RFC 4381**](https://datatracker.ietf.org/doc/html/rfc4381)).
+- **Exposição da topologia:** por padrão, o TTL do IP é copiado para o cabeçalho MPLS, de modo que `traceroute` originado fora do domínio revela os roteadores do núcleo.
+- **Dependência do IGP:** qualquer comprometimento do OSPF (adjacências indevidas, LSAs falsos) afeta a distribuição de rótulos.
+
+### 6.2 Boas práticas (*hardening*)
+
+```cisco
+! No ISP1 e no ISP2: autenticação MD5 da sessão LDP com o ISP3 (LDP ID 3.3.3.3)
+mpls ldp neighbor 3.3.3.3 password SENHA-LAB
+! No ISP3: autenticação com cada PE (ajustar o LDP ID de cada vizinho)
+mpls ldp neighbor 1.1.1.1 password SENHA-LAB
+mpls ldp neighbor 2.2.2.2 password SENHA-LAB
+! Oculta os saltos do núcleo em traceroutes de origem externa ao domínio
+no mpls ip propagate-ttl forwarded
+! Autenticação OSPF na área do backbone (exemplo no ISP1, interface Gi0/2)
+router ospf 100
+ area 0 authentication message-digest
+interface Gi0/2
+ ip ospf message-digest-key 1 md5 SENHA-LAB
+```
+
+O valor `SENHA-LAB` é exclusivamente didático, e a senha deve ser a mesma nos dois extremos de cada sessão. Recomenda-se ainda restringir, por ACL, o acesso às portas TCP/UDP 646 apenas aos endereços dos LSRs do backbone.
+
+---
+
+## 7. Perguntas para Fixação
+
+### 7.1 Questões para análise
 
 1. Qual é a principal diferença entre **roteamento IP tradicional** e **encaminhamento com MPLS**?
 2. Qual é a função do **OSPF** dentro do backbone do provedor?
@@ -459,9 +541,20 @@ Peça aos alunos que identifiquem:
 7. O que significa dizer que o MPLS atua como tecnologia de “camada 2,5”?
 8. Por que o backbone precisa de um IGP estável antes da ativação do MPLS?
 
+### 7.2 Conclusão esperada
+
+Ao final deste laboratório, o estudante deve perceber que:
+
+- o **BGP** continua importante na borda da rede;
+- o **OSPF** organiza a alcançabilidade interna do backbone;
+- o **MPLS** permite transportar o tráfego por meio de rótulos;
+- a nuvem da operadora possui lógica própria, diferente da rede do cliente;
+
 ---
 
-## 16. Critérios de avaliação
+## 8. Critérios de Avaliação e Entregáveis
+
+### 8.1 Critérios de avaliação
 
 | Critério | Pontuação |
 |---|---:|
@@ -472,9 +565,7 @@ Peça aos alunos que identifiquem:
 | Respostas técnicas às questões para análise e comparação didática | 2,0 |
 | **Total** | **10,0** |
 
----
-
-## 17. Entregáveis
+### 8.2 Entregáveis
 
 Cada aluno deve entregar:
 
@@ -491,16 +582,17 @@ Cada aluno deve entregar:
 
 ---
 
-## 18. Conclusão esperada
+## 9. Referências
 
-Ao final deste laboratório, o estudante deve perceber que:
-
-- o **BGP** continua importante na borda da rede;
-- o **OSPF** organiza a alcançabilidade interna do backbone;
-- o **MPLS** permite transportar o tráfego por meio de rótulos;
-- a nuvem da operadora possui lógica própria, diferente da rede do cliente;
+- [**RFC 3031**](https://datatracker.ietf.org/doc/html/rfc3031) - *Multiprotocol Label Switching Architecture*.
+- [**RFC 3032**](https://datatracker.ietf.org/doc/html/rfc3032) - *MPLS Label Stack Encoding*.
+- [**RFC 5036**](https://datatracker.ietf.org/doc/html/rfc5036) - *LDP Specification*.
+- [**RFC 4381**](https://datatracker.ietf.org/doc/html/rfc4381) - *Analysis of the Security of BGP/MPLS IP Virtual Private Networks (VPNs)*.
+- [**RFC 2328**](https://datatracker.ietf.org/doc/html/rfc2328) - *OSPF Version 2*.
+- Cisco Systems. *Multiprotocol Label Switching Configuration Guide* (documentação oficial do fabricante).
+- DAVIE, B.; REKHTER, Y. *MPLS: Technology and Applications*. Morgan Kaufmann.
+- KUROSE, J. F.; ROSS, K. W. *Redes de Computadores e a Internet: uma abordagem top-down*. Pearson.
 
 ---
 
 [← Anterior: Laboratório 08](lab08.md) | [Índice Geral (README)](../README.md) | [Próximo: Laboratório 10 →](lab10.md)
-
