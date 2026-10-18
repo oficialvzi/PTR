@@ -12,9 +12,9 @@
 
 A disciplina **Protocolos de Transporte e Roteamento** tem como objetivo apresentar os fundamentos, o funcionamento interno e a aplicação prática dos principais protocolos que sustentam a comunicação em redes IP modernas.
 
-O curso aborda tanto os **protocolos da camada de transporte** quanto os **protocolos de roteamento**, enfatizando os mecanismos que permitem confiabilidade, escalabilidade, convergência, resiliência e desempenho na Internet.
+O curso aborda tanto os **protocolos da camada de transporte** quanto os **protocolos de roteamento**, além das **principais aplicações de rede**, enfatizando os mecanismos que permitem confiabilidade, escalabilidade, convergência, resiliência, segurança e desempenho na Internet.
 
-Além da fundamentação teórica, a disciplina possui forte **componente prático**, com atividades de laboratório desenvolvidas em ambiente de emulação de redes utilizando o **PNetLab**, permitindo que os estudantes observem o comportamento real dos protocolos estudados.
+Além da fundamentação teórica, a disciplina possui forte **componente prático**, com atividades de laboratório desenvolvidas em ambiente de emulação de redes utilizando o **PNetLab**, permitindo que os estudantes observem o comportamento real dos protocolos e serviços estudados.
 
 ---
 
@@ -41,6 +41,7 @@ Além da fundamentação teórica, a disciplina possui forte **componente práti
 Ao final da disciplina, o estudante deverá ser capaz de:
 
 - Compreender o funcionamento dos protocolos TCP e UDP;
+- Analisar o funcionamento e os requisitos das principais aplicações de rede;
 - Analisar mecanismos de controle de fluxo e congestionamento;
 - Entender o processo de encaminhamento IP e decisão de rotas;
 - Configurar e avaliar roteamento estático e dinâmico;
@@ -54,6 +55,7 @@ Ao final da disciplina, o estudante deverá ser capaz de:
 ## 3. Conteúdos Abordados
 
 - Arquitetura TCP/IP
+- Principais aplicações de rede e modelos de comunicação
 - Encaminhamento IP e tabelas de rotas
 - Roteamento estático
 - Roteamento dinâmico
