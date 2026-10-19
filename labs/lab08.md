@@ -178,13 +178,13 @@ Considere que os seguintes elementos **já estão configurados**:
 - conectividade entre os enlaces
 - loopback do **R1**
 - loopback do **ISP1**
-- loopbacks do **ISP2** e do **ISP3** (endereços de teste, Seção 4.5)
-- rotas estáticas no **ISP1** para `11.11.11.11/32` (origem da sessão BGP multihop com o R1), uma por enlace
+- configuração dos provedores **ISP1**, **ISP2** e **ISP3** do Laboratório 07, inclusive as rotas estáticas do ISP1 para `11.11.11.11/32` (origem da sessão BGP multihop com o R1)
 - topologia montada no emulador
 
 Neste laboratório, serão realizadas apenas as configurações referentes a:
 
 - **OSPF** no roteador da empresa
+- loopbacks de teste e seu anúncio BGP no **ISP2** e no **ISP3** (Seção 4.5)
 - **BGP** no roteador da empresa
 - política BGP para preferência de saída
 - propagação da rota default no OSPF
@@ -327,20 +327,20 @@ Para que os quatro roteadores (R1, ISP1, ISP2 e ISP3) se alcancem, cada um preci
 | ISP2 | 200 | `20.20.20.20/32` (`Loopback0`) | `network 20.20.20.20 mask 255.255.255.255` |
 | ISP3 | 300 | `30.30.30.30/32` (`Loopback0`) | `network 30.30.30.30 mask 255.255.255.255` |
 
-Os endereços `20.20.20.20/32` e `30.30.30.30/32` são sugeridos por este roteiro e podem ser substituídos, desde que distintos entre si e atualizados no filtro da Seção 6.2.
+Os endereços `20.20.20.20/32` e `30.30.30.30/32` são sugeridos por este roteiro e podem ser substituídos, desde que distintos entre si e atualizados no filtro da Seção 6.2. Por pertencerem a faixas públicas reais, devem ser usados apenas em ambiente isolado da Internet, como já ressalvado no Laboratório 07.
 
-#### 4.5.1 ISP1 (conferir)
+#### 4.5.1 ISP1 (apenas conferir)
+
+O ISP1 já foi configurado no Laboratório 07 (Seção 4.2) com o anúncio de `10.10.10.10/32` e as rotas estáticas para `11.11.11.11/32`. Nada deve ser reaplicado; confira:
 
 ```cisco
-! Anuncia a loopback do ISP1 (a /32 conectada satisfaz o comando network)
-router bgp 100
- network 10.10.10.10 mask 255.255.255.255
- exit
-! Rota de retorno para a Loopback1 do R1 (origem da sessão multihop), uma por enlace
-! Substituir pelos endereços do R1 em cada enlace, conforme o Laboratório 06
-ip route 11.11.11.11 255.255.255.255 <IP do R1 em 10.1.0.0/30>
-ip route 11.11.11.11 255.255.255.255 <IP do R1 em 10.1.0.4/30>
+show running-config | section router bgp
+show ip route 11.11.11.11
 ```
+
+A saída deve conter `network 10.10.10.10 mask 255.255.255.255` e duas rotas estáticas para `11.11.11.11/32`, uma por enlace (`Gi0/0` e `Gi0/1`).
+
+> **Nota técnica:** rotas estáticas que indicam apenas a interface de saída (R1 para `10.10.10.10`, ISP1 para `11.11.11.11`) dependem de *proxy ARP* no vizinho. Se o emulador não responder ao ARP e as sessões não subirem, substitua-as por rotas com próximo salto, por exemplo `ip route 11.11.11.11 255.255.255.255 10.1.0.1` e `ip route 11.11.11.11 255.255.255.255 10.1.0.5` no ISP1, e `ip route 10.10.10.10 255.255.255.255 10.1.0.2` e `ip route 10.10.10.10 255.255.255.255 10.1.0.6` no R1.
 
 #### 4.5.2 ISP2
 
