@@ -311,7 +311,7 @@ shutdown
 end
 ```
 
-> Em emuladores, o desligamento administrativo de uma interface em uma extremidade pode não derrubar o estado da interface na extremidade oposta. Nesse caso, **R3** só perceberá a perda do vizinho pela expiração do temporizador de invalidação (180 s por padrão no Cisco IOS), o que torna a convergência mais lenta e mais visível.
+> No PNetLab, o desligamento administrativo de uma interface em uma extremidade pode não derrubar o estado da interface na extremidade oposta. Nesse caso, **R3** só perceberá a perda do vizinho pela expiração do temporizador de invalidação (180 s por padrão no Cisco IOS), o que torna a convergência mais lenta e mais visível.
 
 #### 4.4.3 Etapa 3 - Observação
 

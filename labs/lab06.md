@@ -504,7 +504,7 @@ router bgp 1000
 
 O comando `ttl-security` deve ser aplicado nos dois extremos da sessão e não pode ser combinado com `ebgp-multihop` no mesmo vizinho.
 
-**Migração do MD5 para o TCP-AO.** O TCP-AO deve ser adotado nos ambientes em que o equipamento o suporte. O suporte depende do sistema operacional e da versão do software; a imagem Cisco IOSv utilizada neste laboratório pode não oferecê-lo, e por isso o roteiro mantém a assinatura MD5 como mecanismo disponível no emulador. O comando de configuração do TCP-AO deve ser consultado na documentação da versão em uso. O valor `SENHA` é exclusivamente didático. As práticas operacionais recomendadas para o BGP estão consolidadas na [**RFC 7454**](https://datatracker.ietf.org/doc/html/rfc7454) (BCP 194).
+**Migração do MD5 para o TCP-AO.** O TCP-AO deve ser adotado nos ambientes em que o equipamento o suporte. O suporte depende do sistema operacional e da versão do software; a imagem Cisco IOSv utilizada neste laboratório pode não oferecê-lo, e por isso o roteiro mantém a assinatura MD5 como mecanismo disponível no PNetLab. O comando de configuração do TCP-AO deve ser consultado na documentação da versão em uso. O valor `SENHA` é exclusivamente didático. As práticas operacionais recomendadas para o BGP estão consolidadas na [**RFC 7454**](https://datatracker.ietf.org/doc/html/rfc7454) (BCP 194).
 
 ---
 
@@ -537,7 +537,7 @@ O comando `ttl-security` deve ser aplicado nos dois extremos da sessão e não p
 
 ### 8.2 Entregáveis
 
-- print da topologia no emulador;
+- print da topologia no PNetLab;
 - print do `show ip bgp summary`;
 - print do `show ip bgp`;
 - print do `show ip route`;

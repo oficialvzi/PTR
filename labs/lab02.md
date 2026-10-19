@@ -296,11 +296,11 @@ Cada linha corresponde a uma interface e contém as colunas:
 | `Status` | Estado da camada física: `up`, `down` ou `administratively down` (interface sem `no shutdown`) |
 | `Protocol` | Estado da camada de enlace: `up` ou `down` |
 
-Para a interface da LAN, o resultado esperado é `up/up`. A combinação `administratively down/down` indica ausência de `no shutdown`; `up/down` indica problema de enlace; `down/down` indica ausência de conexão física (cabo ou conexão no emulador).
+Para a interface da LAN, o resultado esperado é `up/up`. A combinação `administratively down/down` indica ausência de `no shutdown`; `up/down` indica problema de enlace; `down/down` indica ausência de conexão física (cabo ou conexão no PNetLab).
 
 ### 5.4 Metodologia de diagnóstico
 
-1. **Conectividade física/enlace:** estado `up/up` da interface e do `SW1` no emulador;
+1. **Conectividade física/enlace:** estado `up/up` da interface e do `SW1` no PNetLab;
 2. **Endereçamento e sub-redes:** `show ip interface brief` e `show running-config interface Gi0/0`; hosts na mesma sub-rede `/24` do gateway;
 3. **Conectividade local:** `ping 192.168.0.254` a partir dos PCs; o roteador deve responder;
 4. **Acesso remoto:** `show ip ssh` e `show ssh` confirmam a versão do SSH e as sessões ativas; verificar `transport input ssh` e `login local` nas linhas VTY;

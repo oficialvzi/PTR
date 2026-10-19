@@ -443,7 +443,7 @@ As senhas das sessões (`SENHA`) utilizam a assinatura MD5 do TCP, obsoleta fren
 
 ### 8.2 Entregáveis
 
-- print da topologia montada no emulador com indicação dos estados BGP;
+- print da topologia montada no PNetLab com indicação dos estados BGP;
 - print da saída de `show ip bgp summary` em **ISP1**, **ISP2** e **ISP3**;
 - print da tabela BGP (`show ip bgp`) no **ISP3**, comprovando o aprendizado do bloco `200.18.245.64/27`;
 - evidência de testes de `ping` para os prefixos de destino na Internet (`181.0.0.1`, etc.), a partir do R1, com origem na `Loopback2` (Seção 5.5), e dos provedores;
