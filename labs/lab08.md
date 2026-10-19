@@ -179,7 +179,7 @@ Considere que os seguintes elementos **já estão configurados**:
 - loopback do **R1**
 - loopback do **ISP1**
 - configuração dos provedores **ISP1**, **ISP2** e **ISP3** do Laboratório 07, inclusive as rotas estáticas do ISP1 para `11.11.11.11/32` (origem da sessão BGP multihop com o R1)
-- topologia montada no emulador
+- topologia montada no PNetLab
 
 Neste laboratório, serão realizadas apenas as configurações referentes a:
 
@@ -340,7 +340,7 @@ show ip route 11.11.11.11
 
 A saída deve conter `network 10.10.10.10 mask 255.255.255.255` e duas rotas estáticas para `11.11.11.11/32`, uma por enlace (`Gi0/0` e `Gi0/1`).
 
-> **Nota técnica:** rotas estáticas que indicam apenas a interface de saída (R1 para `10.10.10.10`, ISP1 para `11.11.11.11`) dependem de *proxy ARP* no vizinho. Se o emulador não responder ao ARP e as sessões não subirem, substitua-as por rotas com próximo salto, por exemplo `ip route 11.11.11.11 255.255.255.255 10.1.0.1` e `ip route 11.11.11.11 255.255.255.255 10.1.0.5` no ISP1, e `ip route 10.10.10.10 255.255.255.255 10.1.0.2` e `ip route 10.10.10.10 255.255.255.255 10.1.0.6` no R1.
+> **Nota técnica:** rotas estáticas que indicam apenas a interface de saída (R1 para `10.10.10.10`, ISP1 para `11.11.11.11`) dependem de *proxy ARP* no vizinho. Se o PNetLab não responder ao ARP e as sessões não subirem, substitua-as por rotas com próximo salto, por exemplo `ip route 11.11.11.11 255.255.255.255 10.1.0.1` e `ip route 11.11.11.11 255.255.255.255 10.1.0.5` no ISP1, e `ip route 10.10.10.10 255.255.255.255 10.1.0.2` e `ip route 10.10.10.10 255.255.255.255 10.1.0.6` no R1.
 
 #### 4.5.2 ISP2
 
