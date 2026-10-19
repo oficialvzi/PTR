@@ -338,9 +338,9 @@ show running-config | section router bgp
 show ip route 11.11.11.11
 ```
 
-A saída deve conter `network 10.10.10.10 mask 255.255.255.255` e duas rotas estáticas para `11.11.11.11/32`, uma por enlace (`Gi0/0` e `Gi0/1`).
+A saída deve conter `network 10.10.10.10 mask 255.255.255.255` e duas rotas estáticas para `11.11.11.11/32`, uma por enlace, com próximos saltos `10.1.0.1` e `10.1.0.5`. O `bgp router-id` do ISP1 deve ser `10.10.10.10`.
 
-> **Nota técnica:** rotas estáticas que indicam apenas a interface de saída (R1 para `10.10.10.10`, ISP1 para `11.11.11.11`) dependem de *proxy ARP* no vizinho. Se o PNetLab não responder ao ARP e as sessões não subirem, substitua-as por rotas com próximo salto, por exemplo `ip route 11.11.11.11 255.255.255.255 10.1.0.1` e `ip route 11.11.11.11 255.255.255.255 10.1.0.5` no ISP1, e `ip route 10.10.10.10 255.255.255.255 10.1.0.2` e `ip route 10.10.10.10 255.255.255.255 10.1.0.6` no R1.
+> **Nota técnica:** as rotas estáticas do R1 para `10.10.10.10` indicam apenas a interface de saída (`Gi0/1` e `Gi0/2`, conforme o Laboratório 06) e dependem de *proxy ARP* no ISP1. Se o PNetLab não responder ao ARP e a sessão não subir, substitua-as no R1 por rotas com próximo salto: `ip route 10.10.10.10 255.255.255.255 10.1.0.2` e `ip route 10.10.10.10 255.255.255.255 10.1.0.6`.
 
 #### 4.5.2 ISP2
 
@@ -581,7 +581,7 @@ Cada aluno deve entregar relatório contendo:
 - [**RFC 7454**](https://datatracker.ietf.org/doc/html/rfc7454) - *BGP Operations and Security* (BCP 194).
 - [**RFC 5082**](https://datatracker.ietf.org/doc/html/rfc5082) - *The Generalized TTL Security Mechanism (GTSM)*.
 - Cisco Systems. *IP Routing: BGP Configuration Guide* e *IP Routing: OSPF Configuration Guide* (documentação oficial do fabricante).
-- HALABI, S. *Internet Routing Architectures*. Cisco Press.
+- HALABI, S.; MCPHERSON, D. *Internet Routing Architectures*. Cisco Press.
 - DOYLE, J.; CARROLL, J. D. *Routing TCP/IP, Volumes I e II*. Cisco Press.
 
 ---

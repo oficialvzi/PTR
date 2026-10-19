@@ -195,6 +195,8 @@ ISP3# configure terminal
 
 ISP3(config)# router bgp 300
 
+ISP3(config-router)# bgp router-id 30.30.30.30
+
 ISP3(config-router)# neighbor 191.1.0.1 remote-as 100
 
 ISP3(config-router)# neighbor 191.1.0.1 password SENHA
@@ -215,6 +217,8 @@ ISP3(config-router)# network 185.0.0.0 mask 255.0.0.0
 
 ISP3(config-router)# end
 ```
+
+> **Nota:** o comando `bgp router-id` fixa o identificador do processo BGP. Sem ele, o Cisco IOS escolhe o maior endereço de loopback (no ISP3, `185.0.0.1`), e o identificador mudaria ao criar ou remover loopbacks, o que reinicia as sessões. Adota-se o endereço de teste de cada provedor (`10.10.10.10`, `20.20.20.20` e `30.30.30.30`); as loopbacks do ISP2 e do ISP3 são criadas no Laboratório 08. O identificador do R1 não é alterado neste laboratório.
 
 ### 4.2 Configuração do ISP1
 
@@ -247,6 +251,7 @@ ISP1(config-if)# end
 ISP1> enable
 ISP1# configure terminal
 ISP1(config)# router bgp 100
+ISP1(config-router)# bgp router-id 10.10.10.10
 ISP1(config-router)# neighbor 11.11.11.11 remote-as 1000
 ISP1(config-router)# neighbor 11.11.11.11 password SENHA
 ISP1(config-router)# neighbor 11.11.11.11 ebgp-multihop 2
@@ -255,12 +260,12 @@ ISP1(config-router)# neighbor 191.1.0.2 remote-as 300
 ISP1(config-router)# neighbor 191.1.0.2 password SENHA
 ISP1(config-router)# network 10.10.10.10 mask 255.255.255.255
 ISP1(config-router)# exit
-ISP1(config)# ip route 11.11.11.11 255.255.255.255 Gi0/0
-ISP1(config)# ip route 11.11.11.11 255.255.255.255 Gi0/1
+ISP1(config)# ip route 11.11.11.11 255.255.255.255 10.1.0.1
+ISP1(config)# ip route 11.11.11.11 255.255.255.255 10.1.0.5
 ISP1(config)# end
 ```
 
-> **Nota:** rotas estáticas que apontam apenas para uma interface Ethernet (sem endereço de próximo salto) fazem o roteador executar ARP para o próprio destino (`11.11.11.11`), o que depende de *proxy ARP* no vizinho (habilitado por padrão no Cisco IOS). Em ambientes reais, recomenda-se indicar o endereço do próximo salto (por exemplo, `10.1.0.1` e `10.1.0.5`).
+> **Nota:** as rotas estáticas para `11.11.11.11/32` indicam o endereço de próximo salto do R1 em cada enlace (`10.1.0.1` e `10.1.0.5`), o que evita que o ISP1 execute ARP para o próprio destino e dispensa o *proxy ARP*. No R1, as rotas para `10.10.10.10/32` do Laboratório 06 apontam apenas para a interface de saída (`Gi0/1` e `Gi0/2`) e dependem de *proxy ARP* no ISP1 (habilitado por padrão no Cisco IOS). Em ambientes reais, recomenda-se indicar também ali o próximo salto (`10.1.0.2` e `10.1.0.6`).
 
 ### 4.3 Configuração do ISP2
 
@@ -289,6 +294,8 @@ ISP2> enable
 ISP2# configure terminal
 
 ISP2(config)# router bgp 200
+
+ISP2(config-router)# bgp router-id 20.20.20.20
 
 ISP2(config-router)# neighbor 10.2.0.1 remote-as 1000
 
@@ -367,7 +374,7 @@ Além de `show ip bgp summary` e `show ip bgp` (campos descritos no Laboratório
 
 1. **Enlace e endereçamento:** `show ip interface brief` e `ping` entre os extremos de cada enlace;
 2. **Alcançabilidade das loopbacks:** `show ip route 10.10.10.10` (no R1) e `show ip route 11.11.11.11` (no ISP1);
-3. **Sessões:** `show ip bgp summary`; sessões em `Idle`/`Active` exigem a verificação de `remote-as`, senha, `update-source` e `ebgp-multihop` dos dois lados;
+3. **Sessões:** `show ip bgp summary`; sessões em `Idle`/`Active` exigem a verificação de `remote-as`, senha, `update-source` e `ebgp-multihop` dos dois lados; o campo `BGP router identifier` deve exibir o valor fixado em cada provedor (`10.10.10.10`, `20.20.20.20` e `30.30.30.30`);
 4. **Prefixos originados:** o ISP3 deve possuir as cinco loopbacks na tabela de roteamento (necessárias para o `network`);
 5. **Propagação:** `show ip bgp` no R1 deve listar `181.0.0.0/8` a `185.0.0.0/8`, e no ISP3 deve listar `200.18.245.64/27`.
 
@@ -464,7 +471,7 @@ As senhas das sessões (`SENHA`) utilizam a assinatura MD5 do TCP, obsoleta fren
 - [**RFC 5737**](https://datatracker.ietf.org/doc/html/rfc5737) - *IPv4 Address Blocks Reserved for Documentation*.
 - [**RFC 6996**](https://datatracker.ietf.org/doc/html/rfc6996) - *Autonomous System (AS) Reservation for Private Use*.
 - Cisco Systems. *IP Routing: BGP Configuration Guide* (documentação oficial do fabricante).
-- HALABI, S. *Internet Routing Architectures*. Cisco Press.
+- HALABI, S.; MCPHERSON, D. *Internet Routing Architectures*. Cisco Press.
 
 ---
 

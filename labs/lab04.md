@@ -9,6 +9,24 @@
 
 ---
 
+### Material de Apoio: Podcast Latência Zero
+
+<table>
+  <tr>
+    <td width="140" align="center">
+      <a href="https://open.spotify.com/show/59S06LhFsKlyvfLFQCJ8fK">
+        <img src="../images/latencia-zero-podcast.png" alt="Latência Zero - Engenharia de Redes da UnB" width="120">
+      </a>
+    </td>
+    <td valign="top">
+      O podcast <strong>Latência Zero</strong> apresenta discussões técnicas complementares sobre os temas da disciplina.<br><br>
+      🎧 <strong>Episódio 2:</strong> <a href="https://open.spotify.com/episode/5My3JBmZoVyoKaOL1MGArI">Quando o link cai: A prova de fogo do RIPv2 e a Convergência de Rede</a>
+    </td>
+  </tr>
+</table>
+
+---
+
 ## 1. Objetivos
 
 Ao final da atividade, o aluno deverá ser capaz de:

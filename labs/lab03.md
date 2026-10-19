@@ -20,7 +20,7 @@
     </td>
     <td valign="top">
       O podcast <strong>Latência Zero</strong> apresenta discussões técnicas complementares sobre os temas da disciplina.<br><br>
-      🎧 <strong>Episódio 1:</strong> <a href="https://open.spotify.com/episode/4DYXfykVe2M5XiUSHmoW7H?si=577680b5f45749a3">Engenharia do Roteamento Multicast PIM-DM</a>
+      🎧 <strong>Episódio 1:</strong> <a href="https://open.spotify.com/episode/6autgkF6lifJAD8M3Xr0XR">Engenharia do Roteamento Multicast PIM-DM</a>
     </td>
   </tr>
 </table>

@@ -565,7 +565,7 @@ O comando `ttl-security` deve ser aplicado nos dois extremos da sessão e não p
 - [**RFC 7454**](https://datatracker.ietf.org/doc/html/rfc7454) - *BGP Operations and Security* (BCP 194).
 - [**RFC 8212**](https://datatracker.ietf.org/doc/html/rfc8212) - *Default External BGP (EBGP) Route Propagation Behavior without Policies*.
 - Cisco Systems. *IP Routing: BGP Configuration Guide* (documentação oficial do fabricante).
-- HALABI, S. *Internet Routing Architectures*. Cisco Press.
+- HALABI, S.; MCPHERSON, D. *Internet Routing Architectures*. Cisco Press.
 - DOYLE, J.; CARROLL, J. D. *Routing TCP/IP, Volume II*. Cisco Press.
 
 ---
