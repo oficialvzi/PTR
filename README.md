@@ -8,7 +8,18 @@
 
 ---
 
-## 1. Apresentação
+## 1. Equipe de Monitoria
+
+| Monitores Atuais (2026/02) | Monitores Anteriores (2026/01) |
+|----------------------------|--------------------------------|
+| Ana Cecília Braga | Beatriz Silva Nascimento |
+| Caio Lucas Pereira Mena Barreto | Gabriel Henrique da Cruz Costa |
+| Caio Soares Rodrigues | Luan Silva Moura |
+| Luidi Rafael da Silva Fernandes | Luidi Rafael da Silva Fernandes |
+
+---
+
+## 2. Apresentação
 
 A disciplina **Protocolos de Transporte e Roteamento** tem como objetivo apresentar os fundamentos, o funcionamento interno e a aplicação prática dos principais protocolos que sustentam a comunicação em redes IP modernas.
 
@@ -34,9 +45,25 @@ Além da fundamentação teórica, a disciplina possui forte **componente práti
   </tr>
 </table>
 
+### Material de Apoio: Simul-Net
+
+<table>
+  <tr>
+    <td width="140" align="center">
+      <a href="https://peotta.github.io/Simul-Net/">
+        <img src="images/simul-net-logo.png" alt="Simul-Net - Simuladores de redes e protocolos" width="120">
+      </a>
+    </td>
+    <td valign="top">
+      O <strong>Simul-Net</strong> reúne simuladores visuais, executados no navegador, que mostram passo a passo o funcionamento dos protocolos estudados na disciplina, com diagrama de sequência ou topologia, captura de pacotes e explicação do experimento. É um recurso complementar aos laboratórios do PNetLab e não exige instalação.<br><br>
+      🌐 <a href="https://peotta.github.io/Simul-Net/">Acessar o Simul-Net</a>
+    </td>
+  </tr>
+</table>
+
 ---
 
-## 2. Objetivos da Disciplina
+## 3. Objetivos da Disciplina
 
 Ao final da disciplina, o estudante deverá ser capaz de:
 
@@ -48,11 +75,13 @@ Ao final da disciplina, o estudante deverá ser capaz de:
 - Implementar e comparar protocolos de roteamento intra-domínio (RIP e OSPF);
 - Projetar e analisar cenários de roteamento interdomínio com BGP;
 - Aplicar políticas de roteamento e princípios de engenharia de tráfego;
+- Compreender o roteamento multicast (PIM-DM) e a comutação por rótulos (MPLS e LDP);
+- Configurar e avaliar mecanismos de segurança de rede e de aplicação (firewall *stateless* e *stateful*, *Web Application Firewall* - WAF e sistemas de detecção e prevenção de intrusões - IDS/IPS);
 - Diagnosticar falhas e problemas de desempenho em redes IP.
 
 ---
 
-## 3. Conteúdos Abordados
+## 4. Conteúdos Abordados
 
 - Arquitetura TCP/IP
 - Principais aplicações de rede e modelos de comunicação
@@ -60,15 +89,19 @@ Ao final da disciplina, o estudante deverá ser capaz de:
 - Roteamento estático
 - Roteamento dinâmico
 - RIP: funcionamento e limitações
-- OSPF: estado de enlace, métricas e áreas
+- OSPF: estado de enlace e métricas (área única)
 - BGP: sistemas autônomos, atributos e políticas
 - Integração entre IGP e BGP
+- Roteamento multicast (PIM-DM)
+- Comutação por rótulos (MPLS e LDP)
 - Convergência, escalabilidade e resiliência
 - Aspectos de segurança em protocolos de roteamento
+- Segurança de redes: firewall *stateless* e *stateful* (`iptables`), WAF (ModSecurity e OWASP CRS) e IDS/IPS (Suricata)
+- Acesso remoto seguro (SSH) e análise de tráfego (Wireshark e tcpdump)
 
 ---
 
-## 4. Metodologia
+## 5. Metodologia
 
 As atividades laboratoriais serão desenvolvidas de forma **prática e supervisionada**, envolvendo:
 - Configuração direta de equipamentos;
@@ -80,23 +113,24 @@ O aluno deve seguir rigorosamente os roteiros e registrar os resultados conforme
 
 ---
 
-## 5. Atividades Práticas
+## 6. Atividades Práticas
 
 As atividades práticas são realizadas no **PNetLab** e incluem:
 
 - Montagem de topologias IP;
 - Configuração de endereçamento e gateways;
 - Análise de tabelas de roteamento;
-- Implementação de RIP, OSPF e BGP;
+- Implementação de RIP, OSPF, BGP, multicast (PIM-DM) e MPLS;
 - Simulação de falhas de enlace;
 - Avaliação de convergência e políticas de roteamento;
-- Projeto final integrador de rede.
+- Configuração de firewall, WAF e IDS/IPS;
+- Acesso remoto seguro (SSH) e captura de tráfego com Wireshark e tcpdump.
 
 Cada laboratório está diretamente vinculado ao conteúdo teórico apresentado em aula.
 
 ---
 
-## 6. Avaliação
+## 7. Avaliação
 
 A avaliação da disciplina será baseada em:
 - Execução correta dos laboratórios;
@@ -108,38 +142,12 @@ Os critérios específicos de cada experimento serão informados no respectivo r
 
 ---
 
-## 7. Requisitos
+## 8. Requisitos
 
 - Conhecimentos básicos de redes de computadores;
 - Familiaridade com sistemas operacionais;
 - Noções iniciais de protocolos TCP/IP;
 - Atenção às normas de uso do laboratório.
-
----
-
-## 8. Bibliografia e Documentos Normativos
-
-### 8.1 Bibliografia Básica
-
-- **DOYLE, Jeff; CARROLL, Jennifer DeHaven**. Routing TCP/IP: volume 1. Indianapolis: Cisco Press, 1998.
-- **FOROUZAN, Behrouz A.** Protocolo TCP/IP. 3. ed. Porto Alegre: AMGH, 2010.
-
-### 8.2 Bibliografia Complementar
-
-- **BRITO, Samuel Henrique Bucke**. Laboratórios de tecnologias Cisco em infraestrutura de redes. 2. ed. São Paulo: Novatec, 2014.
-- **COMER, Douglas E.** Interligação de redes com TCP/IP: princípios, protocolos e arquitetura. 5. ed. Rio de Janeiro: Elsevier, 2006.
-- **KUROSE, James F.; ROSS, Keith W**. Redes de computadores e a Internet: uma abordagem top-down. 8. ed. Porto Alegre: Pearson/Bookman, 2021.
-- **LOBATO, Luiz Carlos**. Protocolos de roteamento IP. Rio de Janeiro: RNP/ESR, 2013.
-- **MORAES, Alexandre Fernandes de**. Wireshark: guia prático de análise de tráfego de rede. São Paulo: Novatec, 2015.
-- **STALLINGS, William.** Comunicações de dados e redes de computadores. 10. ed. São Paulo: Pearson, 2014.
-- **TANENBAUM, Andrew S.; WETHERALL, David J.** Redes de computadores. 5. ed. São Paulo: Pearson, 2011.
-
-### 8.3 Documentos Normativos e Técnicos
-
-- **POSTEL, Jon.** Transmission Control Protocol. RFC 793. Marina del Rey: ISI, 1981.
-- **POSTEL, Jon.** User Datagram Protocol. RFC 768. Marina del Rey: ISI, 1980.
-- **MOY, John T.** OSPF version 2. RFC 2328. Marina del Rey: ISI, 1998.
-- **REKHTER, Yakov et al.** A border gateway protocol 4 (BGP-4). RFC 4271. Marina del Rey: ISI, 2006.
 
 ---
 
@@ -149,43 +157,43 @@ Os laboratórios práticos estão organizados de acordo com a progressão temát
 
 ### 9.1 Módulo 0: Fundamentos e Ambiente PNetLab
 
-| Laboratório | Tema | Roteiro |
-|:------------:|------|:-------:|
-| **00** | Guia de Comandos Básicos (VPCS e Linux) | [Acessar](./labs/comandos.md) |
-| **01** | Configuração Inicial e Fundamentos de Roteamento IP | [Acessar](./labs/lab01.md) |
-| **02** | Configuração Básica de Roteadores no PNetLab | [Acessar](./labs/lab02.md) |
+| Laboratório | Tema | Roteiro | Podcast |
+|:------------:|------|:-------:|:-------:|
+| **00** | Guia de Comandos Básicos (VPCS e Linux) | [Acessar](./labs/comandos.md) | - |
+| **01** | Fundamentos de Roteamento IP e Encaminhamento de Pacotes | [Acessar](./labs/lab01.md) | - |
+| **02** | Configuração Básica de Roteadores no PNetLab | [Acessar](./labs/lab02.md) | - |
 
 ### 9.2 Módulo 1: Roteamento Intra-Domínio (IGP) e Multicast
 
-| Laboratório | Tema | Roteiro |
-|:------------:|------|:-------:|
-| **03** | Roteamento Multicast: PIM-DM em Topologia Controlada | [Acessar](./labs/lab03.md) |
-| **04** | Roteamento com RIPv2 e Análise de Convergência | [Acessar](./labs/lab04.md) |
-| **05** | Roteamento Dinâmico com OSPF | [Acessar](./labs/lab05.md) |
+| Laboratório | Tema | Roteiro | Podcast |
+|:------------:|------|:-------:|:-------:|
+| **03** | Roteamento Multicast: PIM-DM em Topologia Controlada | [Acessar](./labs/lab03.md) | [🎧 Ep. 1](https://open.spotify.com/episode/6autgkF6lifJAD8M3Xr0XR) |
+| **04** | Roteamento com RIPv2 e Análise de Convergência | [Acessar](./labs/lab04.md) | [🎧 Ep. 2](https://open.spotify.com/episode/5My3JBmZoVyoKaOL1MGArI) |
+| **05** | Roteamento Dinâmico com OSPF | [Acessar](./labs/lab05.md) | [🎧 Ep. 4](https://open.spotify.com/episode/6ha3fZPjrfBp8ZQNyIfTps?si=754a105ed6474063) |
 
 ### 9.3 Módulo 2: Roteamento Inter-Domínio (EGP / BGP)
 
-| Laboratório | Tema | Roteiro |
-|:------------:|------|:-------:|
-| **06** | Roteamento Externo via BGP (eBGP Básico) | [Acessar](./labs/lab06.md) |
-| **07** | Configuração dos Provedores (BGP Externo e Peering) | [Acessar](./labs/lab07.md) |
-| **08** | Políticas de Roteamento BGP e Integração com OSPF | [Acessar](./labs/lab08.md) |
+| Laboratório | Tema | Roteiro | Podcast |
+|:------------:|------|:-------:|:-------:|
+| **06** | Roteamento Externo via BGP (eBGP Básico) | [Acessar](./labs/lab06.md) | [🎧 Ep. 5](https://open.spotify.com/episode/5h5COkh8c51req9tUxZhzs?si=20722c87de1b41aa) |
+| **07** | Configuração dos Provedores (BGP Externo e Peering) | [Acessar](./labs/lab07.md) | - |
+| **08** | Políticas de Roteamento BGP e Integração com OSPF | [Acessar](./labs/lab08.md) | - |
 
 ### 9.4 Módulo 3: Comutação por Rótulos (MPLS)
 
-| Laboratório | Tema | Roteiro |
-|:------------:|------|:-------:|
-| **09** | Implementação de MPLS e LDP no Backbone | [Acessar](./labs/lab09.md) |
+| Laboratório | Tema | Roteiro | Podcast |
+|:------------:|------|:-------:|:-------:|
+| **09** | Implementação de MPLS e LDP no Backbone | [Acessar](./labs/lab09.md) | [🎧 Ep. 6](https://open.spotify.com/episode/5RXovxuVQ6eLXa5pt2dUeR?si=dZE1TCGAQwyFAuxqumNnyQ) |
 
 ### 9.5 Módulo 4: Segurança de Redes e Aplicação
 
-| Laboratório | Tema | Roteiro |
-|:------------:|------|:-------:|
-| **10** | Firewall de pacotes sem estado (stateless) | [Acessar](./labs/lab10.md) |
-| **11** | Firewall Stateful com `iptables` e Conntrack | [Acessar](./labs/lab11.md) |
-| **12** | Implementação de WAF com ModSecurity e OWASP CRS | [Acessar](./labs/lab12.md) |
-| **13** | Testes de Ataques Web e Análise de Logs no WAF | [Acessar](./labs/lab13.md) |
-| **14** | Implementação de IDS/IPS com Suricata no PNetLab | [Acessar](./labs/lab14.md) |
+| Laboratório | Tema | Roteiro | Podcast |
+|:------------:|------|:-------:|:-------:|
+| **10** | Firewall de pacotes sem estado (stateless) | [Acessar](./labs/lab10.md) | [🎧 Ep. 7](https://open.spotify.com/episode/6mSMblRBIjOvmX0AgsO1ln?si=ccYN8DnmSEuR6XSJgDvBAA) |
+| **11** | Firewall Stateful com `iptables` e Conntrack | [Acessar](./labs/lab11.md) | - |
+| **12** | Implementação de WAF com ModSecurity e OWASP CRS | [Acessar](./labs/lab12.md) | - |
+| **13** | Testes de Ataques Web e Análise de Logs no WAF | [Acessar](./labs/lab13.md) | - |
+| **14** | Implementação de IDS/IPS com Suricata no PNetLab | [Acessar](./labs/lab14.md) | - |
 
 ---
 
@@ -197,21 +205,31 @@ Os laboratórios práticos estão organizados de acordo com a progressão temát
 
 ---
 
-## 11. Equipe de Monitoria
+## 11. Bibliografia e Documentos Normativos
 
-### 11.1 Monitores Atuais (2026/02)
+### 11.1 Bibliografia Básica
 
-- Ana Cecília Braga
-- Caio Lucas Pereira Mena Barreto
-- Caio Soares Rodrigues
-- Luidi Rafael da Silva Fernandes
+- **DOYLE, Jeff; CARROLL, Jennifer DeHaven**. Routing TCP/IP: volume 1. Indianapolis: Cisco Press, 1998.
+- **FOROUZAN, Behrouz A.** Protocolo TCP/IP. 3. ed. Porto Alegre: AMGH, 2010.
 
-### 11.2 Monitores Anteriores (2026/01)
+### 11.2 Bibliografia Complementar
 
-- Beatriz Silva Nascimento
-- Gabriel Henrique da Cruz Costa
-- Luan Silva Moura
-- Luidi Rafael da Silva Fernandes
+- **BRITO, Samuel Henrique Bucke**. Laboratórios de tecnologias Cisco em infraestrutura de redes. 2. ed. São Paulo: Novatec, 2014.
+- **COMER, Douglas E.** Interligação de redes com TCP/IP: princípios, protocolos e arquitetura. 5. ed. Rio de Janeiro: Elsevier, 2006.
+- **HALABI, Sam; MCPHERSON, Danny**. Internet routing architectures. 2. ed. Indianapolis: Cisco Press, 2001.
+- **KUROSE, James F.; ROSS, Keith W**. Redes de computadores e a Internet: uma abordagem top-down. 8. ed. Porto Alegre: Pearson/Bookman, 2021.
+- **LOBATO, Luiz Carlos**. Protocolos de roteamento IP. Rio de Janeiro: RNP/ESR, 2013.
+- **MORAES, Alexandre Fernandes de**. Wireshark: guia prático de análise de tráfego de rede. São Paulo: Novatec, 2015.
+- **STALLINGS, William.** Comunicações de dados e redes de computadores. 10. ed. São Paulo: Pearson, 2014.
+- **TANENBAUM, Andrew S.; WETHERALL, David J.** Redes de computadores. 5. ed. São Paulo: Pearson, 2011.
+- **ZWICKY, Elizabeth D.; COOPER, Simon; CHAPMAN, D. Brent**. Building internet firewalls. 2. ed. Sebastopol: O'Reilly, 2000.
+
+### 11.3 Documentos Normativos e Técnicos
+
+- **EDDY, Wesley (ed.).** Transmission Control Protocol (TCP). RFC 9293. [S.l.]: IETF, 2022. (Substitui a RFC 793.)
+- **POSTEL, Jon.** User Datagram Protocol. RFC 768. Marina del Rey: ISI, 1980.
+- **MOY, John T.** OSPF version 2. RFC 2328. Marina del Rey: ISI, 1998.
+- **REKHTER, Yakov et al.** A border gateway protocol 4 (BGP-4). RFC 4271. Marina del Rey: ISI, 2006.
 
 ---
 
