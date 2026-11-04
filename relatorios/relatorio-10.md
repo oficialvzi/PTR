@@ -137,36 +137,47 @@ Bloqueada. Nenhuma regra permite TCP do Cliente2 para o Cliente1 com destino à 
 ## Parte 7 - Questões para análise
 
 **1. O que caracteriza um firewall de pacotes sem estado?**
+
 Ele avalia cada pacote isoladamente, só pelos campos do cabeçalho, sem memória de conexões anteriores. Por isso o tráfego de retorno precisa de regras próprias.
 
 **2. Quais campos do pacote foram usados nas regras?**
+
 IP de origem (`-s`), IP de destino (`-d`), protocolo (`-p icmp`/`tcp`) e portas TCP de destino (`--dport`) e de origem (`--sport`).
 
 **3. Por que foi necessário ativar o IP forwarding?**
+
 Por padrão, o Linux descarta pacotes que não são destinados a ele próprio. Com `ip_forward=1` ele passa a rotear entre `ens3` e `ens4`, e esse tráfego atravessa a cadeia `FORWARD`.
 
 **4. Qual é a função da cadeia `FORWARD`?**
+
 Filtrar os pacotes que atravessam o firewall de uma interface para outra, ou seja, o tráfego entre as duas redes. `INPUT` e `OUTPUT` tratam o tráfego destinado ao próprio firewall ou originado nele.
 
 **5. Por que o tráfego não permitido foi bloqueado mesmo sem regras específicas?**
+
 Pela política padrão `FORWARD DROP`: o pacote que não casa com nenhuma regra recebe a ação da política. Foi o que aconteceu com o teste do Cliente2 para a porta 80 (3 pacotes no contador da política).
 
 **6. Qual a diferença entre permitir HTTP e permitir ICMP?**
+
 O ICMP não tem portas: basta liberar o protocolo entre os IPs. O HTTP roda sobre TCP e exige regra por porta. No modo stateless, são duas regras: a ida (`--dport 80`) e a volta (`--sport 80`).
 
 **7. O que muda quando a política padrão da cadeia `FORWARD` é `DROP`?**
+
 O firewall passa a funcionar como lista de permissões: só passa o que tem regra `ACCEPT`. Com `ACCEPT` como política, tudo passaria e seria preciso listar cada bloqueio.
 
 **8. Por que esse laboratório ainda não é um firewall stateful?**
+
 Porque nenhuma regra usa estado de conexão (`-m conntrack --ctstate ESTABLISHED,RELATED`). A regra de retorno `--sport 80` aceita qualquer pacote do Cliente2 com porta de origem 80, mesmo que não pertença a uma conexão aberta pelo Cliente1.
 
 **9. Qual a importância da ordem das regras?**
+
 O `iptables` avalia as regras de cima para baixo e para na primeira que casa. Uma regra `DROP` ampla antes de um `ACCEPT` específico anularia a permissão, e vice-versa.
 
 **10. Quais vantagens surgem ao usar hosts Linux no lugar de VPCs?**
+
 Disponibilidade de ferramentas reais: `python3 -m http.server`, `curl`, `nc` e `tcpdump`. Com elas é possível testar serviços TCP de verdade, e não apenas ping.
 
 **11. Qual a diferença entre bloquear o ping com `sysctl` e bloquear ICMP com `iptables`?**
+
 O `icmp_echo_ignore_all` só faz o kernel do firewall não responder aos pings destinados a ele. O pacote chega (visível no `tcpdump`, P5) e o ICMP encaminhado entre as redes não é afetado. O `iptables` filtra qualquer ICMP, em qualquer cadeia, e de forma seletiva por origem, destino e tipo.
 
 ## Conclusão
